@@ -1,0 +1,815 @@
+@import "tailwindcss";
+
+@theme {
+  --color-black: #42331C;
+}
+
+:root {
+  /* ==========================================
+     JANIA MESQUITA ID SYSTEM (Mapped to Existing Terms)
+     ========================================== */
+  
+  /* --- PALETA DE CORES MAPEADA --- */
+  
+  /* Neutros Claros (Base & Backgrounds) */
+  --color-white: #FFFFFF;    /* Gray/1 */
+  --color-snow: #F9F9F9;     /* Gray/2 */
+  --color-ivory: #F5F5F5;    /* Gray/3 */
+  --color-pearl: #F2EFE8;    /* Jania Beige BG (9081/-1) - Usado para fundos suaves */
+  --color-smoke: #EBEBEB;    /* Gray/4 */
+  --color-ash: #DFDCD4;      /* Jania Beige Mid (9081/1) - Usado para bordas */
+  
+  /* Neutros Médios (Ícones & Elementos) */
+  --color-silver: #B6CBBE;   /* Verde-bege claro - Detalhes */
+  --color-stone: #B6A689;    /* Baileys/2 - Tom areia */
+  --color-slate: #78877E;    /* Verde/1 - Ícones */
+  
+  /* Escuros (Textos & Acentos Fortes) */
+  --color-graphite: #696969; /* Gray/8 - Texto Corrido */
+  --color-charcoal: #42331C; /* Marrom/2 - Acentos Escuros */
+  --color-onyx: #385443;     /* Verde/3 - Verde Escuro Secundário */
+  --color-ink: #42331C;      /* SUBSTITUIÇÃO GERAL DE PRETO POR MARROM */
+  --color-black: #42331C;    /* SUBSTITUIÇÃO GERAL DE PRETO POR MARROM */
+  
+  /* Accent Colors (Destaques) */
+  --color-warm-accent: #4D412F; /* Marrom/1 - Base para degradês */
+  --color-cool-accent: #4D6657; /* Verde/2 - Verde Primário (CTAs) */
+  
+  /* --- VARIAVEIS DE SUPORTE (Adicionadas para compatibilidade) --- */
+  /* Mapeando os grays do Tailwind para as cores da marca para garantir consistência */
+  --color-gray-300: var(--color-ash);      /* Bordas */
+  --color-gray-400: var(--color-stone);    /* Scrollbar */
+  --color-gray-500: var(--color-slate);    /* Scrollbar hover */
+  --color-gray-600: var(--color-onyx);     /* Degradês texto */
+  --color-gray-800: var(--color-charcoal); /* Hover buttons */
+  --color-gray-900: var(--color-cool-accent); /* BG Buttons (Verde Principal) */
+  --color-warm-white: var(--color-pearl);
+
+  /* --- SEMANTIC MAPPING --- */
+  --color-bg-canvas: var(--color-white);
+  --color-bg-elevated: var(--color-snow);
+  --color-bg-soft: var(--color-pearl);   /* Fundos suaves agora são Bege */
+  --color-bg-subtle: var(--color-smoke);
+  
+  --color-text-primary: var(--color-ink);     /* #232323 */
+  --color-text-secondary: var(--color-graphite); /* #696969 (Corpo do texto) */
+  --color-text-tertiary: var(--color-slate);  /* #78877E (Verde Ícone) */
+  --color-text-muted: var(--color-stone);
+  --color-text-subtle: var(--color-ash);
+  
+  --color-border-ultra-light: var(--color-pearl);
+  --color-border-light: var(--color-ash);     /* #DFDCD4 */
+  --color-border-medium: var(--color-stone);  /* #B6A689 */
+  --color-border-strong: var(--color-warm-accent);
+  
+  /* ==========================================
+     SPACING SYSTEM
+     ========================================== */
+  --spacing-unit: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-10: 2.5rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+  --spacing-32: 8rem;
+  --spacing-40: 10rem;
+  --spacing-48: 12rem;
+  --spacing-64: 16rem;
+  
+  /* ==========================================
+     TYPOGRAPHY SCALE
+     ========================================== */
+  --font-size-11: 0.6875rem;
+  --font-size-12: 0.75rem;
+  --font-size-13: 0.8125rem;
+  --font-size-14: 0.875rem;
+  --font-size-15: 0.9375rem;
+  --font-size-16: 1rem;       /* 16px */
+  --font-size-18: 1.125rem;   /* 18px (Base Body) */
+  --font-size-20: 1.25rem;
+  --font-size-24: 1.5rem;
+  --font-size-28: 1.75rem;
+  --font-size-32: 2rem;
+  --font-size-36: 2.25rem;    /* H2 */
+  --font-size-40: 2.5rem;
+  --font-size-48: 3rem;       /* H1 approx */
+  --font-size-56: 3.5rem;
+  --font-size-64: 4rem;
+  --font-size-72: 4.5rem;
+  --font-size-80: 5rem;
+  --font-size-96: 6rem;
+  
+  /* ==========================================
+     BORDER RADIUS - Jania ID (Less Rounded)
+     ========================================== */
+  --radius-none: 0;
+  --radius-xs: 3px;
+  --radius-sm: 5.213px;
+  --radius-base: 7px;     /* Padrão para Botões */
+  --radius-md: 9px;       /* Padrão para Cards */
+  --radius-lg: 10px;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.5rem;
+  --radius-full: 100px;   /* Apenas para Ícones/Bullets */
+  
+  /* ==========================================
+     TRANSITIONS
+     ========================================== */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  
+  --duration-instant: 100ms;
+  --duration-fast: 200ms;
+  --duration-base: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 700ms;
+  
+  /* ==========================================
+     SHADOWS - Jania ID
+     ========================================== */
+  /* Sombra Card Jania: 0px 0px 43.935px rgba(0,0,0,0.09) */
+  --shadow-micro: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  --shadow-xs: 0 2px 4px 0 rgba(0, 0, 0, 0.03);
+  --shadow-sm: 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 6px 12px 0 rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 44px 0 rgba(0, 0, 0, 0.09); /* Ajustado para ID Jania */
+  --shadow-xl: 0 16px 32px 0 rgba(77, 65, 47, 0.1); /* Tom marrom na sombra */
+  --shadow-2xl: 0 24px 48px 0 rgba(0, 0, 0, 0.1);
+  --shadow-premium: 0 32px 64px 0 rgba(0, 0, 0, 0.12);
+  
+  /* Line Weights */
+  --line-hair: 0.5px;
+  --line-thin: 1px;
+  --line-base: 1.5px;
+  --line-thick: 2px;
+  --line-bold: 3px;
+}
+
+/* ==========================================
+   BASE STYLES
+   ========================================== */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  @apply antialiased;
+  /* Fonte Principal: Nunito */
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+  color: var(--color-text-secondary); /* Gray/8 */
+  background: var(--color-pearl);
+  line-height: 1.5;
+  letter-spacing: -1px; /* Tracking da ID */
+}
+
+/* ==========================================
+   TYPOGRAPHY - Sogo & Lato
+   ========================================== */
+h1, h2, h3 {
+  font-family: 'Sogo', 'Times New Roman', serif; /* Fonte Títulos */
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--color-text-primary);
+}
+
+h1 {
+  line-height: 1.3;
+}
+
+h2 {
+  line-height: 1.11;
+}
+
+h3 {
+  line-height: 1;
+}
+
+h4 {
+  font-family: 'Lato', sans-serif; /* Subtítulos */
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: -1px;
+  color: var(--color-text-secondary);
+}
+
+p {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 300; /* Light */
+  line-height: 1.5;
+  letter-spacing: -1px;
+  color: var(--color-text-secondary);
+}
+
+/* Dark Background Overrides */
+.bg-black h1,
+.bg-black h2,
+.bg-black h3,
+.bg-black h4 {
+  color: inherit;
+}
+
+.bg-black p {
+  color: inherit;
+}
+
+.bg-black span {
+  color: inherit;
+}
+
+.bg-black div {
+  color: inherit;
+}
+
+/* ==========================================
+   BUTTON SYSTEM - Jania ID (Green & Rounded-MD)
+   ========================================== */
+.btn-primary {
+  @apply px-8 relative overflow-hidden;
+  /* Altura 55px ~ py-4 ajustado */
+  padding-top: 17px;
+  padding-bottom: 17px;
+  background: var(--color-cool-accent); /* Verde Jania #4D6657 */
+  color: var(--color-white); /* Texto Claro */
+  border-radius: var(--radius-base); /* 7px */
+  transition: all var(--transition-base);
+  
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -1px;
+  
+  box-shadow: var(--shadow-sm);
+  border: 1px solid transparent;
+}
+
+.btn-primary:hover {
+  background: var(--color-onyx); /* Verde Escuro #385443 */
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  @apply px-8 border relative overflow-hidden;
+  padding-top: 17px;
+  padding-bottom: 17px;
+  
+  border-color: var(--color-cool-accent); /* Borda Verde */
+  color: var(--color-cool-accent); /* Texto Verde */
+  border-radius: var(--radius-base); /* 7px */
+  
+  transition: all var(--transition-base);
+  background: transparent;
+  
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: -1px;
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-onyx);
+  background: var(--color-bg-soft); /* Bege */
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  @apply px-6 py-3;
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+}
+
+.btn-ghost:hover {
+  color: var(--color-cool-accent);
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-md);
+}
+
+/* ==========================================
+   LAYOUT COMPONENTS
+   ========================================== */
+.section-padding {
+  @apply py-16 px-6;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    @apply py-20 px-8;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    @apply py-24 px-12;
+  }
+}
+
+/* Container do Briefing: 1920px max width */
+.container-custom {
+  @apply mx-auto;
+  max-width: 1218px; /* Conteúdo efetivo */
+}
+
+.container-wide {
+  @apply mx-auto;
+  max-width: 1920px;
+}
+
+/* ==========================================
+   CARD SYSTEM - Jania ID
+   ========================================== */
+.card {
+  @apply rounded-2xl;
+  background: var(--color-white);
+  border: 1px solid var(--color-border-light); /* #DFDCD4 */
+  border-radius: var(--radius-md); /* 9px ou 10px */
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-lg); /* Sombra custom Jania */
+}
+
+.card:hover {
+  border-color: var(--color-border-medium); /* #B6A689 */
+  transform: translateY(-3px);
+}
+
+.card-elevated {
+  background: var(--color-white);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-border-light);
+}
+
+.card-subtle {
+  background: var(--color-bg-soft); /* Bege */
+  border: 1px solid var(--color-border-light);
+}
+
+/* ==========================================
+   FORM INPUTS
+   ========================================== */
+input, textarea, select {
+  transition: all var(--transition-base);
+  background: var(--color-white);
+  border: 1px solid var(--color-border-medium);
+  color: var(--color-text-primary);
+  font-weight: 400;
+  border-radius: var(--radius-base);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--color-cool-accent); /* Focus Verde */
+  background: var(--color-white);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(77, 102, 87, 0.1); /* Glow verde suave */
+}
+
+/* ==========================================
+   UTILITY CLASSES
+   ========================================== */
+.text-gradient {
+  /* Degradê Marrom > Dourado */
+  background: linear-gradient(135deg, var(--color-warm-accent) 0%, var(--color-border-medium) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.divider-line {
+  height: 2px; /* 2px conforme ID */
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--color-silver) 20%, /* #B6CBBE */
+    var(--color-silver) 80%, 
+    transparent 100%
+  );
+}
+
+.subtle-border {
+  border: 1px solid var(--color-border-light);
+}
+
+.subtle-border-top {
+  border-top: 1px solid var(--color-border-light);
+}
+
+.subtle-border-bottom {
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+/* Background Patterns */
+.dots-pattern {
+  background-image: radial-gradient(circle at 2px 2px, rgba(77, 65, 47, 0.05) 1px, transparent 0);
+  background-size: 32px 32px;
+}
+
+.lines-pattern {
+  background-image: 
+    linear-gradient(rgba(77, 65, 47, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(77, 65, 47, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ==========================================
+   ANIMATIONS
+   ========================================== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.6s ease-out forwards;
+}
+
+/* ==========================================
+   SMOOTH SCROLL & ACCESSIBILITY
+   ========================================== */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+::selection {
+  background-color: var(--color-cool-accent); /* Verde */
+  color: var(--color-white);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-cool-accent);
+  outline-offset: 2px;
+}
+
+a {
+  transition: all var(--transition-fast);
+}
+
+/* ==========================================
+   SCROLLBAR
+   ========================================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-soft);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-stone);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-slate);
+}
+
+/* ==========================================
+   RESPONSIVE TYPOGRAPHY
+   ========================================== */
+@media (max-width: 768px) {
+  h1 { font-size: clamp(2rem, 8vw, 3rem); }
+  h2 { font-size: clamp(1.75rem, 6vw, 2.5rem); }
+  p { font-size: clamp(1rem, 2vw, 1.125rem); }
+}
+
+/* ==========================================
+   PREMIUM ACCENTS
+   ========================================== */
+.premium-badge {
+  @apply inline-flex items-center gap-2 px-4 py-2 rounded-full;
+  background: var(--color-bg-soft);
+  border: 1px solid var(--color-border-light);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.section-accent {
+  position: relative;
+}
+
+.section-accent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--color-border-light) 50%, 
+    transparent 100%
+  );
+}
+
+/* Stats/Metrics */
+.metric-display {
+  text-align: center;
+}
+
+.metric-value {
+  font-family: 'Sogo', serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--color-cool-accent); /* Verde */
+  line-height: 1;
+}
+
+.metric-label {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.5rem;
+}
+
+/* Stats Section - Sobre Page */
+.stats-section {
+  padding: 4rem 1.5rem;
+  background-color: #f9fafb;
+}
+
+@media (min-width: 768px) {
+  .stats-section {
+    padding: 5rem 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .stats-section {
+    padding: 6rem 3rem;
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stats-item {
+  text-align: center;
+}
+
+.stats-number {
+  font-family: 'Sogo', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 0.75rem;
+  line-height: 1;
+}
+
+.stats-label {
+  font-family: 'Nunito', sans-serif;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* ==========================================
+   LAYOUT HELPERS
+   ========================================== */
+.content-wrapper {
+  max-width: 65ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ==========================================
+   EDITORIAL DESIGN ELEMENTS
+   ========================================== */
+
+/* Geometric Accent Lines */
+.geo-line-vertical {
+  position: absolute;
+  width: var(--line-thin);
+  background: var(--color-border-light);
+  opacity: 0.5;
+}
+
+.geo-line-horizontal {
+  position: absolute;
+  height: var(--line-thin);
+  background: var(--color-border-light);
+  opacity: 0.5;
+}
+
+/* Minimal Decorative Elements */
+.minimal-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-text-tertiary);
+}
+
+.minimal-square {
+  width: 6px;
+  height: 6px;
+  background: var(--color-text-tertiary);
+  opacity: 0.3;
+}
+
+/* Editorial Badge/Label */
+.editorial-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: var(--font-size-11);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.editorial-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+/* Premium Floating Card */
+.floating-card {
+  position: relative;
+  background: var(--color-white);
+  border: 1px solid var(--color-border-ultra-light);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--duration-slow) var(--ease-premium);
+}
+
+.floating-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  border-color: var(--color-border-light);
+}
+
+/* Section Divider */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-border-ultra-light) 25%,
+    var(--color-border-light) 50%,
+    var(--color-border-ultra-light) 75%,
+    transparent 100%
+  );
+  margin: var(--spacing-32) 0;
+}
+
+/* Editorial Number */
+.editorial-number {
+  font-family: 'Sogo', serif;
+  font-size: var(--font-size-64);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Minimal Hover State */
+.hover-lift {
+  transition: transform var(--duration-base) var(--ease-premium);
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+/* Text Highlight - Subtle Red Jania */
+.text-highlight {
+  background: transparent;
+  color: #A22323; /* Vermelho destaque */
+  padding: 0;
+}
+
+/* Glass Morphism Effect */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Microinteraction: Expand on Hover */
+.expand-hover {
+  transition: all var(--duration-base) var(--ease-premium);
+}
+
+.expand-hover:hover {
+  transform: scale(1.02);
+}
+
+/* Fine Line Border Top */
+.border-fine-top {
+  border-top: var(--line-hair) solid var(--color-border-ultra-light);
+}
+
+/* Premium Gradient Text */
+.gradient-editorial {
+  background: linear-gradient(
+    135deg,
+    var(--color-ink) 0%,
+    var(--color-charcoal) 50%,
+    var(--color-graphite) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Breathing Space Utility */
+.breathe-sm { padding: var(--spacing-12); }
+.breathe-md { padding: var(--spacing-16); }
+.breathe-lg { padding: var(--spacing-24); }
+.breathe-xl { padding: var(--spacing-32); }
+
+/* Aspect Ratio Containers */
+.aspect-golden { aspect-ratio: 1.618 / 1; }
+.aspect-square { aspect-ratio: 1 / 1; }
+.aspect-landscape { aspect-ratio: 16 / 9; }
+.aspect-portrait { aspect-ratio: 3 / 4; }
