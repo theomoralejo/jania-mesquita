@@ -67,6 +67,16 @@ function App() {
               notificationProvider={useNotificationProvider}
               routerProvider={routerBindings}
               authProvider={authProvider}
+              options={{
+                warnWhenUnsavedChanges: true,
+                useNewQueryKeys: true,
+                projectId: 'jania-admin',
+                syncWithLocation: true,
+                redirect: {
+                  afterLogin: '/',
+                  afterLogout: '/login',
+                },
+              }}
               resources={[
                 {
                   name: 'dashboard',
@@ -195,12 +205,6 @@ function App() {
                   },
                 },
               ]}
-              options={{
-                syncWithLocation: true,
-                warnWhenUnsavedChanges: true,
-                useNewQueryKeys: true,
-                projectId: 'jania-admin',
-              }}
             >
               <Routes>
                 <Route

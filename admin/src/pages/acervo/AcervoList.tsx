@@ -11,7 +11,7 @@ import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 export const AcervoList = () => {
   const { tableProps } = useTable({
     syncWithLocation: true,
-    resource: 'acervo/products',
+    resource: 'acervo',
     sorters: {
       initial: [
         {

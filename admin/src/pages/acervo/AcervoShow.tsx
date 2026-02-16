@@ -11,7 +11,7 @@ const { Title, Paragraph, Link } = Typography;
 
 export const AcervoShow = () => {
   const { queryResult } = useShow({
-    resource: 'acervo/products',
+    resource: 'acervo',
     meta: {
       populate: ['category', 'format'],
     },

@@ -63,9 +63,19 @@ export const authProvider: AuthProvider = {
   check: async () => {
     const token = localStorage.getItem('token');
     if (token) {
-      return {
-        authenticated: true,
-      };
+      try {
+        // Verify token is still valid by checking with backend
+        const response = await axiosInstance.get('/auth/me');
+        if (response.data) {
+          return {
+            authenticated: true,
+          };
+        }
+      } catch (error) {
+        // Token is invalid or expired
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      }
     }
 
     return {

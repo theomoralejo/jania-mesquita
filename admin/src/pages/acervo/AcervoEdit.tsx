@@ -10,7 +10,7 @@ import { RichTextEditor } from '../../components/RichTextEditor';
 
 export const AcervoEdit = () => {
   const { formProps, saveButtonProps, queryResult } = useForm({
-    resource: 'acervo/products',
+    resource: 'acervo',
   });
 
   const { selectProps: categorySelectProps } = useSelect({
