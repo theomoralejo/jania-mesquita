@@ -1,29 +1,40 @@
 import React from 'react';
 
+import { useState, useEffect } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
-// Figma imports commented out - using placeholders
-const janiaPhoto1 = '/assets/img/jania_4.webp';
-const janiaPhoto2 = '/assets/img/jania_12.webp';
-const janiaPhoto3 = '/assets/img/jania_10.webp';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { galeriaApi } from '../lib/api';
 
 export function EventPhotos() {
-  const photos = [
-    {
-      src: janiaPhoto1,
-      alt: "Jania Mesquita em palestra corporativa"
-    },
-    {
-      src: janiaPhoto2,
-      alt: "Sessão de mentoria estratégica"
-    },
-    {
-      src: janiaPhoto3,
-      alt: "Workshop de transformação médica"
-    }
-  ];
+  const [photos, setPhotos] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPhotos = async () => {
+      try {
+        const fotos = await galeriaApi.getFotos();
+        setPhotos(fotos.map((foto: any) => ({
+          src: foto.src,
+          alt: foto.alt,
+          title: foto.title
+        })));
+      } catch (error) {
+        console.error('Erro ao buscar fotos:', error);
+        // Fallback para fotos padrão em caso de erro
+        setPhotos([
+          { src: '/assets/img/jania_4.webp', alt: "Jania Mesquita em palestra corporativa" },
+          { src: '/assets/img/jania_12.webp', alt: "Sessão de mentoria estratégica" },
+          { src: '/assets/img/jania_10.webp', alt: "Workshop de transformação médica" }
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPhotos();
+  }, []);
 
   // Re-evaluating infinite for 3 items with 1.5 view. 
   // If infinite=false, we see 1.5, then scroll to see the rest.

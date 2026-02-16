@@ -3,6 +3,7 @@ import React from 'react';
 import { useState } from 'react';
 import { CheckCircle2, Calendar, Clock } from 'lucide-react';
 import { FormInput, FormSelect, FormTextarea, FormButton, FormSuccessMessage } from './shared';
+import { formulariosApi } from '../lib/api';
 
 export function DiagnosticoForm() {
   const [formData, setFormData] = useState({
@@ -14,11 +15,25 @@ export function DiagnosticoForm() {
     mainChallenge: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Diagnóstico solicitado:', formData);
-    setSubmitted(true);
+
+    try {
+      setLoading(true);
+      setError('');
+
+      await formulariosApi.submitDiagnostico(formData);
+
+      setSubmitted(true);
+    } catch (err) {
+      console.error('Erro ao enviar diagnóstico:', err);
+      setError('Erro ao enviar solicitação. Por favor, tente novamente.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -157,8 +172,14 @@ export function DiagnosticoForm() {
                   placeholder="Ex: Dependência do fundador, falta de processos, dificuldade em escalar..."
                 />
 
+                {error && (
+                  <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 text-red-600 text-sm">
+                    {error}
+                  </div>
+                )}
+
                 <div className="pt-4">
-                  <FormButton type="submit">
+                  <FormButton type="submit" loading={loading}>
                     Agendar Diagnóstico Gratuito
                   </FormButton>
                 </div>

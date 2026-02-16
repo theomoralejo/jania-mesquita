@@ -1,100 +1,90 @@
 import React from 'react';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Calendar, Clock, ArrowRight, BookOpen } from 'lucide-react';
+import { blogApi } from '../lib/api';
 
 export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([
+    { value: 'all', label: 'Todos os artigos' }
+  ]);
+  const [loading, setLoading] = useState(true);
 
-  const categories = [
-    { value: 'all', label: 'Todos os artigos' },
-    { value: 'lideranca', label: 'Liderança' },
-    { value: 'gestao', label: 'Gestão' },
-    { value: 'governanca', label: 'Governança' },
-    { value: 'desenvolvimento', label: 'Desenvolvimento Pessoal' }
-  ];
+  // Buscar posts e categorias da API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
 
-  const blogPosts = [
-    {
-      slug: 'da-medicina-a-gestao',
-      title: 'Da Medicina à Gestão: Uma Jornada de Transformação',
-      category: 'lideranca',
-      categoryLabel: 'Liderança',
-      excerpt: 'Como médicos podem desenvolver habilidades de liderança sem abandonar sua essência clínica. Uma reflexão sobre o papel estratégico do médico-gestor.',
-      image: '/assets/img/jania_14.webp',
-      date: '15 de Dezembro, 2025',
-      readTime: '8 min',
-      featured: true
-    },
-    {
-      slug: 'os-tres-pilares-da-governanca-clinica',
-      title: 'Os 3 Pilares da Governança Clínica Sustentável',
-      category: 'governanca',
-      categoryLabel: 'Governança',
-      excerpt: 'Qualidade assistencial, segurança do paciente e eficiência operacional: o tripé que sustenta instituições de saúde de excelência.',
-      image: '/assets/img/jania_14.webp',
-      date: '8 de Dezembro, 2025',
-      readTime: '12 min',
-      featured: false
-    },
-    {
-      slug: 'cultura-organizacional-em-saude',
-      title: 'Construindo Cultura Organizacional em Saúde',
-      category: 'gestao',
-      categoryLabel: 'Gestão',
-      excerpt: 'Valores, crenças e práticas que transformam equipes clínicas em times de alta performance. O papel da cultura no sucesso institucional.',
-      image: '/assets/img/jania_14.webp',
-      date: '1 de Dezembro, 2025',
-      readTime: '10 min',
-      featured: false
-    },
-    {
-      slug: 'escalabilidade-com-proposito',
-      title: 'Escalabilidade com Propósito: Crescer sem Perder a Alma',
-      category: 'gestao',
-      categoryLabel: 'Gestão',
-      excerpt: 'Estratégias para expandir sua operação mantendo os valores que tornaram sua prática única. Crescimento intencional e sustentável.',
-      image: '/assets/img/jania_14.webp',
-      date: '24 de Novembro, 2025',
-      readTime: '9 min',
-      featured: false
-    },
-    {
-      slug: 'lideranca-emocional',
-      title: 'Liderança Emocional: O Equilíbrio Entre Mente e Coração',
-      category: 'desenvolvimento',
-      categoryLabel: 'Desenvolvimento Pessoal',
-      excerpt: 'Por que a inteligência emocional é a competência mais crítica para médicos-líderes. Estratégia e sensibilidade andando juntas.',
-      image: '/assets/img/jania_14.webp',
-      date: '17 de Novembro, 2025',
-      readTime: '11 min',
-      featured: false
-    },
-    {
-      slug: 'metricas-que-importam',
-      title: 'Métricas que Importam: Além do Faturamento',
-      category: 'gestao',
-      categoryLabel: 'Gestão',
-      excerpt: 'Indicadores estratégicos para medir o que realmente impacta a sustentabilidade e a qualidade do seu negócio em saúde.',
-      image: '/assets/img/jania_14.webp',
-      date: '10 de Novembro, 2025',
-      readTime: '7 min',
-      featured: false
-    }
-  ];
+        // Buscar posts
+        const posts = await blogApi.getPosts();
+
+        // Transformar dados da API para o formato do componente
+        const transformedPosts = posts.map((post: any) => ({
+          slug: post.slug,
+          title: post.title,
+          category: post.category.slug,
+          categoryLabel: post.category.label,
+          excerpt: post.excerpt,
+          image: post.image,
+          date: new Date(post.publishedAt).toLocaleDateString('pt-BR', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          }),
+          readTime: post.readTime,
+          featured: post.featured
+        }));
+
+        setBlogPosts(transformedPosts);
+
+        // Buscar categorias
+        const categoriesData = await blogApi.getCategories();
+        const transformedCategories = [
+          { value: 'all', label: 'Todos os artigos' },
+          ...categoriesData.map((cat: any) => ({
+            value: cat.slug,
+            label: cat.label
+          }))
+        ];
+        setCategories(transformedCategories);
+
+      } catch (error) {
+        console.error('Erro ao buscar dados do blog:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const filteredPosts = blogPosts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory;
-    
+
     return matchesSearch && matchesCategory;
   });
 
   const featuredPost = filteredPosts.find(post => post.featured);
   const regularPosts = filteredPosts.filter(post => !post.featured);
+
+  // Loading state
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-[#F2EFE8] flex items-center justify-center">
+        <div className="text-center">
+          <BookOpen className="w-16 h-16 text-[#385443] mx-auto mb-4 animate-pulse" />
+          <p className="text-[#696969] text-lg">Carregando artigos...</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-[#F2EFE8]">

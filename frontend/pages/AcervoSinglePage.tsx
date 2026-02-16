@@ -1,70 +1,65 @@
 import React from 'react';
 
-import { useParams, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle2, ShoppingCart, Star, Clock, User, ArrowRight, BookOpen, ShieldCheck, Award } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
+import { acervoApi } from '../lib/api';
 
 export default function AcervoSinglePage() {
   const { slug } = useParams();
-  
-  // Mock Data Dispatcher
-  const isArticle = slug?.includes('nova-era') || slug?.includes('papel-ceo') || slug?.includes('escalar-sem');
-  
-  const productData = {
-    title: 'Governança Clínica: O Guia Definitivo',
-    subtitle: 'Transforme seu consultório em uma empresa de saúde escalável e lucrativa.',
-    type: 'Livro Físico',
-    category: 'Governança',
-    price: 'R$ 89,90',
-    originalPrice: 'R$ 119,90',
-    format: 'fisico', 
-    image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=800',
-    description: 'A obra de referência para médicos que desejam transformar suas clínicas em empresas de alto valor. Um guia prático, direto e fundamental para a nova era da medicina.',
-    hotmartLink: 'https://hotmart.com/pt-br',
-    features: [
-      '320 páginas de conteúdo prático',
-      'Capa dura com acabamento premium',
-      'Prefácio de grandes nomes da gestão',
-      'Acesso a área de membros exclusiva'
-    ],
-    benefits: [
-      {
-        title: 'Domine a Gestão',
-        desc: 'Pare de ser refém da sua operação. Aprenda a delegar e criar processos que funcionam sem você.'
-      },
-      {
-        title: 'Aumente a Lucratividade',
-        desc: 'Técnicas de precificação e controle financeiro para elevar sua margem acima de 30%.'
-      },
-      {
-        title: 'Experiência do Paciente',
-        desc: 'Crie uma jornada encantadora que fideliza e gera indicações espontâneas.'
-      },
-      {
-        title: 'Cultura de Alta Performance',
-        desc: 'Como contratar, treinar e reter talentos que vestem a camisa da sua clínica.'
+  const navigate = useNavigate();
+  const [product, setProduct] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  // Buscar produto da API
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        setError(false);
+
+        if (!slug) {
+          setError(true);
+          return;
+        }
+
+        const productData = await acervoApi.getProductBySlug(slug);
+
+        // Transformar dados da API para o formato do componente
+        const transformedProduct = {
+          title: productData.title,
+          subtitle: productData.description,
+          type: productData.format.label,
+          category: productData.category.label,
+          price: productData.price,
+          originalPrice: productData.originalPrice,
+          format: productData.format.slug,
+          image: productData.image,
+          description: productData.description,
+          hotmartLink: productData.hotmartLink,
+          features: productData.features?.map((f: any) => f.text) || [],
+          benefits: [], // Pode ser implementado futuramente
+          fullContent: productData.fullContent || '',
+          relatedResources: [], // Pode ser implementado futuramente
+          tags: productData.features?.map((f: any) => f.text).slice(0, 3) || []
+        };
+
+        setProduct(transformedProduct);
+      } catch (error) {
+        console.error('Erro ao buscar produto:', error);
+        setError(true);
+      } finally {
+        setLoading(false);
       }
-    ],
-    fullContent: `
-      <p class="mb-6">A medicina mudou. O paciente mudou. O mercado mudou. E a sua clínica? Ainda é gerida como um consultório artesanal ou já opera com a eficiência de uma empresa de saúde?</p>
-      <p class="mb-6">Neste livro, Jania Mesquita condensa 15 anos de experiência transformando clínicas médicas em negócios escaláveis e lucrativos. Não é teoria de administração genérica: é o método de campo de batalha, testado e validado em centenas de clínicas por todo o Brasil.</p>
-    `,
-    relatedResources: [
-      { 
-        title: 'Escalabilidade Sem Caos', 
-        type: 'E-book', 
-        price: 'R$ 47,00',
-        image: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=800' 
-      },
-      { 
-        title: 'Kit de Gestão Financeira', 
-        type: 'Ferramenta', 
-        price: 'R$ 197,00',
-        image: 'https://images.unsplash.com/photo-1554224155-98406852d0a8?auto=format&fit=crop&q=80&w=800'
-      }
-    ],
-    tags: ['Gestão', 'Livros', 'Bestseller']
-  };
+    };
+
+    fetchProduct();
+  }, [slug]);
+
+  // Mock Data Dispatcher (mantido para compatibilidade com artigos - pode ser removido se não houver artigos)
+  const isArticle = false; // Por enquanto só produtos
 
   const articleData = {
     title: 'A Nova Era da Governança Clínica',
@@ -96,8 +91,40 @@ export default function AcervoSinglePage() {
     }
   };
 
-  // Select data based on simulated routing
-  const resource = isArticle ? articleData : productData;
+  // Loading state
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-[#F2EFE8] flex items-center justify-center">
+        <div className="text-center">
+          <BookOpen className="w-16 h-16 text-[#385443] mx-auto mb-4 animate-pulse" />
+          <p className="text-[#696969] text-lg">Carregando produto...</p>
+        </div>
+      </main>
+    );
+  }
+
+  // Error or product not found
+  if (error || !product) {
+    return (
+      <main className="min-h-screen bg-[#F2EFE8] flex items-center justify-center">
+        <div className="text-center max-w-md px-6">
+          <BookOpen className="w-16 h-16 text-[#B6A689] mx-auto mb-4" />
+          <h2 className="font-serif text-3xl mb-4 text-[#42331C]">Produto não encontrado</h2>
+          <p className="text-[#696969] mb-8">O produto que você procura não existe ou foi removido.</p>
+          <Link
+            to="/acervo"
+            className="inline-flex items-center gap-2 text-[#385443] hover:text-[#42331C] font-bold"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Voltar para o acervo
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  // Select data based on simulated routing (product from API or old articleData)
+  const resource = isArticle ? articleData : product;
 
   // --- RENDER ARTICLE VIEW ---
   if (isArticle) {

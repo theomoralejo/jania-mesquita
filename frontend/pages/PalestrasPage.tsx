@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle2, Compass, Lightbulb, Users2, MessageCircle, Ta
 import { CompaniesLogos } from '../components/CompaniesLogos';
 import { EventPhotos } from '../components/EventPhotos';
 import { PalestrasHeroImage } from '../components/PalestrasHeroImage';
+import { formulariosApi } from '../lib/api';
 
 export default function PalestrasPage() {
   const [formData, setFormData] = useState({
@@ -18,11 +19,22 @@ export default function PalestrasPage() {
     message: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Solicitação enviada:', formData);
-    setSubmitted(true);
+    try {
+      setLoading(true);
+      setError('');
+      await formulariosApi.submitPalestras(formData);
+      setSubmitted(true);
+    } catch (err) {
+      console.error('Erro ao enviar solicitação:', err);
+      setError('Erro ao enviar solicitação. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

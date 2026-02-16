@@ -1,13 +1,93 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock, Share2, BookOpen } from 'lucide-react';
+import { blogApi } from '../lib/api';
 
 export default function BlogSinglePage() {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const [post, setPost] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  // Blog posts data (same as BlogPage)
-  const blogPosts = [
+  // Buscar post da API
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        setLoading(true);
+        setError(false);
+
+        if (!slug) {
+          setError(true);
+          return;
+        }
+
+        const postData = await blogApi.getPostBySlug(slug);
+
+        // Transformar dados da API para o formato do componente
+        const transformedPost = {
+          slug: postData.slug,
+          title: postData.title,
+          category: postData.category.slug,
+          categoryLabel: postData.category.label,
+          excerpt: postData.excerpt,
+          image: postData.image,
+          date: new Date(postData.publishedAt).toLocaleDateString('pt-BR', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          }),
+          readTime: postData.readTime,
+          content: postData.content
+        };
+
+        setPost(transformedPost);
+      } catch (error) {
+        console.error('Erro ao buscar post:', error);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [slug]);
+
+  // Loading state
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-[#F2EFE8] flex items-center justify-center">
+        <div className="text-center">
+          <BookOpen className="w-16 h-16 text-[#385443] mx-auto mb-4 animate-pulse" />
+          <p className="text-[#696969] text-lg">Carregando artigo...</p>
+        </div>
+      </main>
+    );
+  }
+
+  // Error or post not found
+  if (error || !post) {
+    return (
+      <main className="min-h-screen bg-[#F2EFE8] flex items-center justify-center">
+        <div className="text-center max-w-md px-6">
+          <BookOpen className="w-16 h-16 text-[#B6A689] mx-auto mb-4" />
+          <h2 className="font-serif text-3xl mb-4 text-[#42331C]">Artigo não encontrado</h2>
+          <p className="text-[#696969] mb-8">O artigo que você procura não existe ou foi removido.</p>
+          <Link
+            to="/blog"
+            className="inline-flex items-center gap-2 text-[#385443] hover:text-[#42331C] font-bold"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Voltar para o blog
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  // OLD DATA - TO BE REMOVED
+  const oldBlogPosts = [
     {
       slug: 'da-medicina-a-gestao',
       title: 'Da Medicina à Gestão: Uma Jornada de Transformação',
@@ -357,16 +437,8 @@ export default function BlogSinglePage() {
     }
   ];
 
-  const post = blogPosts.find(p => p.slug === slug);
-
-  if (!post) {
-    navigate('/blog');
-    return null;
-  }
-
-  const relatedPosts = blogPosts
-    .filter(p => p.category === post.category && p.slug !== post.slug)
-    .slice(0, 3);
+  // Posts relacionados (por enquanto array vazio - pode ser implementado futuramente)
+  const relatedPosts: any[] = [];
 
   return (
     <main className="min-h-screen bg-[#F2EFE8]">

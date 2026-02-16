@@ -1,34 +1,43 @@
 import React from 'react';
 
+import { useState, useEffect } from 'react';
 import { Building2, Users, Award, TrendingUp } from 'lucide-react';
+import { socialProofApi } from '../lib/api';
+
+const iconMap: Record<string, any> = {
+  'building': Building2,
+  'users': Users,
+  'award': Award,
+  'trending': TrendingUp
+};
 
 export function SocialProofHome() {
-  const stats = [
-    {
-      icon: Building2,
-      value: '200+',
-      label: 'Clínicas Transformadas',
-      description: 'Operações escaláveis em todo Brasil'
-    },
-    {
-      icon: Users,
-      value: '+100mil',
-      label: 'Profissionais Impactados',
-      description: 'Através de mentoria e capacitação'
-    },
-    {
-      icon: Award,
-      value: '98%',
-      label: 'Taxa de Satisfação',
-      description: 'Mentorados recomendam o programa'
-    },
-    {
-      icon: TrendingUp,
-      value: 'R$ 500M+',
-      label: 'Valor Gerado',
-      description: 'Impacto em faturamento de clínicas mentoradas*'
-    }
-  ];
+  const [stats, setStats] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const data = await socialProofApi.getStats();
+        setStats(data.map((stat: any) => ({
+          icon: Building2, // Pode ser melhorado mapeando icons
+          value: stat.value,
+          label: stat.label,
+          description: '' // Adicionar se necessário no schema
+        })));
+      } catch (error) {
+        console.error('Erro ao buscar estatísticas:', error);
+        // Fallback
+        setStats([
+          { icon: Building2, value: '200+', label: 'Clínicas Transformadas', description: 'Operações escaláveis em todo Brasil' },
+          { icon: Users, value: '+100mil', label: 'Profissionais Impactados', description: 'Através de mentoria e capacitação' },
+          { icon: Award, value: '98%', label: 'Taxa de Satisfação', description: 'Mentorados recomendam o programa' },
+          { icon: TrendingUp, value: 'R$ 500M+', label: 'Valor Gerado', description: 'Impacto em faturamento de clínicas mentoradas*' }
+        ]);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   return (
     <section className="py-12 md:py-20 bg-[#F2EFE8] relative overflow-hidden border-y border-[#DFDCD4]">

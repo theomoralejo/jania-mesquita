@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useState } from 'react';
 import { Mail, Phone, MapPin, Send, Clock, CheckCircle2 } from 'lucide-react';
+import { formulariosApi } from '../lib/api';
 
 export default function ContatoPage() {
   const [formData, setFormData] = useState({
@@ -12,11 +13,33 @@ export default function ContatoPage() {
     message: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Contato enviado:', formData);
-    setSubmitted(true);
+
+    try {
+      setLoading(true);
+      setError('');
+
+      await formulariosApi.submitContato(formData);
+
+      setSubmitted(true);
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+    } catch (err) {
+      console.error('Erro ao enviar contato:', err);
+      setError('Erro ao enviar mensagem. Por favor, tente novamente.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -183,11 +206,18 @@ export default function ContatoPage() {
                     />
                   </div>
 
+                  {error && (
+                    <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 text-red-600 text-sm">
+                      {error}
+                    </div>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full bg-[#42331C] text-white py-4 rounded-xl hover:bg-gray-900 transition-all flex items-center justify-center gap-2 group"
+                    disabled={loading}
+                    className="w-full bg-[#42331C] text-white py-4 rounded-xl hover:bg-gray-900 transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Enviar Mensagem
+                    {loading ? 'Enviando...' : 'Enviar Mensagem'}
                     <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" strokeWidth={1.5} />
                   </button>
                 </form>

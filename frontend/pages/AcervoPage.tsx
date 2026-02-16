@@ -1,98 +1,89 @@
 import React from 'react';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Filter, BookOpen, ShoppingBag, Smartphone, Book, Video, Headphones, ArrowRight } from 'lucide-react';
+import { acervoApi } from '../lib/api';
+
+// Mapeia icons para formatos
+const formatIcons: Record<string, any> = {
+  'ebook': Smartphone,
+  'kindle': Book,
+  'fisico': BookOpen,
+  'produto': ShoppingBag,
+  'default': BookOpen
+};
 
 export default function AcervoPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedFormat, setSelectedFormat] = useState('all');
+  const [resources, setResources] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([
+    { value: 'all', label: 'Todos' }
+  ]);
+  const [formats, setFormats] = useState<any[]>([
+    { value: 'all', label: 'Todos os Formatos', icon: Filter }
+  ]);
+  const [loading, setLoading] = useState(true);
 
-  const categories = [
-    { value: 'all', label: 'Todos' },
-    { value: 'governanca', label: 'Governança' },
-    { value: 'gestao', label: 'Gestão' },
-    { value: 'lideranca', label: 'Liderança' },
-    { value: 'marketing', label: 'Marketing' }
-  ];
+  // Buscar produtos, categorias e formatos da API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
 
-  const formats = [
-    { value: 'all', label: 'Todos os Formatos' },
-    { value: 'ebook', label: 'E-books', icon: Smartphone },
-    { value: 'kindle', label: 'Kindle', icon: Book },
-    { value: 'fisico', label: 'Livro Físico', icon: BookOpen },
-    { value: 'produto', label: 'Produtos Digitais', icon: ShoppingBag }
-  ];
+        // Buscar produtos
+        const products = await acervoApi.getProducts();
 
-  const resources = [
-    {
-      slug: 'livro-governanca-clinica',
-      title: 'Governança Clínica: O Guia Definitivo',
-      category: 'governanca',
-      format: 'fisico',
-      type: 'Livro Físico',
-      price: 'R$ 89,90',
-      image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=800',
-      description: 'A obra de referência para médicos que desejam transformar suas clínicas em empresas de alto valor.',
-      tags: ['Bestseller', 'Fundamentos']
-    },
-    {
-      slug: 'ebook-escalabilidade',
-      title: 'Escalabilidade Sem Caos',
-      category: 'gestao',
-      format: 'ebook',
-      type: 'E-book',
-      price: 'R$ 47,00',
-      image: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=800',
-      description: 'Estratégias práticas para crescer sua operação mantendo a qualidade e a sanidade.',
-      tags: ['Crescimento', 'Processos']
-    },
-    {
-      slug: 'kindle-lideranca-medica',
-      title: 'Liderança Médica na Prática',
-      category: 'lideranca',
-      format: 'kindle',
-      type: 'Kindle',
-      price: 'R$ 24,90',
-      image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=800',
-      description: 'Como liderar equipes multidisciplinares e criar uma cultura de alta performance.',
-      tags: ['Gestão de Pessoas', 'Cultura']
-    },
-    {
-      slug: 'kit-gestao-financeira',
-      title: 'Kit de Gestão Financeira',
-      category: 'gestao',
-      format: 'produto',
-      type: 'Ferramenta Digital',
-      price: 'R$ 197,00',
-      image: 'https://images.unsplash.com/photo-1554224155-98406852d0a8?auto=format&fit=crop&q=80&w=800',
-      description: 'Planilhas, dashboards e templates para controle total das finanças da sua clínica.',
-      tags: ['Finanças', 'Templates']
-    },
-    {
-      slug: 'ebook-marketing-etico',
-      title: 'Marketing Ético e Eficiente',
-      category: 'marketing',
-      format: 'ebook',
-      type: 'E-book',
-      price: 'R$ 59,90',
-      image: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800',
-      description: 'Como atrair pacientes qualificados respeitando as normas do CFM e construindo autoridade.',
-      tags: ['Vendas', 'Posicionamento']
-    },
-    {
-      slug: 'livro-experiencia-paciente',
-      title: 'A Jornada do Paciente',
-      category: 'gestao',
-      format: 'fisico',
-      type: 'Livro Físico',
-      price: 'R$ 79,90',
-      image: 'https://images.unsplash.com/photo-1516549655169-df83a063b36c?auto=format&fit=crop&q=80&w=800',
-      description: 'Mapeando e otimizando cada ponto de contato para encantar e fidelizar.',
-      tags: ['Atendimento', 'Fidelização']
-    }
-  ];
+        // Transformar dados da API para o formato do componente
+        const transformedProducts = products.map((product: any) => ({
+          slug: product.slug,
+          title: product.title,
+          category: product.category.slug,
+          format: product.format.slug,
+          type: product.format.label,
+          price: product.price,
+          originalPrice: product.originalPrice,
+          image: product.image,
+          description: product.description,
+          tags: product.features?.map((f: any) => f.text).slice(0, 2) || []
+        }));
+
+        setResources(transformedProducts);
+
+        // Buscar categorias
+        const categoriesData = await acervoApi.getCategories();
+        const transformedCategories = [
+          { value: 'all', label: 'Todos' },
+          ...categoriesData.map((cat: any) => ({
+            value: cat.slug,
+            label: cat.label
+          }))
+        ];
+        setCategories(transformedCategories);
+
+        // Buscar formatos
+        const formatsData = await acervoApi.getFormats();
+        const transformedFormats = [
+          { value: 'all', label: 'Todos os Formatos', icon: Filter },
+          ...formatsData.map((format: any) => ({
+            value: format.slug,
+            label: format.label,
+            icon: formatIcons[format.slug] || formatIcons.default
+          }))
+        ];
+        setFormats(transformedFormats);
+
+      } catch (error) {
+        console.error('Erro ao buscar dados do acervo:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const filteredResources = resources.filter(resource => {
     const matchesSearch = resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -102,6 +93,18 @@ export default function AcervoPage() {
     
     return matchesSearch && matchesCategory && matchesFormat;
   });
+
+  // Loading state
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-[#F2EFE8] flex items-center justify-center">
+        <div className="text-center">
+          <BookOpen className="w-16 h-16 text-[#385443] mx-auto mb-4 animate-pulse" />
+          <p className="text-[#696969] text-lg">Carregando produtos...</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-[#F2EFE8]">
