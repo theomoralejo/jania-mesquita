@@ -1,18 +1,28 @@
 import React from 'react';
+import { Suspense, lazy } from 'react';
 
-import { HeroMentoria } from '../components/HeroMentoria';
-import { ProblemSection } from '../components/ProblemSection';
-import { MethodologySection } from '../components/MethodologySection';
-import { JourneySection } from '../components/JourneySection';
-import { MaturityLevels } from '../components/MaturityLevels';
-import { PricingSection } from '../components/PricingSection';
-import { ROISection } from '../components/ROISection';
-import { ArrowRight } from 'lucide-react';
+const HeroMentoria = lazy(() => import('../components/HeroMentoria').then(m => ({ default: m.HeroMentoria })));
+const ProblemSection = lazy(() => import('../components/ProblemSection').then(m => ({ default: m.ProblemSection })));
+const MethodologySection = lazy(() => import('../components/MethodologySection').then(m => ({ default: m.MethodologySection })));
+const JourneySection = lazy(() => import('../components/JourneySection').then(m => ({ default: m.JourneySection })));
+const MaturityLevels = lazy(() => import('../components/MaturityLevels').then(m => ({ default: m.MaturityLevels })));
+const PricingSection = lazy(() => import('../components/PricingSection').then(m => ({ default: m.PricingSection })));
+const ROISection = lazy(() => import('../components/ROISection').then(m => ({ default: m.ROISection })));
+
+function LoadingFallback() {
+  return <div className="min-h-screen flex items-center justify-center bg-[#F2EFE8]">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#385443] mx-auto mb-4"></div>
+      <p className="text-[#696969]">Carregando...</p>
+    </div>
+  </div>;
+}
 
 export default function MentoriaPage() {
   return (
     <>
-      <HeroMentoria />
+      <Suspense fallback={<LoadingFallback />}>
+        <HeroMentoria />
       
       {/* Video Section - Player de vídeo */}
       {/* <section className="py-20 bg-white relative overflow-hidden">
@@ -77,6 +87,7 @@ export default function MentoriaPage() {
       <MaturityLevels />
       <PricingSection />
       <ROISection />
+      </Suspense>
     </>
   );
 }
