@@ -1,3 +1,6 @@
+import React from 'react';
+
+
 interface FormInputProps {
   label: string;
   type?: 'text' | 'email' | 'tel';

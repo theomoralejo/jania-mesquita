@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { AlertCircle, TrendingDown, Clock, Users } from 'lucide-react';
 
 export function ProblemSection() {

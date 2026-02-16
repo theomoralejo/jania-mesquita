@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { HeroHome } from '../components/HeroHome';
 import { SocialProofHome } from '../components/SocialProofHome';
 import { CompaniesLogos } from '../components/CompaniesLogos';

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Building2, Users, Award, TrendingUp } from 'lucide-react';
 
 export function SocialProofHome() {

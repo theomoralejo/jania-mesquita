@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useEffect, useRef, useState, ReactNode } from 'react';
 
 interface ScrollRevealProps {

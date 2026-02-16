@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { ExternalLink, Instagram, Linkedin, Mail, Youtube, BookOpen, Mic, GraduationCap, Calendar } from 'lucide-react';
 import Logo from '../imports/Logo1';
 

@@ -1,8 +1,6 @@
-@import "tailwindcss";
-
-@theme {
-  --color-black: #42331C;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   /* ==========================================
@@ -177,7 +175,7 @@ body {
    TYPOGRAPHY - Sogo & Lato
    ========================================== */
 h1, h2, h3 {
-  font-family: 'Sogo', 'Times New Roman', serif; /* Fonte Títulos */
+  font-family: 'Cormorant Garamond', 'Times New Roman', serif; /* Fonte Títulos */
   font-weight: 700;
   letter-spacing: -1px;
   color: var(--color-text-primary);
@@ -561,7 +559,7 @@ a {
 }
 
 .metric-value {
-  font-family: 'Sogo', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 600;
   letter-spacing: -0.03em;
@@ -614,7 +612,7 @@ a {
 }
 
 .stats-number {
-  font-family: 'Sogo', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 36px;
   font-weight: 700;
   color: var(--color-text-primary);
@@ -742,7 +740,7 @@ a {
 
 /* Editorial Number */
 .editorial-number {
-  font-family: 'Sogo', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: var(--font-size-64);
   font-weight: 300;
   letter-spacing: -0.04em;

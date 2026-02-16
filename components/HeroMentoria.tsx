@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { ArrowRight, Users, Target, TrendingUp, Award } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';

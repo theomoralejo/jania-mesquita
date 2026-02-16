@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Minus } from 'lucide-react';

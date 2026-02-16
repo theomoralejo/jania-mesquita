@@ -1,4 +1,8 @@
-import imgJaniaEvento from "figma:asset/f0d58dd034beefcde6ef8f99b3d5d3a7ebf48f20.png";
+import React from 'react';
+
+
+// import imgJaniaEvento from "figma:asset/f0d58dd034beefcde6ef8f99b3d5d3a7ebf48f20.png";
+const imgJaniaEvento = "/assets/img/jania_1.webp"; // placeholder
 
 export function PalestrasHeroImage() {
   return (

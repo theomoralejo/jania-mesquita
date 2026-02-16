@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Minus } from 'lucide-react';
 
 export function JourneySection() {

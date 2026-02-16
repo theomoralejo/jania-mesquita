@@ -1,3 +1,4 @@
+import React from 'react';
 import svgPaths from "./svg-0791840446";
 import imgSlide1691 from "figma:asset/6429bb5af5e4efcf7d1cb647cf55d4ddaaba7cd9.png";
 import imgPreventSeniorLogoVectorSvg1 from "figma:asset/b652c07434bbd7fea0a18c245043c2351f26ef5b.png";

@@ -1,7 +1,10 @@
+import React from 'react';
+
 import { ImageWithFallback } from './figma/ImageWithFallback';
-import janiaPhoto1 from 'figma:asset/443dc02c47f0584729d4ee989a39fac303309d33.png';
-import janiaPhoto2 from 'figma:asset/ea7d67edcf26f6a37501aaaf183420a1204c9061.png';
-import janiaPhoto3 from 'figma:asset/cb03c4b2dc39812386517570831e5b2226b55804.png';
+// Figma imports commented out - using placeholders
+const janiaPhoto1 = '/assets/img/jania_10.webp';
+const janiaPhoto2 = '/assets/img/jania_11.webp';
+const janiaPhoto3 = '/assets/img/jania_12.webp';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

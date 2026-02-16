@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { HeroMentoria } from '../components/HeroMentoria';
 import { ProblemSection } from '../components/ProblemSection';
 import { MethodologySection } from '../components/MethodologySection';

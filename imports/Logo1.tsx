@@ -1,3 +1,4 @@
+import React from 'react';
 import svgPaths from "./svg-hvc97ysp5r";
 
 export default function Logo() {

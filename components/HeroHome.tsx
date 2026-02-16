@@ -1,7 +1,10 @@
+import React from 'react';
+
 import { ArrowRight, Award } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import janiaImage from 'figma:asset/c456985b525ef9ca7d753f8d9c92aac5e84db191.png';
+// import janiaImage from 'figma:asset/c456985b525ef9ca7d753f8d9c92aac5e84db191.png';
+const janiaImage = "/assets/img/jania_9.webp"; // placeholder
 
 export function HeroHome() {
   const [isVisible, setIsVisible] = useState(false);

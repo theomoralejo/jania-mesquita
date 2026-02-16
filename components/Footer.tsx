@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowRight, CheckCircle2, Mail, Minus, Instagram, Linkedin } from 'lucide-react';

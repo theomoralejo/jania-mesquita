@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { TrendingUp, Shield, Target, Zap, ArrowRight } from 'lucide-react';
 
 export function ROISection() {

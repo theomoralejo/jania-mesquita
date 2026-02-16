@@ -1,3 +1,4 @@
+import React from 'react';
 import imgHmd001621CLogoMaterDeiRedeDeSaudeHRgb1 from "figma:asset/b89e30551de791d01c8ec6e2b626e2f4f722b816.png";
 
 export default function Hmd001621CLogoMaterDeiRedeDeSaudeHRgb() {

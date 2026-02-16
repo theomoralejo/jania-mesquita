@@ -1,11 +1,15 @@
-import imgFleury from "figma:asset/5a7f33ea681b6f9ec00711255fe25972ce2079ab.png";
-import imgSirioLibanes from "figma:asset/103123d5f53230c40c1b2d0e2f3fedf32db0fe98.png";
-import imgMaterDei from "figma:asset/b89e30551de791d01c8ec6e2b626e2f4f722b816.png";
-import imgRedeDor from "figma:asset/76a5b2d61b1fce391e9d66688eadb75f03fc7e06.png";
-import imgUnimed from "figma:asset/b07e35ef6cf22026a4df43b9e594e936d1a141e9.png";
-import imgPreventSenior from "figma:asset/b652c07434bbd7fea0a18c245043c2351f26ef5b.png";
-import imgNotreDame from "figma:asset/7cc991b358f403e7604b712d3b2b8fa4acabf50a.png";
-import imgHapvida from "figma:asset/ddad1c317568798a3c8ad8d0cfca2e9467f361ea.png";
+import React from 'react';
+
+
+// Figma imports commented out - using placeholders
+const imgFleury = "/assets/logos/fleury.png";
+const imgSirioLibanes = "/assets/logos/sirio.png";
+const imgMaterDei = "/assets/logos/mater.png";
+const imgRedeDor = "/assets/logos/rede-dor.png";
+const imgUnimed = "/assets/logos/unimed.png";
+const imgPreventSenior = "/assets/logos/prevent.png";
+const imgNotreDame = "/assets/logos/notre-dame.png";
+const imgHapvida = "/assets/logos/hapvida.png";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

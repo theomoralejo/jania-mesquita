@@ -1,3 +1,4 @@
+import React from 'react';
 import imgUnimed221 from "figma:asset/b07e35ef6cf22026a4df43b9e594e936d1a141e9.png";
 
 export default function Unimed() {

@@ -1,3 +1,4 @@
+import React from 'react';
 import imgFleury321 from "figma:asset/5a7f33ea681b6f9ec00711255fe25972ce2079ab.png";
 
 export default function Fleury() {

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Shield, Lock, Eye, Database, UserCheck, FileText, Mail } from 'lucide-react';
 
 export default function PrivacidadePage() {

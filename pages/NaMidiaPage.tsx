@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Newspaper, Tv, Mic, BookOpen, ExternalLink, Calendar } from 'lucide-react';
 
 export default function NaMidiaPage() {

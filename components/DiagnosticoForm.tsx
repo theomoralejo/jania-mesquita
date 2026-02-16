@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useState } from 'react';
 import { CheckCircle2, Calendar, Clock } from 'lucide-react';
 import { FormInput, FormSelect, FormTextarea, FormButton, FormSuccessMessage } from './shared';

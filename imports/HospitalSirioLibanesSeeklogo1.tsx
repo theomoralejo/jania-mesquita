@@ -1,3 +1,4 @@
+import React from 'react';
 import imgHospitalSirioLibanesSeeklogo1 from "figma:asset/103123d5f53230c40c1b2d0e2f3fedf32db0fe98.png";
 
 export default function HospitalSirioLibanesSeeklogo() {

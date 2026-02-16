@@ -1,3 +1,4 @@
+import React from 'react';
 import imgMask from "figma:asset/d47f9f5af24fd7129274afad903571dd3819a330.png";
 import imgBitmap from "figma:asset/18240d8c88b474ac593e68ffda3575628f29ad55.png";
 import imgBitmap1 from "figma:asset/50764eaa6d056ba033d05278d4b48e9eaaa3bd8c.png";

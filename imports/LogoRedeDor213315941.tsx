@@ -1,3 +1,4 @@
+import React from 'react';
 import imgLogoRedeDor213315941 from "figma:asset/76a5b2d61b1fce391e9d66688eadb75f03fc7e06.png";
 
 export default function LogoRedeDor() {

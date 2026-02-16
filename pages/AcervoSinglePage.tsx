@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, CheckCircle2, ShoppingCart, Star, Clock, User, ArrowRight, BookOpen, ShieldCheck, Award } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';

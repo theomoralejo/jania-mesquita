@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { ArrowRight, Users, Mic, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

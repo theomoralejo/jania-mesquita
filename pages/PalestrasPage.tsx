@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useState } from 'react';
 import { ArrowRight, CheckCircle2, Compass, Lightbulb, Users2, MessageCircle, Target, Sparkles, Anchor, MapPin } from 'lucide-react';
 import { CompaniesLogos } from '../components/CompaniesLogos';

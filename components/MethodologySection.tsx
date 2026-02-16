@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useState } from 'react';
 import { Target, Users, Settings, BarChart3, TrendingUp, Minus, ArrowRight } from 'lucide-react';
 
