@@ -22,7 +22,7 @@ export const DepoimentoShow = () => {
         {record?.image && (
           <div style={{ textAlign: 'center' }}>
             <Image
-              src={record.image}
+              src={record.image && record.image.startsWith('/uploads') ? (import.meta.env.VITE_API_URL || 'http://localhost:3000/api').replace(/\/api\/?$/, '') + record.image : record.image}
               alt={record.name}
               style={{
                 width: '150px',

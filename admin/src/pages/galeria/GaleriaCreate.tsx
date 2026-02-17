@@ -26,8 +26,9 @@ export const GaleriaCreate = () => {
         formData.append('folder', 'galeria');
 
         const token = localStorage.getItem('token');
+        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
         const response = await axios.post(
-          'http://localhost:3000/api/upload/image',
+          `${apiBase}/upload/image`,
           formData,
           {
             headers: {
@@ -103,7 +104,7 @@ export const GaleriaCreate = () => {
         {imageUrl && (
           <div style={{ marginBottom: '24px' }}>
             <Image
-              src={imageUrl}
+              src={imageUrl && imageUrl.startsWith('/uploads') ? (import.meta.env.VITE_API_URL || 'http://localhost:3000/api').replace(/\/api\/?$/, '') + imageUrl : imageUrl}
               alt="Preview"
               style={{
                 maxWidth: '100%',

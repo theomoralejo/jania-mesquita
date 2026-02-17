@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock, Share2, BookOpen } from 'lucide-react';
-import { blogApi } from '../lib/api';
+import { blogApi, resolveImageUrl } from '../lib/api';
 
 export default function BlogSinglePage() {
   const { slug } = useParams();

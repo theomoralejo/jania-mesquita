@@ -2,6 +2,13 @@ import axios from 'axios';
 
 // Base URL da API - pode ser configurado via variável de ambiente
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, '');
+
+export function resolveImageUrl(url?: string | null) {
+  if (!url) return url;
+  if (url.startsWith('/uploads')) return `${API_ORIGIN}${url}`;
+  return url;
+}
 
 // Cliente axios configurado
 export const api = axios.create({

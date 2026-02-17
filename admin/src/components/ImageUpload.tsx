@@ -14,6 +14,12 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ value, onChange, folde
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>(value || '');
 
+  // Se value for uma URL absoluta (http) ou caminho relativo (/uploads/...), mantenha o value
+  // Quando exibimos a imagem, usamos `displayUrl` que garante que caminhos relativos vindos da API
+  // sejam prefixed com a origem da API (ex: http://localhost:3000)
+  const apiBase = (import.meta.env.VITE_API_URL || 'http://localhost:3000/api').replace(/\/api\/?$/, '');
+  const displayUrl = imageUrl && imageUrl.startsWith('/uploads') ? `${apiBase}${imageUrl}` : imageUrl;
+
   const uploadProps: UploadProps = {
     name: 'image',
     accept: 'image/*',
@@ -26,8 +32,9 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ value, onChange, folde
         formData.append('folder', folder);
 
         const token = localStorage.getItem('token');
+        const apiBaseLocal = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
         const response = await axios.post(
-          'http://localhost:3000/api/upload/image',
+          `${apiBaseLocal}/upload/image`,
           formData,
           {
             headers: {
@@ -37,7 +44,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ value, onChange, folde
           }
         );
 
-        const url = response.data.url;
+        const url = response.data.url; // geralmente '/uploads/…'
         setImageUrl(url);
         onChange?.(url);
         message.success('Imagem enviada com sucesso!');
@@ -57,11 +64,13 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ value, onChange, folde
 
     try {
       const token = localStorage.getItem('token');
-      await axios.delete('http://localhost:3000/api/upload/image', {
+      const apiBaseLocal = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+      // backend espera campo `filepath` contendo o caminho (ex: /uploads/galeria/xxx.jpg)
+      await axios.delete(`${apiBaseLocal}/upload/image`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        data: { url: imageUrl },
+        data: { filepath: imageUrl },
       });
 
       setImageUrl('');
@@ -78,7 +87,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ value, onChange, folde
       {imageUrl && (
         <div style={{ position: 'relative', display: 'inline-block' }}>
           <Image
-            src={imageUrl}
+            src={displayUrl}
             alt="Preview"
             style={{
               maxWidth: '300px',

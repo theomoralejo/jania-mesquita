@@ -3,7 +3,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Filter, BookOpen, ShoppingBag, Smartphone, Book, Video, Headphones, ArrowRight } from 'lucide-react';
-import { acervoApi } from '../lib/api';
+import { acervoApi, resolveImageUrl } from '../lib/api';
 
 // Mapeia icons para formatos
 const formatIcons: Record<string, any> = {
@@ -178,7 +178,7 @@ export default function AcervoPage() {
                 {/* Image Aspect Ratio */}
                 <div className="relative aspect-[3/4] mb-8 overflow-hidden bg-[#EBEBEB]">
                   <img
-                    src={resource.image}
+                    src={resolveImageUrl(resource.image)}
                     alt={resource.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 saturate-50 group-hover:saturate-100"
                   />

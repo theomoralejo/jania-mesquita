@@ -31,7 +31,7 @@ export const DepoimentoList = () => {
           title="Foto"
           width="80px"
           render={(value) => (
-            <Avatar src={value} size={50} />
+            <Avatar src={value && value.startsWith('/uploads') ? (import.meta.env.VITE_API_URL || 'http://localhost:3000/api').replace(/\/api\/?$/, '') + value : value} size={50} />
           )}
         />
         <Table.Column

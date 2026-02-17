@@ -28,7 +28,7 @@ export const GaleriaList = () => {
           width="120px"
           render={(value) => (
             <Image
-              src={value}
+              src={value && value.startsWith('/uploads') ? (import.meta.env.VITE_API_URL || 'http://localhost:3000/api').replace(/\/api\/?$/, '') + value : value}
               alt="foto"
               width={100}
               height={100}

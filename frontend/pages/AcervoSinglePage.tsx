@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle2, ShoppingCart, Star, Clock, User, ArrowRight, BookOpen, ShieldCheck, Award } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
-import { acervoApi } from '../lib/api';
+import { acervoApi, resolveImageUrl } from '../lib/api';
 
 export default function AcervoSinglePage() {
   const { slug } = useParams();
@@ -155,7 +155,7 @@ export default function AcervoSinglePage() {
 
           {/* Hero Image */}
           <div className="max-w-5xl mx-auto mb-16 aspect-[21/9] overflow-hidden rounded-[3px]">
-            <img src={resource.image} alt={resource.title} className="w-full h-full object-cover" />
+            <img src={resolveImageUrl(resource.image)} alt={resource.title} className="w-full h-full object-cover" />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -298,7 +298,7 @@ export default function AcervoSinglePage() {
                <div className="relative w-full max-w-md aspect-[3/4] shadow-2xl rounded-[5px] rotate-y-12 transform transition-transform hover:rotate-0 duration-700">
                   <div className="absolute inset-0 bg-[#42331C] rounded-[5px] transform translate-x-4 translate-y-4 -z-10"></div>
                   <img 
-                    src={resource.image} 
+                    src={resolveImageUrl(resource.image)} 
                     alt={resource.title}
                     className="w-full h-full object-cover rounded-[5px] border border-[#DFDCD4]"
                   />

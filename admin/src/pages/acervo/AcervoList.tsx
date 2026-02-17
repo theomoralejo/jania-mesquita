@@ -30,7 +30,7 @@ export const AcervoList = () => {
           title="Imagem"
           width="100px"
           render={(value) => (
-            <Avatar src={value} size={64} shape="square" />
+            <Avatar src={value && value.startsWith('/uploads') ? (import.meta.env.VITE_API_URL || 'http://localhost:3000/api').replace(/\/api\/?$/, '') + value : value} size={64} shape="square" />
           )}
         />
         <Table.Column

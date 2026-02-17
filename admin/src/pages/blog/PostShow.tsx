@@ -31,7 +31,7 @@ export const PostShow = () => {
           <div>
             <Title level={5}>Imagem de Capa</Title>
             <Image
-              src={record.image}
+              src={record.image && record.image.startsWith('/uploads') ? (import.meta.env.VITE_API_URL || 'http://localhost:3000/api').replace(/\/api\/?$/, '') + record.image : record.image}
               alt={record.title}
               style={{ maxWidth: '100%', maxHeight: '400px', objectFit: 'cover' }}
             />
