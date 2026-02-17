@@ -48,7 +48,7 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
 // Buscar post por slug
 export const getPostBySlug = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { slug } = req.params;
+    const slug = String(req.params.slug);
 
     const post = await prisma.blogPost.findUnique({
       where: { slug },
@@ -118,7 +118,7 @@ export const adminGetAllPosts = async (req: AuthRequest, res: Response): Promise
 // Buscar post por ID (admin)
 export const adminGetPostById = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
 
     const post = await prisma.blogPost.findUnique({
       where: { id },
@@ -199,7 +199,7 @@ export const createPost = async (req: AuthRequest, res: Response): Promise<void>
 // Atualizar post
 export const updatePost = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
     const {
       slug,
       title,
@@ -264,7 +264,7 @@ export const updatePost = async (req: AuthRequest, res: Response): Promise<void>
 // Deletar post
 export const deletePost = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
 
     const post = await prisma.blogPost.findUnique({
       where: { id },
@@ -323,7 +323,7 @@ export const createCategory = async (req: AuthRequest, res: Response): Promise<v
 // Atualizar categoria
 export const updateCategory = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
     const { slug, label } = req.body;
 
     const category = await prisma.blogCategory.update({
@@ -344,7 +344,7 @@ export const updateCategory = async (req: AuthRequest, res: Response): Promise<v
 // Deletar categoria
 export const deleteCategory = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
 
     // Verificar se há posts usando esta categoria
     const postsCount = await prisma.blogPost.count({

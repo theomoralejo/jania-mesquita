@@ -276,7 +276,7 @@ export const adminGetContatos = async (req: AuthRequest, res: Response): Promise
 // Buscar Contato por ID
 export const adminGetContatoById = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
 
     const contato = await prisma.formularioContato.findUnique({
       where: { id },
@@ -297,7 +297,7 @@ export const adminGetContatoById = async (req: AuthRequest, res: Response): Prom
 // Marcar como lido
 export const adminMarkContatoRead = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
     const { read } = req.body;
 
     const contato = await prisma.formularioContato.update({
@@ -315,7 +315,7 @@ export const adminMarkContatoRead = async (req: AuthRequest, res: Response): Pro
 // Deletar Contato
 export const adminDeleteContato = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
 
     await prisma.formularioContato.delete({
       where: { id },

@@ -34,7 +34,7 @@ export const adminGetGaleriaFotos = async (req: AuthRequest, res: Response): Pro
 
 export const adminGetGaleriaFoto = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
 
     const foto = await prisma.galeriaFoto.findUnique({
       where: { id },
@@ -79,7 +79,7 @@ export const adminCreateGaleriaFoto = async (req: AuthRequest, res: Response): P
 
 export const adminUpdateGaleriaFoto = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
     const { src, alt, title, order } = req.body;
 
     const foto = await prisma.galeriaFoto.update({
@@ -105,7 +105,7 @@ export const adminUpdateGaleriaFoto = async (req: AuthRequest, res: Response): P
 
 export const adminDeleteGaleriaFoto = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
 
     await prisma.galeriaFoto.delete({
       where: { id },

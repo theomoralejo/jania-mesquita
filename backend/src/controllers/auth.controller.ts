@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import jwt, { type Secret } from 'jsonwebtoken';
 import prisma from '../config/database';
 import { jwtConfig } from '../config/jwt';
 import { AuthRequest } from '../middleware/auth';
@@ -39,8 +39,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         email: user.email,
         role: user.role,
       },
-      jwtConfig.secret,
-      { expiresIn: jwtConfig.expiresIn }
+      jwtConfig.secret as Secret,
+      { expiresIn: jwtConfig.expiresIn } as jwt.SignOptions
     );
 
     res.json({

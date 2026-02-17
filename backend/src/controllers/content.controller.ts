@@ -93,7 +93,7 @@ export const createDepoimento = async (req: AuthRequest, res: Response): Promise
 
 export const updateDepoimento = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
     const { name, role, event, quote, image, published, order } = req.body;
 
     const depoimento = await prisma.depoimento.update({
@@ -118,7 +118,7 @@ export const updateDepoimento = async (req: AuthRequest, res: Response): Promise
 
 export const deleteDepoimento = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
     await prisma.depoimento.delete({ where: { id } });
     res.json({ message: 'Depoimento deletado com sucesso' });
   } catch (error) {
@@ -215,7 +215,7 @@ export const createGaleriaFoto = async (req: AuthRequest, res: Response): Promis
 
 export const deleteGaleriaFoto = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
     await prisma.galeriaFoto.delete({ where: { id } });
     res.json({ message: 'Foto deletada com sucesso' });
   } catch (error) {
