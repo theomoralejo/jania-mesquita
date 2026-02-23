@@ -9,7 +9,7 @@ import { ImageUpload } from '../../components/ImageUpload';
 import { RichTextEditor } from '../../components/RichTextEditor';
 
 export const AcervoCreate = () => {
-  const { formProps, saveButtonProps } = useForm({
+  const { formProps, saveButtonProps, form } = useForm({
     resource: 'acervo',
   });
 
@@ -25,6 +25,17 @@ export const AcervoCreate = () => {
     optionValue: 'id',
   });
 
+  // Gerador simples de slug validado
+  const slugify = (text = '') =>
+    text
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+
   return (
     <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
@@ -33,7 +44,14 @@ export const AcervoCreate = () => {
           name="title"
           rules={[{ required: true, message: 'Por favor, insira o título' }]}
         >
-          <Input />
+          <Input onChange={(e) => {
+            const title = e.target.value;
+            const currentSlug = form?.getFieldValue('slug');
+            const generated = slugify(title);
+            if (!currentSlug) {
+              form?.setFieldValue('slug', generated);
+            }
+          }} />
         </Form.Item>
 
         <Form.Item

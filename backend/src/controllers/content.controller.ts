@@ -240,6 +240,41 @@ export const getSocialProofStats = async (req: Request, res: Response): Promise<
   }
 };
 
+// ===========================
+// ADMIN SUMMARY
+// ===========================
+export const adminGetSummary = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const [
+      totalPosts,
+      publishedPosts,
+      totalProducts,
+      totalGaleriaFotos,
+      unreadContatos,
+      newsletterCount,
+    ] = await Promise.all([
+      prisma.blogPost.count(),
+      prisma.blogPost.count({ where: { published: true } }),
+      prisma.acervoProduct.count(),
+      prisma.galeriaFoto.count(),
+      prisma.formularioContato.count({ where: { read: false } }),
+      prisma.formularioNewsletter.count(),
+    ]);
+
+    res.json({
+      totalPosts,
+      publishedPosts,
+      totalProducts,
+      totalGaleriaFotos,
+      unreadContatos,
+      newsletterCount,
+    });
+  } catch (error) {
+    console.error('Erro ao buscar resumo do admin:', error);
+    res.status(500).json({ error: 'Erro ao buscar resumo' });
+  }
+};
+
 export default {
   getPalestrasVertentes,
   getPalestrasFormatos,

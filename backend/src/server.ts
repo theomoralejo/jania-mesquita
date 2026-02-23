@@ -14,6 +14,7 @@ app.use(cors({
   origin: [
     process.env.FRONTEND_URL || 'http://localhost:5173',
     process.env.ADMIN_URL || 'http://localhost:3002',
+    'http://localhost:3004',
     'http://localhost:3001', // Porta alternativa do frontend
     'http://localhost:3003', // Admin dashboard alternativo
   ],

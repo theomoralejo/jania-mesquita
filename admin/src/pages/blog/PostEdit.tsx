@@ -3,7 +3,7 @@ import {
   useForm,
   useSelect,
 } from '@refinedev/antd';
-import { Form, Input, Select, Switch, InputNumber, DatePicker } from 'antd';
+import { Form, Input, Select, Switch, DatePicker } from 'antd';
 import dayjs from 'dayjs';
 import { ImageUpload } from '../../components/ImageUpload';
 import { RichTextEditor } from '../../components/RichTextEditor';

@@ -4,9 +4,9 @@ import {
   ShowButton,
   EditButton,
   DeleteButton,
-  BooleanField,
 } from '@refinedev/antd';
-import { Table, Space, Tag, Avatar } from 'antd';
+import { useCreate, useNavigation } from '@refinedev/core';
+import { Table, Space, Tag, Avatar, Button, message } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 export const DepoimentoList = () => {
@@ -22,6 +22,9 @@ export const DepoimentoList = () => {
       ],
     },
   });
+
+  const { mutate: create } = useCreate();
+  const { list } = useNavigation();
 
   return (
     <List>
@@ -82,6 +85,30 @@ export const DepoimentoList = () => {
             <Space>
               <ShowButton hideText size="small" recordItemId={record.id} />
               <EditButton hideText size="small" recordItemId={record.id} />
+              <Button
+                size="small"
+                onClick={async () => {
+                  try {
+                    const createValues = {
+                      ...record,
+                      name: `${record.name} (copy)`,
+                    };
+                    // remove fields that should not be sent
+                    delete createValues.id;
+                    delete createValues.createdAt;
+                    delete createValues.updatedAt;
+
+                    await create({ resource: 'depoimentos', values: createValues });
+                    message.success('Depoimento duplicado com sucesso');
+                    list('depoimentos');
+                  } catch (err) {
+                    console.error(err);
+                    message.error('Erro ao duplicar depoimento');
+                  }
+                }}
+              >
+                Duplicar
+              </Button>
               <DeleteButton hideText size="small" recordItemId={record.id} />
             </Space>
           )}

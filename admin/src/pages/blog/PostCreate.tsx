@@ -3,12 +3,11 @@ import {
   useForm,
   useSelect,
 } from '@refinedev/antd';
-import { Form, Input, Select, Switch, InputNumber, DatePicker } from 'antd';
+import { Form, Input, Select, Switch, DatePicker } from 'antd';
 import dayjs from 'dayjs';
 import { ImageUpload } from '../../components/ImageUpload';
 import { RichTextEditor } from '../../components/RichTextEditor';
-import { useEffect } from 'react';
-
+ 
 // Função para calcular tempo de leitura
 const calculateReadTime = (content: string): string => {
   if (!content) return '1 min';
@@ -41,6 +40,17 @@ export const PostCreate = () => {
     form?.setFieldValue('readTime', readTime);
   };
 
+  // Gerador simples de slug validado
+  const slugify = (text = '') =>
+    text
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+
   return (
     <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
@@ -49,7 +59,14 @@ export const PostCreate = () => {
           name="title"
           rules={[{ required: true, message: 'Por favor, insira o título' }]}
         >
-          <Input />
+          <Input onChange={(e) => {
+            const title = e.target.value;
+            const currentSlug = form?.getFieldValue('slug');
+            const generated = slugify(title);
+            if (!currentSlug) {
+              form?.setFieldValue('slug', generated);
+            }
+          }} />
         </Form.Item>
 
         <Form.Item

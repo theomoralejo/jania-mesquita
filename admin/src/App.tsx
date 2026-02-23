@@ -7,9 +7,7 @@ import {
   useNotificationProvider,
 } from '@refinedev/antd';
 import routerBindings, {
-  CatchAllNavigate,
   DocumentTitleHandler,
-  NavigateToResource,
   UnsavedChangesNotifier,
 } from '@refinedev/react-router-v6';
 import dataProvider from '@refinedev/simple-rest';
@@ -21,14 +19,12 @@ import { authProvider, axiosInstance } from './providers/authProvider';
 import {
   DashboardOutlined,
   FileTextOutlined,
-  ShoppingOutlined,
   CommentOutlined,
   FormOutlined,
   PictureOutlined,
-  TrophyOutlined,
-  SoundOutlined,
   BookOutlined,
 } from '@ant-design/icons';
+import { DashboardPage } from './pages/Dashboard';
 import { PostList } from './pages/blog/PostList';
 import { PostCreate } from './pages/blog/PostCreate';
 import { PostEdit } from './pages/blog/PostEdit';
@@ -63,7 +59,7 @@ function App() {
       <ConfigProvider locale={ptBR}>
           <AntdApp>
             <Refine
-              dataProvider={dataProvider('http://localhost:3000/api/admin', axiosInstance)}
+              dataProvider={dataProvider((import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin` : 'http://localhost:3000/api/admin'), axiosInstance)}
               notificationProvider={useNotificationProvider}
               routerProvider={routerBindings}
               authProvider={authProvider}
@@ -72,10 +68,6 @@ function App() {
                 useNewQueryKeys: true,
                 projectId: 'jania-admin',
                 syncWithLocation: true,
-                redirect: {
-                  afterLogin: '/',
-                  afterLogout: '/login',
-                },
               }}
               resources={[
                 {
@@ -216,7 +208,7 @@ function App() {
                     </ThemedLayoutV2>
                   }
                 >
-                  <Route index element={<div style={{ padding: '24px' }}><h1>Dashboard</h1><p>Bem-vindo ao painel administrativo!</p></div>} />
+                  <Route index element={<DashboardPage />} />
 
                   <Route path="/blog/posts">
                     <Route index element={<PostList />} />

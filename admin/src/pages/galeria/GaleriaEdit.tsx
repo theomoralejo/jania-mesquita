@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
 import { Edit, useForm } from '@refinedev/antd';
-import { Form, Input, InputNumber, Image } from 'antd';
+import { Form, Input, InputNumber } from 'antd';
 import { ImageUpload } from '../../components/ImageUpload';
 
 export const GaleriaEdit = () => {
-  const { formProps, saveButtonProps, queryResult } = useForm({
+  const { formProps, saveButtonProps } = useForm({
     resource: 'galeria/fotos',
   });
 

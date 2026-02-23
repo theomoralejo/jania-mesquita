@@ -367,6 +367,25 @@ export const deleteCategory = async (req: AuthRequest, res: Response): Promise<v
   }
 };
 
+// Buscar categoria por ID (admin)
+export const adminGetCategoryById = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const id = String(req.params.id);
+
+    const category = await prisma.blogCategory.findUnique({ where: { id } });
+
+    if (!category) {
+      res.status(404).json({ error: 'Categoria não encontrada' });
+      return;
+    }
+
+    res.json(category);
+  } catch (error) {
+    console.error('Erro ao buscar categoria:', error);
+    res.status(500).json({ error: 'Erro ao buscar categoria' });
+  }
+};
+
 export default {
   getPosts,
   getPostBySlug,
@@ -379,4 +398,5 @@ export default {
   createCategory,
   updateCategory,
   deleteCategory,
+  adminGetCategoryById,
 };

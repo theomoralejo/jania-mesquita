@@ -1,0 +1,25 @@
+# Node
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Vite
+.env*
+.vite
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Prisma local DB (do NOT ignore if you intentionally keep it in repo)
+# backend/prisma/prisma/dev.db

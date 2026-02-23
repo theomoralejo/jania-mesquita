@@ -1,7 +1,6 @@
 import {
   Show,
   TextField,
-  BooleanField,
 } from '@refinedev/antd';
 import { Typography, Tag, Space, Image, Card } from 'antd';
 import { useShow } from '@refinedev/core';

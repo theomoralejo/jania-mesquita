@@ -3,7 +3,6 @@ import {
   useTable,
   DateField,
   EmailField,
-  BooleanField,
 } from '@refinedev/antd';
 import { Table, Tag } from 'antd';
 

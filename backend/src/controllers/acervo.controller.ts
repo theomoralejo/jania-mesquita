@@ -102,7 +102,7 @@ export const adminGetAcervoProducts = async (req: AuthRequest, res: Response): P
 
 export const adminGetAcervoProduct = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
 
     const product = await prisma.acervoProduct.findUnique({
       where: { id },
@@ -165,7 +165,7 @@ export const adminCreateAcervoProduct = async (req: AuthRequest, res: Response):
 
 export const adminUpdateAcervoProduct = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
     const { title, slug, description, fullContent, image, price, originalPrice, categoryId, formatId, hotmartLink, published } = req.body;
 
     const product = await prisma.acervoProduct.update({
@@ -206,7 +206,7 @@ export const adminUpdateAcervoProduct = async (req: AuthRequest, res: Response):
 
 export const adminDeleteAcervoProduct = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
 
     await prisma.acervoProduct.delete({
       where: { id },

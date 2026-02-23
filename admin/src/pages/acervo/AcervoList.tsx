@@ -5,7 +5,8 @@ import {
   EditButton,
   DeleteButton,
 } from '@refinedev/antd';
-import { Table, Space, Tag, Avatar } from 'antd';
+import { useCreate, useNavigation } from '@refinedev/core';
+import { Table, Space, Tag, Avatar, Button, message } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 export const AcervoList = () => {
@@ -21,6 +22,9 @@ export const AcervoList = () => {
       ],
     },
   });
+
+  const { mutate: create } = useCreate();
+  const { list } = useNavigation();
 
   return (
     <List>
@@ -77,6 +81,31 @@ export const AcervoList = () => {
             <Space>
               <ShowButton hideText size="small" recordItemId={record.id} />
               <EditButton hideText size="small" recordItemId={record.id} />
+              <Button
+                size="small"
+                onClick={async () => {
+                  try {
+                    const createValues = {
+                      ...record,
+                      title: `${record.title} (copy)`,
+                      published: false,
+                    };
+                    // remove fields that should not be sent
+                    delete createValues.id;
+                    delete createValues.createdAt;
+                    delete createValues.updatedAt;
+
+                    await create({ resource: 'acervo', values: createValues });
+                    message.success('Produto duplicado com sucesso');
+                    list('acervo');
+                  } catch (err) {
+                    console.error(err);
+                    message.error('Erro ao duplicar produto');
+                  }
+                }}
+              >
+                Duplicar
+              </Button>
               <DeleteButton hideText size="small" recordItemId={record.id} />
             </Space>
           )}

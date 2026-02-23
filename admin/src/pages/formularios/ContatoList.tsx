@@ -4,10 +4,8 @@ import {
   ShowButton,
   DateField,
   EmailField,
-  BooleanField,
 } from '@refinedev/antd';
 import { Table, Space, Tag } from 'antd';
-import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 export const ContatoList = () => {
   const { tableProps } = useTable({

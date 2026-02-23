@@ -129,3 +129,28 @@ export default {
   adminUpdateGaleriaFoto,
   adminDeleteGaleriaFoto,
 };
+
+export const adminReorderGaleriaFotos = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const items = req.body?.items;
+
+    if (!Array.isArray(items)) {
+      res.status(400).json({ error: 'Payload inválido: expected { items: [{ id, order }, ...] }' });
+      return;
+    }
+
+    // Update each foto order in parallel
+    const updates = items.map((it: any) => {
+      const id = String(it.id);
+      const order = Number(it.order) || 0;
+      return prisma.galeriaFoto.update({ where: { id }, data: { order } });
+    });
+
+    await Promise.all(updates);
+
+    res.json({ message: 'Ordem atualizada' });
+  } catch (error) {
+    console.error('Erro ao reordenar fotos:', error);
+    res.status(500).json({ error: 'Erro ao reordenar fotos' });
+  }
+};

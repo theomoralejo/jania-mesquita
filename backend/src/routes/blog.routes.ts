@@ -9,6 +9,7 @@ import {
   updatePost,
   deletePost,
   createCategory,
+  adminGetCategoryById,
   updateCategory,
   deleteCategory,
 } from '../controllers/blog.controller';
@@ -34,6 +35,7 @@ adminBlogRouter.put('/posts/:id', authenticate, updatePost);
 adminBlogRouter.delete('/posts/:id', authenticate, deletePost);
 
 adminBlogRouter.get('/categories', authenticate, getCategories);
+adminBlogRouter.get('/categories/:id', authenticate, adminGetCategoryById);
 adminBlogRouter.post('/categories', authenticate, createCategory);
 adminBlogRouter.put('/categories/:id', authenticate, updateCategory);
 adminBlogRouter.delete('/categories/:id', authenticate, deleteCategory);

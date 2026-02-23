@@ -2,7 +2,6 @@ import {
   Show,
   TextField,
   DateField,
-  BooleanField,
 } from '@refinedev/antd';
 import { Typography, Tag, Space, Image } from 'antd';
 import { useShow } from '@refinedev/core';

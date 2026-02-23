@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Create } from '@refinedev/antd';
-import { Form, Input, InputNumber, Upload, Button, message, Image } from 'antd';
+import { Form, Input, InputNumber, Upload, message, Image } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
 import axios from 'axios';

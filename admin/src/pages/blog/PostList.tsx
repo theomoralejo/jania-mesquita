@@ -7,7 +7,8 @@ import {
   DateField,
   BooleanField,
 } from '@refinedev/antd';
-import { Table, Space, Tag } from 'antd';
+import { useCreate, useNavigation } from '@refinedev/core';
+import { Table, Space, Tag, Button, message } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 export const PostList = () => {
@@ -15,6 +16,9 @@ export const PostList = () => {
     syncWithLocation: true,
     resource: 'blog/posts',
   });
+
+  const { mutate: create } = useCreate();
+  const { list } = useNavigation();
 
   return (
     <List>
@@ -71,6 +75,34 @@ export const PostList = () => {
             <Space>
               <ShowButton hideText size="small" recordItemId={record.id} />
               <EditButton hideText size="small" recordItemId={record.id} />
+              <Button
+                size="small"
+                onClick={async () => {
+                  try {
+                    const newSlug = `${record.slug}-copy-${Date.now().toString().slice(-4)}`;
+                    const createValues = {
+                      ...record,
+                      title: `${record.title} (copy)`,
+                      slug: newSlug,
+                      published: false,
+                    };
+                    // remove fields that should not be sent
+                    delete createValues.id;
+                    delete createValues.createdAt;
+                    delete createValues.updatedAt;
+
+                    await create({ resource: 'blog/posts', values: createValues });
+                    message.success('Post duplicado com sucesso');
+                    // refresh table is automatic because useTable syncs with location — force reload by navigating to list
+                    list('blog/posts');
+                  } catch (err) {
+                    console.error(err);
+                    message.error('Erro ao duplicar post');
+                  }
+                }}
+              >
+                Duplicar
+              </Button>
               <DeleteButton hideText size="small" recordItemId={record.id} />
             </Space>
           )}

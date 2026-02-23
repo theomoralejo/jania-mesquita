@@ -16,6 +16,7 @@ import {
   createGaleriaFoto,
   deleteGaleriaFoto,
   getSocialProofStats,
+  adminGetSummary,
 } from '../controllers/content.controller';
 import { authenticate } from '../middleware/auth';
 
@@ -58,3 +59,6 @@ adminContentRouter.delete('/depoimentos/:id', authenticate, deleteDepoimento);
 adminContentRouter.get('/galeria/fotos', authenticate, getGaleriaFotos);
 adminContentRouter.post('/galeria/fotos', authenticate, createGaleriaFoto);
 adminContentRouter.delete('/galeria/fotos/:id', authenticate, deleteGaleriaFoto);
+
+// Dashboard summary (admin)
+adminContentRouter.get('/summary', authenticate, adminGetSummary);

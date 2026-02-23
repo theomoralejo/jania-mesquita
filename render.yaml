@@ -1,0 +1,39 @@
+# Render manifest to create backend web service + Postgres database
+# After you connect this repo to Render, Render will detect this manifest and can
+# create/maintain the resources below automatically.
+
+services:
+  - type: web
+    name: jania-backend
+    env: node
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_URL
+        value: https://theomoralejo.github.io/jania-mesquita
+      - key: ADMIN_URL
+        value: http://localhost:3002
+      - key: DATABASE_URL
+        fromDatabase:
+          name: jania-db
+          property: DATABASE_URL
+
+databases:
+  - name: jania-db
+    plan: starter
+    engine: postgresql
+    version: "14"
+
+# Notes:
+# - Render will provision the `jania-db` PostgreSQL instance and the service
+#   `jania-backend` when you create a new web service from this repo (or use
+#   the Render dashboard "Create a new service" and point to this repo/branch).
+# - The service's DATABASE_URL is injected from the managed database above.
+# - After the service is active, add a GitHub secret named RENDER_BACKEND_URL
+#   with the public backend URL (e.g. https://jania-backend.onrender.com/api)
+#   so the frontend CI can use it when building the static site.
