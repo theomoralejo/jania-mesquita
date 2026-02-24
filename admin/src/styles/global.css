@@ -1,0 +1,249 @@
+/* ============================================================
+   Jania Mesquita Admin — Identidade Visual
+   ============================================================ */
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600;700&display=swap');
+
+/* ---- Variáveis da marca ---- */
+:root {
+  --color-primary:       #385443;
+  --color-primary-light: #4D6657;
+  --color-brown:         #42331C;
+  --color-brown-dark:    #2d2520;
+  --color-beige:         #F2EFE8;
+  --color-beige-dark:    #DFDCD4;
+  --color-stone:         #B6A689;
+  --color-white:         #FFFFFF;
+  --color-text:          #42331C;
+  --color-text-soft:     #696969;
+  --font-serif:          'Cormorant Garamond', Georgia, serif;
+  --font-sans:           'Nunito', 'Lato', sans-serif;
+}
+
+/* ---- Fontes base ---- */
+body,
+.ant-layout,
+.ant-table,
+.ant-form,
+.ant-input,
+.ant-select,
+.ant-btn {
+  font-family: var(--font-sans) !important;
+}
+
+/* ---- Layout principal ---- */
+.ant-layout {
+  background: var(--color-beige) !important;
+}
+
+.ant-layout-content {
+  background: var(--color-beige);
+}
+
+/* ---- Sidebar ---- */
+.ant-layout-sider {
+  background: var(--color-brown) !important;
+  border-right: none !important;
+  box-shadow: 4px 0 16px rgba(0, 0, 0, 0.12);
+}
+
+.ant-menu-dark {
+  background: transparent !important;
+}
+
+.ant-menu-dark .ant-menu-item,
+.ant-menu-dark .ant-menu-submenu-title {
+  color: #d4c4a8 !important;
+  border-radius: 6px !important;
+  margin: 2px 8px !important;
+  width: calc(100% - 16px) !important;
+  transition: background 0.2s, color 0.2s;
+}
+
+.ant-menu-dark .ant-menu-item:hover,
+.ant-menu-dark .ant-menu-submenu-title:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #fff !important;
+}
+
+.ant-menu-dark .ant-menu-item-selected {
+  background: var(--color-primary) !important;
+  color: #fff !important;
+}
+
+.ant-menu-dark .ant-menu-submenu-open > .ant-menu-submenu-title {
+  color: #fff !important;
+}
+
+.ant-menu-dark .ant-menu-sub {
+  background: rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ---- Header ---- */
+.ant-layout-header {
+  background: var(--color-white) !important;
+  border-bottom: 1px solid var(--color-beige-dark) !important;
+  box-shadow: 0 1px 8px rgba(66, 51, 28, 0.06);
+}
+
+/* ---- Logo / título da sidebar ---- */
+.admin-logo {
+  padding: 20px 16px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 8px;
+}
+
+.admin-logo-name {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 700;
+  color: #f5ede1;
+  line-height: 1.1;
+  letter-spacing: -0.3px;
+}
+
+.admin-logo-sub {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-stone);
+  margin-top: 3px;
+}
+
+/* ---- Cards / Panels ---- */
+.ant-card {
+  border-radius: 9px !important;
+  border-color: var(--color-beige-dark) !important;
+  box-shadow: 0 2px 12px rgba(66, 51, 28, 0.06) !important;
+}
+
+.ant-card-head {
+  border-bottom-color: var(--color-beige-dark) !important;
+  font-family: var(--font-sans) !important;
+  font-weight: 600 !important;
+  color: var(--color-text) !important;
+}
+
+/* ---- Tabela ---- */
+.ant-table-wrapper .ant-table {
+  border-radius: 9px !important;
+  overflow: hidden;
+}
+
+.ant-table-thead > tr > th {
+  background: var(--color-beige) !important;
+  color: var(--color-text) !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.05em !important;
+  border-bottom-color: var(--color-beige-dark) !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: #f9f7f2 !important;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom-color: var(--color-beige-dark) !important;
+  color: var(--color-text) !important;
+}
+
+/* ---- Botões ---- */
+.ant-btn-primary {
+  background: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  font-weight: 600 !important;
+  border-radius: 7px !important;
+}
+
+.ant-btn-primary:hover {
+  background: var(--color-primary-light) !important;
+  border-color: var(--color-primary-light) !important;
+}
+
+.ant-btn-default:hover {
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary) !important;
+}
+
+/* ---- Inputs ---- */
+.ant-input,
+.ant-input-affix-wrapper,
+.ant-select-selector,
+.ant-picker {
+  border-color: var(--color-beige-dark) !important;
+  border-radius: 7px !important;
+}
+
+.ant-input:focus,
+.ant-input-affix-wrapper-focused,
+.ant-select-focused .ant-select-selector,
+.ant-picker-focused {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 2px rgba(56, 84, 67, 0.12) !important;
+}
+
+/* ---- Tags / Badges ---- */
+.ant-tag {
+  border-radius: 5px !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+/* ---- Títulos de página (Refine) ---- */
+.ant-page-header-heading-title,
+.refine-page-header-title,
+h2.ant-typography,
+h3.ant-typography {
+  font-family: var(--font-serif) !important;
+  color: var(--color-text) !important;
+}
+
+/* ---- Breadcrumb ---- */
+.ant-breadcrumb {
+  font-family: var(--font-sans) !important;
+  font-size: 12px !important;
+}
+
+.ant-breadcrumb a {
+  color: var(--color-primary) !important;
+}
+
+/* ---- Paginação ---- */
+.ant-pagination-item-active {
+  border-color: var(--color-primary) !important;
+}
+
+.ant-pagination-item-active a {
+  color: var(--color-primary) !important;
+}
+
+/* ---- Form labels ---- */
+.ant-form-item-label > label {
+  font-weight: 600 !important;
+  color: var(--color-text) !important;
+  font-size: 13px !important;
+}
+
+/* ---- Scrollbar sutil ---- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-beige);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-beige-dark);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-stone);
+}

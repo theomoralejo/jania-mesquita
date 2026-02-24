@@ -35,6 +35,58 @@ export const getAcervoFormats = async (req: Request, res: Response): Promise<voi
 };
 
 // ===========================
+// PRODUTOS PÚBLICOS
+// ===========================
+
+export const getAcervoProducts = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { category, format } = req.query;
+
+    const products = await prisma.acervoProduct.findMany({
+      where: {
+        published: true,
+        ...(category ? { category: { slug: String(category) } } : {}),
+        ...(format ? { format: { slug: String(format) } } : {}),
+      },
+      include: {
+        category: true,
+        format: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    res.json(products);
+  } catch (error) {
+    console.error('Erro ao buscar produtos:', error);
+    res.status(500).json({ error: 'Erro ao buscar produtos' });
+  }
+};
+
+export const getAcervoProductBySlug = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const slug = String(req.params.slug);
+
+    const product = await prisma.acervoProduct.findFirst({
+      where: { slug, published: true },
+      include: {
+        category: true,
+        format: true,
+      },
+    });
+
+    if (!product) {
+      res.status(404).json({ error: 'Produto não encontrado' });
+      return;
+    }
+
+    res.json(product);
+  } catch (error) {
+    console.error('Erro ao buscar produto:', error);
+    res.status(500).json({ error: 'Erro ao buscar produto' });
+  }
+};
+
+// ===========================
 // ADMIN - CATEGORIAS
 // ===========================
 

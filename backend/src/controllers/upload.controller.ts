@@ -101,6 +101,38 @@ export const uploadImages = async (req: AuthRequest, res: Response): Promise<voi
   }
 };
 
+// List uploaded images
+export const listImages = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const uploadsDir = path.join(process.cwd(), 'uploads');
+    const results: { url: string; filename: string; folder: string }[] = [];
+
+    if (fs.existsSync(uploadsDir)) {
+      const folders = fs.readdirSync(uploadsDir, { withFileTypes: true })
+        .filter(d => d.isDirectory())
+        .map(d => d.name);
+
+      for (const folder of folders) {
+        const folderPath = path.join(uploadsDir, folder);
+        const files = fs.readdirSync(folderPath)
+          .filter(f => /\.(jpg|jpeg|png|webp|gif)$/i.test(f));
+        for (const file of files) {
+          results.push({
+            url: `/uploads/${folder}/${file}`,
+            filename: file,
+            folder,
+          });
+        }
+      }
+    }
+
+    res.json(results);
+  } catch (error) {
+    console.error('Erro ao listar imagens:', error);
+    res.status(500).json({ error: 'Erro ao listar imagens' });
+  }
+};
+
 // Delete image
 export const deleteImage = async (req: AuthRequest, res: Response): Promise<void> => {
   try {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Award, Users, TrendingUp, Target, BookOpen, Briefcase } from 'lucide-react';
 // import imgJaniaMesquita from 'figma:asset/ec80bb3e3c57326b8068234761e68d2524ebbcb0.png';
-const imgJaniaMesquita = '/assets/img/jania_13.webp';
+const imgJaniaMesquita = `${import.meta.env.BASE_URL}assets/img/jania_13.webp`;
 
 export default function SobrePage() {
   const stats = [

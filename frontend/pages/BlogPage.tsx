@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Calendar, Clock, ArrowRight, BookOpen } from 'lucide-react';
-import { blogApi, resolveImageUrl } from '../lib/api';
+import { Search, Calendar, Clock, ArrowRight, BookOpen, CheckCircle2 } from 'lucide-react';
+import { blogApi, formulariosApi, resolveImageUrl } from '../lib/api';
 
 export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -13,6 +13,23 @@ export default function BlogPage() {
     { value: 'all', label: 'Todos os artigos' }
   ]);
   const [loading, setLoading] = useState(true);
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
+  const [newsletterLoading, setNewsletterLoading] = useState(false);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsletterEmail) return;
+    try {
+      setNewsletterLoading(true);
+      await formulariosApi.submitNewsletter({ email: newsletterEmail });
+      setNewsletterSubmitted(true);
+    } catch (err) {
+      console.error('Erro ao assinar newsletter:', err);
+    } finally {
+      setNewsletterLoading(false);
+    }
+  };
 
   // Buscar posts e categorias da API
   useEffect(() => {
@@ -281,7 +298,7 @@ export default function BlogPage() {
       </section>
 
       {/* Newsletter CTA */}
-      <section className="py-24 bg-gradient-to-br from-[#385443] to-[#42331C] text-[#F2EFE8] relative overflow-hidden">
+      <section className="py-24 bg-[#42331C] text-[#F2EFE8] relative overflow-hidden">
         <div className="absolute inset-0 opacity-5 bg-[rgba(243,243,243,0.11.01)] bg-[rgb(236,236,236)]">
           <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-white blur-3xl"></div>
           <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-white blur-3xl"></div>
@@ -300,23 +317,35 @@ export default function BlogPage() {
             Insights semanais sobre liderança médica, gestão estratégica e governança clínica direto na sua caixa de entrada.
           </p>
 
-          <form className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
-            <input
-              type="email"
-              placeholder="Seu melhor e-mail"
-              className="flex-1 px-6 py-4 bg-white/10 backdrop-blur-sm border border-white/20 focus:border-white/40 outline-none placeholder-[#DFDCD4]/60 text-white transition-all rounded-[7px]"
-            />
-            <button
-              type="submit"
-              className="px-8 py-4 bg-white text-[#385443] rounded-[7px] hover:bg-[#F2EFE8] transition-all font-bold tracking-wide shadow-lg whitespace-nowrap"
-            >
-              Assinar Newsletter
-            </button>
-          </form>
-
-          <p className="text-xs text-[#DFDCD4]/70 mt-6">
-            Sem spam. Cancele a qualquer momento.
-          </p>
+          {!newsletterSubmitted ? (
+            <>
+              <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+                <input
+                  type="email"
+                  required
+                  placeholder="Seu melhor e-mail"
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  className="flex-1 px-6 py-4 bg-white/10 backdrop-blur-sm border border-white/20 focus:border-white/40 outline-none placeholder-[#DFDCD4]/60 text-[#F2EFE8] caret-white transition-all rounded-[7px]"
+                />
+                <button
+                  type="submit"
+                  disabled={newsletterLoading}
+                  className="px-8 py-4 bg-white text-[#385443] rounded-[7px] hover:bg-[#F2EFE8] transition-all font-bold tracking-wide shadow-lg whitespace-nowrap disabled:opacity-50"
+                >
+                  {newsletterLoading ? 'Enviando...' : 'Assinar Newsletter'}
+                </button>
+              </form>
+              <p className="text-xs text-[#DFDCD4]/70 mt-6">
+                Sem spam. Cancele a qualquer momento.
+              </p>
+            </>
+          ) : (
+            <div className="flex items-center justify-center gap-3 text-[#F2EFE8]">
+              <CheckCircle2 className="w-6 h-6 text-[#B6CBBE]" />
+              <span className="text-lg font-medium">Inscrição realizada com sucesso!</span>
+            </div>
+          )}
         </div>
       </section>
     </main>

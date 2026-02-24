@@ -21,9 +21,10 @@ export default router;
 export const adminGaleriaRouter = Router();
 
 adminGaleriaRouter.get('/fotos', authenticate, adminGetGaleriaFotos);
-adminGaleriaRouter.get('/fotos/:id', authenticate, adminGetGaleriaFoto);
 adminGaleriaRouter.post('/fotos', authenticate, adminCreateGaleriaFoto);
-adminGaleriaRouter.put('/fotos/:id', authenticate, adminUpdateGaleriaFoto);
-adminGaleriaRouter.delete('/fotos/:id', authenticate, adminDeleteGaleriaFoto);
 adminGaleriaRouter.put('/fotos/reorder', authenticate, adminReorderGaleriaFotos);
+adminGaleriaRouter.get('/fotos/:id', authenticate, adminGetGaleriaFoto);
+adminGaleriaRouter.put('/fotos/:id', authenticate, adminUpdateGaleriaFoto);
+adminGaleriaRouter.patch('/fotos/:id', authenticate, adminUpdateGaleriaFoto);
+adminGaleriaRouter.delete('/fotos/:id', authenticate, adminDeleteGaleriaFoto);
 

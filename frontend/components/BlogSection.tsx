@@ -1,41 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
 import { ArrowRight, Calendar, Clock } from 'lucide-react';
+import { blogApi, resolveImageUrl } from '../lib/api';
 
 export function BlogSection() {
-  const posts = [
-    {
-      id: 1,
-      slug: 'nova-era-governanca',
-      title: 'A Nova Era da Governança Clínica',
-      excerpt: 'Por que a gestão intuitiva não é mais suficiente para clínicas que buscam escala e perpetuidade no mercado atual.',
-      category: 'Governança',
-      date: '12 Dez 2025',
-      readTime: '5 min',
-      image: 'https://images.unsplash.com/photo-1747727568150-444573cd705a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwb2ZmaWNlJTIwYXJjaGl0ZWN0dXJlJTIwYWJzdHJhY3R8ZW58MXx8fHwxNzY1ODI4MzM2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral'
-    },
-    {
-      id: 2,
-      slug: 'escalar-sem-perder-qualidade',
-      title: 'Como Escalar sem Perder a Qualidade',
-      excerpt: 'O paradoxo do crescimento médico: estratégias para manter o padrão de excelência enquanto multiplica a operação.',
-      category: 'Estratégia',
-      date: '08 Dez 2025',
-      readTime: '7 min',
-      image: 'https://images.unsplash.com/photo-1634245482616-ea3ae51b82d5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMG1lZXRpbmclMjBlZGl0b3JpYWwlMjBtaW5pbWFsaXN0fGVufDF8fHx8MTc2NTgyODMzNnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral'
-    },
-    {
-      id: 3,
-      slug: 'papel-ceo-medico',
-      title: 'O Papel do CEO Médico',
-      excerpt: 'A transição de especialista técnico para líder executivo: as competências essenciais que ninguém ensina na faculdade.',
-      category: 'Liderança',
-      date: '01 Dez 2025',
-      readTime: '6 min',
-      image: 'https://images.unsplash.com/photo-1570105954248-fa0c1376edfe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZWRpY2FsJTIwZXhlY3V0aXZlJTIwbWluaW1hbGlzdCUyMG9mZmljZXxlbnwxfHx8fDE3NjU4MjgzMzZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral'
-    }
-  ];
+  const [posts, setPosts] = useState<any[]>([]);
+
+  useEffect(() => {
+    blogApi.getPosts({}).then((data: any[]) => {
+      setPosts(
+        data.slice(0, 3).map((post: any) => ({
+          id: post.id,
+          slug: post.slug,
+          title: post.title,
+          excerpt: post.excerpt,
+          category: post.category?.label ?? '',
+          date: post.publishedAt
+            ? new Date(post.publishedAt).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' })
+            : '',
+          readTime: post.readTime ?? '5 min',
+          image: resolveImageUrl(post.image) ?? '',
+        }))
+      );
+    }).catch(() => {
+      // mantém lista vazia em caso de erro de rede
+    });
+  }, []);
+
+  if (posts.length === 0) return null;
 
   return (
     <section className="py-[48px] md:section-padding bg-[#F2EFE8] border-t border-[#DFDCD4] px-[20px]">
@@ -46,7 +39,7 @@ export function BlogSection() {
             <div className="inline-flex items-center gap-3 mb-4 md:mb-8">
               <div className="w-8 h-px bg-[#42331C]"></div>
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#42331C]">
-                Acervo Digital
+                Blog
               </span>
             </div>
             <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight text-[#232323]">
@@ -54,11 +47,11 @@ export function BlogSection() {
             </h2>
           </div>
 
-          <Link 
-            to="/acervo"
+          <Link
+            to="/blog"
             className="group flex items-center gap-3 text-sm tracking-widest uppercase font-bold border-b border-[#385443] pb-1 text-[#385443] hover:text-[#42331C] hover:border-[#42331C] transition-colors self-start md:self-auto"
           >
-            Ver Todo o Acervo
+            Ver todos os artigos
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" strokeWidth={2} />
           </Link>
         </div>
@@ -66,18 +59,20 @@ export function BlogSection() {
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {posts.map((post) => (
-            <Link 
-              key={post.id} 
-              to={`/acervo/${post.slug}`}
+            <Link
+              key={post.id}
+              to={`/blog/${post.slug}`}
               className="bg-white group relative h-full flex flex-col rounded-[9px] overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-500 border border-[#DFDCD4]"
             >
               {/* Image Container */}
-              <div className="relative aspect-[4/2] md:aspect-[4/2] overflow-hidden">
-                <img 
-                  src={post.image} 
-                  alt={post.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
+              <div className="relative aspect-[4/2] md:aspect-[4/2] overflow-hidden bg-[#DFDCD4]">
+                {post.image && (
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                )}
                 <div className="absolute top-3 left-3 md:top-4 md:left-4 bg-[#F2EFE8]/90 backdrop-blur-sm px-[8px] py-[4px] md:px-3 rounded-[3px] pt-[3px] pr-[8px] pb-[5px] pl-[8px]">
                   <span className="text-[8px] md:text-[10px] tracking-widest uppercase font-bold text-[#614D35]">
                     {post.category}

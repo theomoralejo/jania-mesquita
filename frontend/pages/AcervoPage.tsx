@@ -242,10 +242,10 @@ export default function AcervoPage() {
           <span className="block text-xs font-bold tracking-[0.2em] uppercase text-[#D4C5A8] mb-6">
             Mentoria Executiva
           </span>
-          <h2 className="font-serif text-4xl md:text-6xl mb-8 text-[#FFFFFF]">
+          <h2 className="font-serif text-4xl md:text-6xl mb-8 text-[#42331C]">
             Acesso Completo ao Acervo
           </h2>
-          <p className="text-xl text-[#E8E5DD] mb-12 max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="text-xl text-[#696969] mb-12 max-w-2xl mx-auto font-light leading-relaxed">
             Mentorados têm acesso irrestrito a toda a biblioteca digital, ferramentas e templates, além de sessões exclusivas.
           </p>
           <div className="flex flex-col gap-6 justify-center items-center max-w-md mx-auto">

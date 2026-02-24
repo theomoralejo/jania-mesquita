@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import authRoutes from './auth.routes';
 import blogRoutes, { adminBlogRouter } from './blog.routes';
-import formulariosRoutes from './formularios.routes';
+import formulariosRoutes, { adminFormulariosRouter } from './formularios.routes';
 import contentRoutes, { adminContentRouter } from './content.routes';
 import acervoRoutes, { adminAcervoRouter } from './acervo.routes';
 import { adminGaleriaRouter } from './galeria.routes';
@@ -24,7 +24,8 @@ router.use('/upload', uploadRoutes);
 // Rotas Admin
 router.use('/admin/blog', adminBlogRouter);
 router.use('/admin/acervo', adminAcervoRouter);
-router.use('/admin', adminGaleriaRouter);
+router.use('/admin/galeria', adminGaleriaRouter);
+router.use('/admin/formularios', adminFormulariosRouter);
 router.use('/admin', adminContentRouter);
 router.use('/admin/upload', uploadRoutes);
 

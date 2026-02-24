@@ -11,9 +11,10 @@ import routerBindings, {
   UnsavedChangesNotifier,
 } from '@refinedev/react-router-v6';
 import dataProvider from '@refinedev/simple-rest';
-import { App as AntdApp, ConfigProvider } from 'antd';
+import { App as AntdApp, ConfigProvider, theme as antdTheme } from 'antd';
 import ptBR from 'antd/locale/pt_BR';
 import '@refinedev/antd/dist/reset.css';
+import './styles/global.css';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import { authProvider, axiosInstance } from './providers/authProvider';
 import {
@@ -52,11 +53,93 @@ import { AcervoList } from './pages/acervo/AcervoList';
 import { AcervoCreate } from './pages/acervo/AcervoCreate';
 import { AcervoEdit } from './pages/acervo/AcervoEdit';
 import { AcervoShow } from './pages/acervo/AcervoShow';
+import { AdminLoginLogo } from './components/AdminLoginLogo';
 
 function App() {
   return (
     <BrowserRouter>
-      <ConfigProvider locale={ptBR}>
+      <ConfigProvider
+        locale={ptBR}
+        theme={{
+          algorithm: antdTheme.defaultAlgorithm,
+          token: {
+            // Cores principais
+            colorPrimary: '#385443',
+            colorLink: '#385443',
+            colorSuccess: '#52c41a',
+            colorWarning: '#d4a017',
+            colorError: '#cf1322',
+
+            // Backgrounds
+            colorBgContainer: '#FFFFFF',
+            colorBgLayout: '#F2EFE8',
+            colorBgElevated: '#FFFFFF',
+            colorBgSpotlight: '#F2EFE8',
+
+            // Texto
+            colorText: '#42331C',
+            colorTextSecondary: '#696969',
+            colorTextTertiary: '#B6A689',
+            colorTextQuaternary: '#B6A689',
+            colorTextPlaceholder: '#B6A689',
+
+            // Bordas
+            colorBorder: '#DFDCD4',
+            colorBorderSecondary: '#EBEBEB',
+            colorSplit: '#DFDCD4',
+
+            // Tipografia
+            fontFamily: "'Nunito', 'Lato', sans-serif",
+            fontSize: 14,
+            fontSizeLG: 16,
+
+            // Bordas arredondadas
+            borderRadius: 7,
+            borderRadiusLG: 9,
+            borderRadiusSM: 5,
+            borderRadiusXS: 3,
+
+            // Sombras
+            boxShadow: '0 2px 12px rgba(66, 51, 28, 0.08)',
+            boxShadowSecondary: '0 8px 32px rgba(66, 51, 28, 0.12)',
+          },
+          components: {
+            Layout: {
+              headerBg: '#FFFFFF',
+              siderBg: '#42331C',
+              bodyBg: '#F2EFE8',
+            },
+            Menu: {
+              darkItemBg: 'transparent',
+              darkSubMenuItemBg: 'rgba(0,0,0,0.15)',
+              darkItemSelectedBg: '#385443',
+              darkItemColor: '#d4c4a8',
+              darkItemSelectedColor: '#FFFFFF',
+              darkItemHoverBg: 'rgba(255,255,255,0.08)',
+              darkItemHoverColor: '#FFFFFF',
+            },
+            Button: {
+              borderRadius: 7,
+              fontWeight: 600,
+            },
+            Table: {
+              headerBg: '#F2EFE8',
+              headerColor: '#42331C',
+              borderColor: '#DFDCD4',
+              rowHoverBg: '#f9f7f2',
+            },
+            Card: {
+              borderRadiusLG: 9,
+            },
+            Input: {
+              borderRadius: 7,
+            },
+            Select: {
+              borderRadius: 7,
+            },
+          },
+        }}
+      >
           <AntdApp>
             <Refine
               dataProvider={dataProvider((import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin` : 'http://localhost:3000/api/admin'), axiosInstance)}
@@ -165,7 +248,7 @@ function App() {
                   },
                 },
                 {
-                  name: 'acervo/products',
+                  name: 'acervo',
                   list: '/acervo',
                   create: '/acervo/create',
                   edit: '/acervo/edit/:id',
@@ -202,7 +285,16 @@ function App() {
                 <Route
                   element={
                     <ThemedLayoutV2
-                      Sider={() => <ThemedSiderV2 Title={() => <div style={{ padding: '16px' }}><h2>Admin</h2></div>} />}
+                      Sider={() => (
+                        <ThemedSiderV2
+                          Title={() => (
+                            <div className="admin-logo">
+                              <div className="admin-logo-name">Jania Mesquita</div>
+                              <div className="admin-logo-sub">Painel Admin</div>
+                            </div>
+                          )}
+                        />
+                      )}
                     >
                       <Outlet />
                     </ThemedLayoutV2>
@@ -265,7 +357,7 @@ function App() {
                   <Route path="*" element={<ErrorComponent />} />
                 </Route>
 
-                <Route path="/login" element={<AuthPage type="login" title="Admin - Jania Mesquita" />} />
+                <Route path="/login" element={<AuthPage type="login" title={<AdminLoginLogo />} registerLink={false} />} />
               </Routes>
 
               <UnsavedChangesNotifier />

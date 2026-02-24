@@ -6,13 +6,16 @@ import {
 } from '@refinedev/antd';
 import { Typography, Tag, Space, Button, Card, Divider } from 'antd';
 import { useShow, useUpdate } from '@refinedev/core';
+import { useParams } from 'react-router-dom';
 import { CheckCircleOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 
 export const AvaliacaoShow = () => {
+  const { id } = useParams();
   const { queryResult } = useShow({
     resource: 'formularios/avaliacao',
+    id,
   });
   const { data, isLoading } = queryResult;
   const record = data?.data;

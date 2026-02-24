@@ -2,6 +2,8 @@ import { Router } from 'express';
 import {
   getAcervoCategories,
   getAcervoFormats,
+  getAcervoProducts,
+  getAcervoProductBySlug,
   adminGetAcervoCategories,
   adminGetAcervoFormats,
   adminGetAcervoProducts,
@@ -17,6 +19,8 @@ const router = Router();
 // Rotas públicas (frontend)
 router.get('/categories', getAcervoCategories);
 router.get('/formats', getAcervoFormats);
+router.get('/products', getAcervoProducts);
+router.get('/products/:slug', getAcervoProductBySlug);
 
 export default router;
 
@@ -29,4 +33,5 @@ adminAcervoRouter.get('/', authenticate, adminGetAcervoProducts);
 adminAcervoRouter.get('/:id', authenticate, adminGetAcervoProduct);
 adminAcervoRouter.post('/', authenticate, adminCreateAcervoProduct);
 adminAcervoRouter.put('/:id', authenticate, adminUpdateAcervoProduct);
+adminAcervoRouter.patch('/:id', authenticate, adminUpdateAcervoProduct);
 adminAcervoRouter.delete('/:id', authenticate, adminDeleteAcervoProduct);

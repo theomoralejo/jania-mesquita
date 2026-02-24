@@ -217,8 +217,8 @@ export default function PrivacidadePage() {
               
               <div className="pl-16 bg-[#42331C] text-white p-8 rounded-2xl">
                 <div className="space-y-3">
-                  <p><strong>E-mail:</strong> privacidade@janiamesquita.com.br</p>
-                  <p><strong>Telefone:</strong> +55 (11) 99999-9999</p>
+                  <p className="text-white"><strong>E-mail:</strong> contato@janiamesquita.com.br</p>
+                  <p className="text-white"><strong>Telefone:</strong> +55 (11) 9 7336-4443</p>
                   <p className="text-sm text-gray-300 pt-4 border-t border-white/10">
                     Responderemos sua solicitação em até 15 dias corridos.
                   </p>

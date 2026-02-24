@@ -7,6 +7,7 @@ const API_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, '');
 export function resolveImageUrl(url?: string | null) {
   if (!url) return url;
   if (url.startsWith('/uploads')) return `${API_ORIGIN}${url}`;
+  if (url.startsWith('/assets/')) return `${import.meta.env.BASE_URL}${url.slice(1)}`;
   return url;
 }
 

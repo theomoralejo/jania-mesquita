@@ -81,7 +81,7 @@ async function main() {
 
 <h2>A Transformação é Possível</h2>
 <p>A boa notícia é que essa transformação é totalmente possível. Você não precisa abandonar a medicina para se tornar um bom gestor. Na verdade, muitas das habilidades que você já possui - como raciocínio analítico, resolução de problemas e empatia - são fundamentais para a gestão.</p>`,
-      image: '/assets/img/jania_14.webp',
+      image: '/assets/img/jania_15.webp',
       readTime: '8 min',
       featured: true,
       published: true,
@@ -113,7 +113,7 @@ async function main() {
 
 <h2>5. Não Desenvolver a Equipe</h2>
 <p>Contratar pelo menor preço, não treinar e esperar alta performance. Sua equipe é seu maior ativo - ou seu maior passivo.</p>`,
-      image: '/assets/img/jania_02.webp',
+      image: '/assets/img/jania_4.webp',
       readTime: '6 min',
       featured: false,
       published: true,
@@ -142,7 +142,7 @@ async function main() {
   <li><strong>Educação Continuada:</strong> Desenvolvimento constante da equipe</li>
   <li><strong>Envolvimento do Paciente:</strong> Feedback e participação ativa</li>
 </ul>`,
-      image: '/assets/img/jania_08.webp',
+      image: '/assets/img/jania_17.webp',
       readTime: '10 min',
       featured: false,
       published: true,
@@ -168,7 +168,7 @@ async function main() {
   <li>Reconhecimento e feedback constante</li>
   <li>Participação nas decisões importantes</li>
 </ul>`,
-      image: '/assets/img/jania_11.webp',
+      image: '/assets/img/jania_12.webp',
       readTime: '7 min',
       featured: false,
       published: true,
@@ -302,7 +302,7 @@ async function main() {
       title: 'Gestão de Clínicas: Do Caos à Excelência',
       description: 'O guia completo para transformar sua clínica em um negócio sustentável e lucrativo.',
       fullContent: `<p>Este livro é o resultado de mais de 15 anos de experiência em gestão de clínicas médicas...</p>`,
-      image: '/assets/img/acervo/livro-gestao.jpg',
+      image: '/assets/img/jania_16.webp',
       price: 'R$ 89,90',
       hotmartLink: 'https://hotmart.com/exemplo',
       published: true,
@@ -343,60 +343,42 @@ async function main() {
   // ===========================
   console.log('\n🎤 Criando dados de palestras...');
 
-  await prisma.palestraVertente.createMany({
-    data: [
-      {
-        title: 'Liderança Médica',
-        question: 'Como desenvolver liderança autêntica na medicina?',
-        icon: 'Users',
-        order: 1,
-      },
-      {
-        title: 'Gestão Estratégica',
-        question: 'Como transformar sua clínica em um negócio sustentável?',
-        icon: 'TrendingUp',
-        order: 2,
-      },
-      {
-        title: 'Governança Clínica',
-        question: 'Como garantir qualidade e segurança assistencial?',
-        icon: 'Shield',
-        order: 3,
-      },
-    ],
-  });
+  for (const item of [
+    { title: 'Liderança Médica', question: 'Como desenvolver liderança autêntica na medicina?', icon: 'Users', order: 1 },
+    { title: 'Gestão Estratégica', question: 'Como transformar sua clínica em um negócio sustentável?', icon: 'TrendingUp', order: 2 },
+    { title: 'Governança Clínica', question: 'Como garantir qualidade e segurança assistencial?', icon: 'Shield', order: 3 },
+  ]) {
+    await prisma.palestraVertente.upsert({
+      where: { title: item.title } as any,
+      update: {},
+      create: item,
+    });
+  }
 
-  await prisma.palestraFormato.createMany({
-    data: [
-      {
-        title: 'Palestra Keynote',
-        subtitle: '45-60 min',
-        desc: 'Apresentação inspiradora e estratégica para grandes audiências',
-        order: 1,
-      },
-      {
-        title: 'Workshop Prático',
-        subtitle: '3-4 horas',
-        desc: 'Capacitação hands-on com ferramentas e metodologias aplicáveis',
-        order: 2,
-      },
-      {
-        title: 'Treinamento In-Company',
-        subtitle: '1-2 dias',
-        desc: 'Programa customizado para desenvolvimento de lideranças',
-        order: 3,
-      },
-    ],
-  });
+  for (const item of [
+    { title: 'Palestra Keynote', subtitle: '45-60 min', desc: 'Apresentação inspiradora e estratégica para grandes audiências', order: 1 },
+    { title: 'Workshop Prático', subtitle: '3-4 horas', desc: 'Capacitação hands-on com ferramentas e metodologias aplicáveis', order: 2 },
+    { title: 'Treinamento In-Company', subtitle: '1-2 dias', desc: 'Programa customizado para desenvolvimento de lideranças', order: 3 },
+  ]) {
+    await prisma.palestraFormato.upsert({
+      where: { title: item.title } as any,
+      update: {},
+      create: item,
+    });
+  }
 
-  await prisma.palestraEstatistica.createMany({
-    data: [
-      { value: '50+', label: 'Eventos', order: 1 },
-      { value: '5.000+', label: 'Profissionais Impactados', order: 2 },
-      { value: '15+', label: 'Anos de Experiência', order: 3 },
-      { value: '98%', label: 'Satisfação', order: 4 },
-    ],
-  });
+  for (const item of [
+    { value: '50+', label: 'Eventos', order: 1 },
+    { value: '5.000+', label: 'Profissionais Impactados', order: 2 },
+    { value: '15+', label: 'Anos de Experiência', order: 3 },
+    { value: '98%', label: 'Satisfação', order: 4 },
+  ]) {
+    await prisma.palestraEstatistica.upsert({
+      where: { label: item.label } as any,
+      update: {},
+      create: item,
+    });
+  }
 
   console.log('✅ Dados de palestras criados');
 
@@ -405,36 +387,29 @@ async function main() {
   // ===========================
   console.log('\n💬 Criando depoimentos...');
 
-  await prisma.depoimento.createMany({
-    data: [
-      {
-        name: 'Dr. Carlos Silva',
-        role: 'Diretor Médico',
-        event: 'Workshop de Gestão Estratégica',
-        quote: 'A palestra da Jania transformou completamente minha visão sobre gestão de clínicas. Implementei as estratégias e em 6 meses aumentei meu faturamento em 40%.',
-        image: '/assets/img/depoimentos/carlos.jpg',
-        published: true,
-        order: 1,
-      },
-      {
-        name: 'Dra. Ana Paula',
-        role: 'Proprietária de Clínica',
-        event: 'Mentoria Individual',
-        quote: 'O programa de mentoria me deu clareza e ferramentas práticas. Hoje tenho processos estruturados e uma equipe engajada. Recomendo para todo médico gestor!',
-        image: '/assets/img/depoimentos/ana.jpg',
-        published: true,
-        order: 2,
-      },
-      {
-        name: 'Dr. Roberto Mendes',
-        role: 'CEO Hospital Regional',
-        event: 'Palestra de Liderança',
-        quote: 'Conteúdo de altíssima qualidade com aplicação prática imediata. A Jania tem uma capacidade única de traduzir conceitos complexos em ações concretas.',
-        published: true,
-        order: 3,
-      },
-    ],
-  });
+  for (const item of [
+    {
+      name: 'Dr. Carlos Silva', role: 'Diretor Médico', event: 'Workshop de Gestão Estratégica',
+      quote: 'A palestra da Jania transformou completamente minha visão sobre gestão de clínicas. Implementei as estratégias e em 6 meses aumentei meu faturamento em 40%.',
+      image: '/assets/img/jania_13.webp', published: true, order: 1,
+    },
+    {
+      name: 'Dra. Ana Paula', role: 'Proprietária de Clínica', event: 'Mentoria Individual',
+      quote: 'O programa de mentoria me deu clareza e ferramentas práticas. Hoje tenho processos estruturados e uma equipe engajada. Recomendo para todo médico gestor!',
+      image: '/assets/img/jania_9.webp', published: true, order: 2,
+    },
+    {
+      name: 'Dr. Roberto Mendes', role: 'CEO Hospital Regional', event: 'Palestra de Liderança',
+      quote: 'Conteúdo de altíssima qualidade com aplicação prática imediata. A Jania tem uma capacidade única de traduzir conceitos complexos em ações concretas.',
+      published: true, order: 3,
+    },
+  ]) {
+    await prisma.depoimento.upsert({
+      where: { name: item.name } as any,
+      update: {},
+      create: item,
+    });
+  }
 
   console.log('✅ 3 depoimentos criados');
 
@@ -443,60 +418,48 @@ async function main() {
   // ===========================
   console.log('\n📰 Criando dados de mídia...');
 
-  await prisma.mediaFeatured.create({
-    data: {
+  await prisma.mediaFeatured.upsert({
+    where: { outlet_title: { outlet: 'Harvard Business Review Brasil', title: 'A Nova Era da Gestão em Saúde' } } as any,
+    update: {},
+    create: {
       type: 'Revista',
       outlet: 'Harvard Business Review Brasil',
       title: 'A Nova Era da Gestão em Saúde',
       date: 'Dezembro 2025',
       description: 'Artigo sobre transformação digital e liderança em organizações de saúde.',
-      image: '/assets/img/media/hbr.jpg',
+      image: '/assets/img/jania_15.webp',
       link: 'https://hbr.com.br/exemplo',
     },
   });
 
-  await prisma.mediaItem.createMany({
-    data: [
-      {
-        type: 'TV',
-        icon: 'Tv',
-        outlet: 'Globo News',
-        title: 'Gestão de Clínicas no Pós-Pandemia',
-        date: 'Nov 2025',
-        link: 'https://globonews.com/exemplo',
-        order: 1,
-      },
-      {
-        type: 'Podcast',
-        icon: 'Mic',
-        outlet: 'Saúde Business',
-        title: 'Liderança Médica na Prática',
-        date: 'Out 2025',
-        link: 'https://podcast.com/exemplo',
-        order: 2,
-      },
-    ],
+  for (const item of [
+    { type: 'TV', icon: 'Tv', outlet: 'Globo News', title: 'Gestão de Clínicas no Pós-Pandemia', date: 'Nov 2025', link: 'https://globonews.com/exemplo', order: 1 },
+    { type: 'Podcast', icon: 'Mic', outlet: 'Saúde Business', title: 'Liderança Médica na Prática', date: 'Out 2025', link: 'https://podcast.com/exemplo', order: 2 },
+  ]) {
+    await prisma.mediaItem.upsert({
+      where: { outlet_title: { outlet: item.outlet, title: item.title } } as any,
+      update: {},
+      create: item,
+    });
+  }
+
+  await prisma.mediaBook.upsert({
+    where: { title: 'Gestão de Clínicas: Do Caos à Excelência' } as any,
+    update: {},
+    create: { title: 'Gestão de Clínicas: Do Caos à Excelência', year: '2024', publisher: 'Editora Saúde', description: 'O guia definitivo para gestão de clínicas médicas', order: 1 },
   });
 
-  await prisma.mediaBook.createMany({
-    data: [
-      {
-        title: 'Gestão de Clínicas: Do Caos à Excelência',
-        year: '2024',
-        publisher: 'Editora Saúde',
-        description: 'O guia definitivo para gestão de clínicas médicas',
-        order: 1,
-      },
-    ],
-  });
-
-  await prisma.mediaPress.createMany({
-    data: [
-      { outlet: 'Folha de S.Paulo', mentions: 12, order: 1 },
-      { outlet: 'O Globo', mentions: 8, order: 2 },
-      { outlet: 'Valor Econômico', mentions: 15, order: 3 },
-    ],
-  });
+  for (const item of [
+    { outlet: 'Folha de S.Paulo', mentions: 12, order: 1 },
+    { outlet: 'O Globo', mentions: 8, order: 2 },
+    { outlet: 'Valor Econômico', mentions: 15, order: 3 },
+  ]) {
+    await prisma.mediaPress.upsert({
+      where: { outlet: item.outlet } as any,
+      update: {},
+      create: item,
+    });
+  }
 
   console.log('✅ Dados de mídia criados');
 
@@ -505,28 +468,17 @@ async function main() {
   // ===========================
   console.log('\n📸 Criando galeria de fotos...');
 
-  await prisma.galeriaFoto.createMany({
-    data: [
-      {
-        src: '/assets/img/galeria/evento1.jpg',
-        alt: 'Palestra em São Paulo',
-        title: 'Workshop de Liderança - SP',
-        order: 1,
-      },
-      {
-        src: '/assets/img/galeria/evento2.jpg',
-        alt: 'Congresso Nacional',
-        title: 'Congresso de Gestão em Saúde',
-        order: 2,
-      },
-      {
-        src: '/assets/img/galeria/evento3.jpg',
-        alt: 'Treinamento in-company',
-        title: 'Treinamento Corporativo',
-        order: 3,
-      },
-    ],
-  });
+  for (const item of [
+    { src: '/assets/img/palestra.webp', alt: 'Palestra em São Paulo', title: 'Workshop de Liderança - SP', order: 1 },
+    { src: '/assets/img/jania_10.webp', alt: 'Congresso Nacional', title: 'Congresso de Gestão em Saúde', order: 2 },
+    { src: '/assets/img/jania_12.webp', alt: 'Treinamento in-company', title: 'Treinamento Corporativo', order: 3 },
+  ]) {
+    await prisma.galeriaFoto.upsert({
+      where: { src: item.src } as any,
+      update: {},
+      create: item,
+    });
+  }
 
   console.log('✅ 3 fotos de galeria criadas');
 
@@ -535,14 +487,18 @@ async function main() {
   // ===========================
   console.log('\n📊 Criando estatísticas de social proof...');
 
-  await prisma.socialProofStat.createMany({
-    data: [
-      { value: '200+', label: 'Clínicas Transformadas', order: 1 },
-      { value: '15 anos', label: 'de Experiência', order: 2 },
-      { value: '5.000+', label: 'Profissionais Capacitados', order: 3 },
-      { value: '98%', label: 'de Satisfação', order: 4 },
-    ],
-  });
+  for (const item of [
+    { value: '200+', label: 'Clínicas Transformadas', order: 1 },
+    { value: '15 anos', label: 'de Experiência', order: 2 },
+    { value: '5.000+', label: 'Profissionais Capacitados', order: 3 },
+    { value: '98%', label: 'de Satisfação', order: 4 },
+  ]) {
+    await prisma.socialProofStat.upsert({
+      where: { label: item.label } as any,
+      update: {},
+      create: item,
+    });
+  }
 
   console.log('✅ Estatísticas criadas');
 

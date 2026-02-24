@@ -24,9 +24,9 @@ export function EventPhotos() {
         console.error('Erro ao buscar fotos:', error);
         // Fallback para fotos padrão em caso de erro
         setPhotos([
-          { src: '/assets/img/jania_4.webp', alt: "Jania Mesquita em palestra corporativa" },
-          { src: '/assets/img/jania_12.webp', alt: "Sessão de mentoria estratégica" },
-          { src: '/assets/img/jania_10.webp', alt: "Workshop de transformação médica" }
+          { src: `${import.meta.env.BASE_URL}assets/img/jania_4.webp`, alt: "Jania Mesquita em palestra corporativa" },
+          { src: `${import.meta.env.BASE_URL}assets/img/jania_12.webp`, alt: "Sessão de mentoria estratégica" },
+          { src: `${import.meta.env.BASE_URL}assets/img/jania_10.webp`, alt: "Workshop de transformação médica" }
         ]);
       } finally {
         setLoading(false);

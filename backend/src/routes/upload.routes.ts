@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { upload, uploadImage, uploadImages, deleteImage } from '../controllers/upload.controller';
+import { upload, uploadImage, uploadImages, deleteImage, listImages } from '../controllers/upload.controller';
 import { authenticate } from '../middleware/auth';
 
 const router = Router();
@@ -12,5 +12,8 @@ router.post('/images', authenticate, upload.array('images', 10), uploadImages);
 
 // Delete image
 router.delete('/image', authenticate, deleteImage);
+
+// List all uploaded images
+router.get('/list', authenticate, listImages);
 
 export default router;

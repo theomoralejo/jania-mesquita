@@ -32,10 +32,12 @@ adminBlogRouter.get('/posts', authenticate, adminGetAllPosts);
 adminBlogRouter.get('/posts/:id', authenticate, adminGetPostById);
 adminBlogRouter.post('/posts', authenticate, createPost);
 adminBlogRouter.put('/posts/:id', authenticate, updatePost);
+adminBlogRouter.patch('/posts/:id', authenticate, updatePost);
 adminBlogRouter.delete('/posts/:id', authenticate, deletePost);
 
 adminBlogRouter.get('/categories', authenticate, getCategories);
 adminBlogRouter.get('/categories/:id', authenticate, adminGetCategoryById);
 adminBlogRouter.post('/categories', authenticate, createCategory);
 adminBlogRouter.put('/categories/:id', authenticate, updateCategory);
+adminBlogRouter.patch('/categories/:id', authenticate, updateCategory);
 adminBlogRouter.delete('/categories/:id', authenticate, deleteCategory);

@@ -71,6 +71,21 @@ export const adminGetAllDepoimentos = async (req: AuthRequest, res: Response): P
   }
 };
 
+export const adminGetDepoimentoById = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const id = String(req.params.id);
+    const depoimento = await prisma.depoimento.findUnique({ where: { id } });
+    if (!depoimento) {
+      res.status(404).json({ error: 'Depoimento não encontrado' });
+      return;
+    }
+    res.json(depoimento);
+  } catch (error) {
+    console.error('Erro ao buscar depoimento:', error);
+    res.status(500).json({ error: 'Erro ao buscar depoimento' });
+  }
+};
+
 export const createDepoimento = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { name, role, event, quote, image, published, order } = req.body;
@@ -281,6 +296,7 @@ export default {
   getPalestrasEstatisticas,
   getDepoimentos,
   adminGetAllDepoimentos,
+  adminGetDepoimentoById,
   createDepoimento,
   updateDepoimento,
   deleteDepoimento,
@@ -289,7 +305,5 @@ export default {
   getMediaBooks,
   getMediaPress,
   getGaleriaFotos,
-  createGaleriaFoto,
-  deleteGaleriaFoto,
   getSocialProofStats,
 };

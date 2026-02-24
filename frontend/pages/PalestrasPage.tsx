@@ -1,11 +1,31 @@
 import React from 'react';
 
-import { useState } from 'react';
-import { ArrowRight, CheckCircle2, Compass, Lightbulb, Users2, MessageCircle, Target, Sparkles, Anchor, MapPin } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ArrowRight, CheckCircle2, Compass, Lightbulb, Users, Users2, MessageCircle, Target, Sparkles, Anchor, TrendingUp, Shield } from 'lucide-react';
 import { CompaniesLogos } from '../components/CompaniesLogos';
 import { EventPhotos } from '../components/EventPhotos';
 import { PalestrasHeroImage } from '../components/PalestrasHeroImage';
-import { formulariosApi } from '../lib/api';
+import { formulariosApi, palestrasApi, depoimentosApi, type PalestraVertente, type PalestraEstatistica, type Depoimento } from '../lib/api';
+
+const ICON_MAP: Record<string, React.ElementType> = {
+  Users, Users2, Target, TrendingUp, Shield, Sparkles, MessageCircle, Compass, Lightbulb,
+};
+
+const DEFAULT_VERTENTES = [
+  { id: '1', icon: 'Users2', title: 'Liderança e Posicionamento', question: 'Como você lidera quando o desafio não tem protocolo?', order: 1 },
+  { id: '2', icon: 'Target', title: 'Gestão, Performance e Resultados', question: 'Por que sua operação ainda depende só de você?', order: 2 },
+  { id: '3', icon: 'Sparkles', title: 'Desenvolvimento Humano e Emocional', question: 'Qual é o custo de não desenvolver sua equipe?', order: 3 },
+  { id: '4', icon: 'MessageCircle', title: 'Comunicação, Influência e Clareza', question: 'Sua equipe entende aonde você quer chegar?', order: 4 },
+  { id: '5', icon: 'Compass', title: 'Propósito, Valores e Decisão', question: 'O que você quer que sua organização represente?', order: 5 },
+  { id: '6', icon: 'Lightbulb', title: 'Legado e Sustentabilidade', question: 'O que vai continuar depois de você?', order: 6 },
+];
+
+const DEFAULT_STATS = [
+  { id: '1', value: '50+', label: 'Eventos', order: 1 },
+  { id: '2', value: '10k+', label: 'Pessoas', order: 2 },
+  { id: '3', value: '4.9', label: 'Avaliação', order: 3 },
+  { id: '4', value: '98%', label: 'Recomendação', order: 4 },
+];
 
 export default function PalestrasPage() {
   const [formData, setFormData] = useState({
@@ -21,6 +41,16 @@ export default function PalestrasPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const [vertentes, setVertentes] = useState<PalestraVertente[]>(DEFAULT_VERTENTES as any);
+  const [stats, setStats] = useState<PalestraEstatistica[]>(DEFAULT_STATS as any);
+  const [testimonials, setTestimonials] = useState<Depoimento[]>([]);
+
+  useEffect(() => {
+    palestrasApi.getVertentes().then(data => { if (data.length) setVertentes(data); }).catch(() => {});
+    palestrasApi.getEstatisticas().then(data => { if (data.length) setStats(data); }).catch(() => {});
+    depoimentosApi.getDepoimentos().then(data => { if (data.length) setTestimonials(data); }).catch(() => {});
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,60 +73,6 @@ export default function PalestrasPage() {
       [e.target.name]: e.target.value
     });
   };
-
-  const vertentes = [
-    {
-      icon: Users2,
-      title: 'Liderança e Posicionamento',
-      question: 'Como você lidera quando o desafio não tem protocolo?'
-    },
-    {
-      icon: Target,
-      title: 'Gestão, Performance e Resultados',
-      question: 'Por que sua operação ainda depende só de você?'
-    },
-    {
-      icon: Sparkles,
-      title: 'Desenvolvimento Humano e Emocional',
-      question: 'Qual é o custo de não desenvolver sua equipe?'
-    },
-    {
-      icon: MessageCircle,
-      title: 'Comunicação, Influência e Clareza',
-      question: 'Sua equipe entende aonde você quer chegar?'
-    },
-    {
-      icon: Compass,
-      title: 'Propósito, Valores e Decisão',
-      question: 'O que você quer que sua organização represente?'
-    },
-    {
-      icon: Lightbulb,
-      title: 'Legado e Sustentabilidade',
-      question: 'O que vai continuar depois de você?'
-    }
-  ];
-
-  const testimonials = [
-    {
-      name: 'Dr. Roberto Machado',
-      role: 'Presidente da ABCM',
-      event: 'Congresso Nacional de Clínicas 2024',
-      quote: 'A palestra da Jania transformou a forma como enxergamos gestão de clínicas. Conteúdo denso, prático e extremamente aplicável.'
-    },
-    {
-      name: 'Ana Paula Costa',
-      role: 'Diretora de Eventos - SINDHOSP',
-      event: 'Healthcare Summit 2024',
-      quote: 'Melhor avaliação do evento. Os participantes saíram com planos de ação concretos e resultados mensuráveis.'
-    },
-    {
-      name: 'Dr. Fernando Lima',
-      role: 'Coordenador Acadêmico - FGV Saúde',
-      event: 'MBA Gestão em Saúde',
-      quote: 'Jania consegue traduzir conceitos complexos de governança para a linguagem prática do dia a dia das clínicas.'
-    }
-  ];
 
   return (
     <main className="pt-24 bg-[#F2EFE8]">
@@ -155,22 +131,12 @@ export default function PalestrasPage() {
 
               {/* Stats - mais compacto */}
               <div className="grid grid-cols-4 gap-6 pt-10 border-t border-[#385443]/20">
-                <div>
-                  <div className="font-serif text-3xl text-[#385443] mb-1">50+</div>
-                  <div className="text-[10px] font-bold tracking-[0.15em] text-[#42331C] uppercase">Eventos</div>
-                </div>
-                <div>
-                  <div className="font-serif text-3xl text-[#385443] mb-1">10k+</div>
-                  <div className="text-[10px] font-bold tracking-[0.15em] text-[#42331C] uppercase">Pessoas</div>
-                </div>
-                <div>
-                  <div className="font-serif text-3xl text-[#385443] mb-1">4.9</div>
-                  <div className="text-[10px] font-bold tracking-[0.15em] text-[#42331C] uppercase">Avaliação</div>
-                </div>
-                <div>
-                  <div className="font-serif text-3xl text-[#385443] mb-1">98%</div>
-                  <div className="text-[10px] font-bold tracking-[0.15em] text-[#42331C] uppercase">Recomendação</div>
-                </div>
+                {stats.map((stat) => (
+                  <div key={stat.id}>
+                    <div className="font-serif text-3xl text-[#385443] mb-1">{stat.value}</div>
+                    <div className="text-[10px] font-bold tracking-[0.15em] text-[#42331C] uppercase">{stat.label}</div>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -447,6 +413,10 @@ export default function PalestrasPage() {
               </span>
             </div>
             
+            <p className="font-serif text-lg md:text-xl mb-4 text-[#42331C] italic">
+              De onde falo quando falo de
+            </p>
+
             <h2 className="font-serif text-[48px] md:text-[58px] mb-12 leading-[1.05] tracking-tight text-[#232323]">
               Temas que constroem{' '}
               <span className="italic text-[#385443]">trajetórias</span>
@@ -460,27 +430,30 @@ export default function PalestrasPage() {
 
           {/* Vertentes Grid - Minimalista */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {vertentes.map((vertente, index) => (
-              <div 
-                key={index}
-                className="group pb-8 border-b border-[#DFDCD4] hover:border-[#385443] transition-all duration-300"
-              >
-                {/* Icon + Title */}
-                <div className="flex items-start gap-4 mb-8">
-                  <div className="w-12 h-12 flex items-center justify-center rounded-full bg-white border border-[#385443]/20 group-hover:bg-[#385443] group-hover:border-[#385443] transition-all duration-300 flex-shrink-0">
-                    <vertente.icon className="w-5 h-5 text-[#385443] group-hover:text-white transition-colors duration-300" strokeWidth={1.5} />
+            {vertentes.map((vertente) => {
+              const IconComp = ICON_MAP[(vertente as any).icon] ?? Compass;
+              return (
+                <div
+                  key={vertente.id}
+                  className="group pb-8 border-b border-[#DFDCD4] hover:border-[#385443] transition-all duration-300"
+                >
+                  {/* Icon + Title */}
+                  <div className="flex items-start gap-4 mb-8">
+                    <div className="w-12 h-12 flex items-center justify-center rounded-full bg-white border border-[#385443]/20 group-hover:bg-[#385443] group-hover:border-[#385443] transition-all duration-300 flex-shrink-0">
+                      <IconComp className="w-5 h-5 text-[#385443] group-hover:text-white transition-colors duration-300" strokeWidth={1.5} />
+                    </div>
+                    <h3 className="text-xl text-[#232323] group-hover:text-[#385443] transition-colors duration-300 leading-tight pt-2">
+                      {vertente.title}
+                    </h3>
                   </div>
-                  <h3 className="text-xl text-[#232323] group-hover:text-[#385443] transition-colors duration-300 leading-tight pt-2">
-                    {vertente.title}
-                  </h3>
-                </div>
 
-                {/* Question - elemento de impacto */}
-                <p className="text-base italic text-[#385443] pl-4 border-l-2 border-[#385443]/30 leading-relaxed">
-                  {vertente.question}
-                </p>
-              </div>
-            ))}
+                  {/* Question - elemento de impacto */}
+                  <p className="text-base italic text-[#385443] pl-4 border-l-2 border-[#385443]/30 leading-relaxed">
+                    {vertente.question}
+                  </p>
+                </div>
+              );
+            })}
           </div>
 
           {/* CTA após vertentes */}
@@ -524,7 +497,7 @@ export default function PalestrasPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {[
               { title: 'Speed Talk', subtitle: '18-30 min', desc: 'Impacto rápido e direto para eventos dinâmicos' },
               { title: 'Keynote', subtitle: '45-60 min', desc: 'Inspiração estratégica para grandes audiências' },
@@ -568,20 +541,22 @@ export default function PalestrasPage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="group bg-white p-8 rounded-[7px] border border-[#DFDCD4] hover:border-[#385443]/40 transition-all duration-300">
-                <p className="text-[#42331C] mb-8 leading-relaxed italic text-base">
-                  "{testimonial.quote}"
-                </p>
-                <div className="pt-6 border-t border-[#DFDCD4]">
-                  <div className="text-[#232323] mb-1 font-medium">{testimonial.name}</div>
-                  <div className="text-sm text-[#385443] mb-1">{testimonial.role}</div>
-                  <div className="text-xs text-[#42331C]/70">{testimonial.event}</div>
+          {testimonials.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              {testimonials.map((testimonial) => (
+                <div key={testimonial.id} className="group bg-white p-8 rounded-[7px] border border-[#DFDCD4] hover:border-[#385443]/40 transition-all duration-300">
+                  <p className="text-[#42331C] mb-8 leading-relaxed italic text-base">
+                    "{testimonial.quote}"
+                  </p>
+                  <div className="pt-6 border-t border-[#DFDCD4]">
+                    <div className="text-[#232323] mb-1 font-medium">{testimonial.name}</div>
+                    <div className="text-sm text-[#385443] mb-1">{testimonial.role}</div>
+                    <div className="text-xs text-[#42331C]/70">{testimonial.event}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

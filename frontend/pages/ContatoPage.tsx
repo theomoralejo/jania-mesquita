@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Send, Clock, CheckCircle2 } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle2 } from 'lucide-react';
 import { formulariosApi } from '../lib/api';
 
 export default function ContatoPage() {
@@ -91,8 +91,8 @@ export default function ContatoPage() {
                     </div>
                     <div>
                       <div className="text-sm text-gray-600 mb-1">Telefone</div>
-                      <a href="tel:+5511999999999" className="text-[#42331C] hover:text-gray-600 transition-colors">
-                        +55 (11) 99999-9999
+                      <a href="tel:+5511973364443" className="text-[#42331C] hover:text-gray-600 transition-colors">
+                        +55 (11) 9 7336-4443
                       </a>
                     </div>
                   </div>
@@ -107,15 +107,6 @@ export default function ContatoPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-[#42331C] rounded-2xl flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-6 h-6 text-white" strokeWidth={1.5} />
-                    </div>
-                    <div>
-                      <div className="text-sm text-gray-600 mb-1">Horário</div>
-                      <p className="text-[#42331C]">Seg - Sex: 9h às 18h</p>
-                    </div>
-                  </div>
                 </div>
               </div>
 

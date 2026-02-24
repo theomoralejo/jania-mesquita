@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight, Check, ArrowRight, ArrowLeft } from 'lucide-react';
+import { formulariosApi } from '../lib/api';
 
 export default function AvaliacaoPage() {
   const navigate = useNavigate();
@@ -131,8 +132,28 @@ export default function AvaliacaoPage() {
     return Math.round(average);
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const level = calculateLevel();
+    const levelInfo = getLevelInfo(level);
+
+    try {
+      await formulariosApi.submitAvaliacao({
+        name: formData.nome,
+        email: formData.email,
+        phone: formData.telefone,
+        position: formData.cargo,
+        revenue: formData.faturamento,
+        employees: formData.numeroFuncionarios,
+        operationTime: formData.tempoOperacao,
+        quizAnswers,
+        totalScore: level,
+        maturityLevel: levelInfo.title,
+      });
+    } catch (err) {
+      console.error('Erro ao enviar avaliação:', err);
+    }
+
     setCurrentStep('result');
     window.scrollTo(0, 0);
   };

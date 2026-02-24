@@ -362,7 +362,7 @@ export default function AcervoSinglePage() {
                     <p className="text-[10px] text-[#DFDCD4] uppercase tracking-wider">Ortopedia • BH</p>
                   </div>
                 </div>
-                <p className="text-sm font-light leading-relaxed italic">
+                <p className="text-sm font-light leading-relaxed italic text-white">
                   "Finalmente consegui delegar sem medo. O livro me deu a estrutura que faltava."
                 </p>
               </div>
@@ -418,7 +418,7 @@ export default function AcervoSinglePage() {
       </section>
 
       {/* 4. BENEFITS / WHAT'S INSIDE */}
-      <section className="section-padding bg-[#42331C] text-[#F2EFE8] relative overflow-hidden">
+      {resource.benefits && resource.benefits.length >= 4 && <section className="section-padding bg-[#42331C] text-[#F2EFE8] relative overflow-hidden">
         {/* Geometric Accent */}
         <div className="absolute top-20 left-0 w-72 h-72 border border-[#B6A689]/20 rounded-full -translate-x-1/2"></div>
         <div className="absolute bottom-20 right-0 w-96 h-96 border border-[#B6A689]/20 rounded-full translate-x-1/2"></div>
@@ -555,7 +555,7 @@ export default function AcervoSinglePage() {
             </a>
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* 5. PRICING / OFFER */}
       <section className="section-padding bg-[#F2EFE8]">
@@ -618,17 +618,17 @@ export default function AcervoSinglePage() {
       <section className="py-24 border-t border-[#DFDCD4]">
         <div className="container-custom">
           <div className="flex flex-col md:flex-row items-center gap-12">
-            <div className="w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-white shadow-xl flex-shrink-0">
-              <img 
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400" 
-                alt="Jania Mesquita" 
+            <div className="w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-[#DFDCD4] shadow-xl flex-shrink-0">
+              <img
+                src={`${import.meta.env.BASE_URL}assets/img/jania_9.webp`}
+                alt="Jania Mesquita"
                 className="w-full h-full object-cover"
               />
             </div>
             <div>
                <h3 className="font-serif text-2xl text-[#42331C] mb-4">Sobre a Autora</h3>
                <p className="text-[#696969] leading-relaxed max-w-2xl font-light">
-                 Jania Mesquita é especialista em governança corporativa aplicada à saúde. Com mais de 15 anos de atuação no setor e autora best-seller, já impactou centenas de clínicas através de sua metodologia proprietária, unindo a visão humanizada da saúde com a eficiência da gestão.
+                 Jania Mesquita é médica especialista em gestão e governança corporativa aplicada à saúde. Com mais de 15 anos de experiência no setor, é autora best-seller e mentora de líderes que transformam clínicas em operações escaláveis. Sua metodologia proprietária une a visão humanizada da medicina com a eficiência estratégica da gestão, tendo impactado diretamente centenas de profissionais e organizações de saúde no Brasil.
                </p>
             </div>
           </div>

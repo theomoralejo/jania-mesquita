@@ -72,18 +72,21 @@ export const GaleriaList = () => {
           dataIndex="src"
           title="Foto"
           width="120px"
-          render={(value) => (
-            <Image
-              src={value && value.startsWith('/uploads') ? (import.meta.env.VITE_API_URL || 'http://localhost:3000/api').replace(/\/api\/?$/, '') + value : value}
-              alt="foto"
-              width={100}
-              height={100}
-              style={{ objectFit: 'cover', borderRadius: '4px' }}
-              preview={{
-                mask: 'Ver',
-              }}
-            />
-          )}
+          render={(value) => {
+            const apiBase = (import.meta.env.VITE_API_URL || 'http://localhost:3000/api').replace(/\/api\/?$/, '');
+            const src = value && value.startsWith('/uploads') ? `${apiBase}${value}` : value;
+            return (
+              <Image
+                src={src}
+                alt="foto"
+                width={100}
+                height={100}
+                style={{ objectFit: 'cover', borderRadius: '4px' }}
+                preview={{ mask: 'Ver' }}
+                fallback="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='%23999' font-size='10'%3ESem imagem%3C/text%3E%3C/svg%3E"
+              />
+            );
+          }}
         />
         <Table.Column
           dataIndex="title"

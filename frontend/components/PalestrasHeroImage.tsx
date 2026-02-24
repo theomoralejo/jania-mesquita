@@ -2,7 +2,7 @@ import React from 'react';
 
 
 // import imgJaniaEvento from "figma:asset/f0d58dd034beefcde6ef8f99b3d5d3a7ebf48f20.png";
-const imgJaniaEvento = "/assets/img/palestra.webp";
+const imgJaniaEvento = `${import.meta.env.BASE_URL}assets/img/palestra.webp`;
 
 export function PalestrasHeroImage() {
   return (
