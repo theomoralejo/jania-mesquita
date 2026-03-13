@@ -5,7 +5,7 @@ import {
   DateField,
   EmailField,
 } from '@refinedev/antd';
-import { Table, Space, Tag } from 'antd';
+import { Table, Space, Tag, Alert } from 'antd';
 
 export const DiagnosticoList = () => {
   const { tableProps } = useTable({
@@ -23,6 +23,13 @@ export const DiagnosticoList = () => {
 
   return (
     <List>
+      <Alert
+        message="Formulário Rápido de Contato (Diagnóstico)"
+        description={<>Estes contatos vêm do formulário no rodapé da página inicial (Home). <a href="https://janiamesquita.com.br/#diagnostico" target="_blank" rel="noreferrer">Ver formulário no site</a></>}
+        type="info"
+        showIcon
+        style={{ marginBottom: 16 }}
+      />
       <Table {...tableProps} rowKey="id">
         <Table.Column
           dataIndex="name"

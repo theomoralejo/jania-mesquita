@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Newspaper, Tv, Mic, BookOpen, ExternalLink, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { mediaApi, acervoApi, resolveImageUrl, type MediaFeatured, type MediaItem, type MediaPress, type AcervoProduct } from '../lib/api';
+import { EventPhotos } from '../components/EventPhotos';
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Tv, Mic, Newspaper, BookOpen,
@@ -15,13 +16,13 @@ export default function NaMidiaPage() {
   const [press, setPress] = useState<MediaPress[]>([]);
 
   useEffect(() => {
-    mediaApi.getFeatured().then(data => { if (data[0]) setFeatured(data[0]); }).catch(() => {});
-    mediaApi.getItems().then(setMediaItems).catch(() => {});
-    mediaApi.getPress().then(setPress).catch(() => {});
+    mediaApi.getFeatured().then(data => { if (data[0]) setFeatured(data[0]); }).catch(() => { });
+    mediaApi.getItems().then(setMediaItems).catch(() => { });
+    mediaApi.getPress().then(setPress).catch(() => { });
     // Livros vêm do acervo filtrados pelo formato "fisico"
     acervoApi.getProducts({ format: 'fisico' })
       .then(data => setLivros(data))
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   return (
@@ -145,17 +146,15 @@ export default function NaMidiaPage() {
                   to={`/acervo/${livro.slug}`}
                   className="group bg-white border-2 border-gray-200 rounded-2xl p-8 hover:border-[#42331C] hover:shadow-xl transition-all duration-300 block"
                 >
-                  <div className="aspect-[3/4] bg-[#F2EFE8] rounded-xl mb-6 overflow-hidden">
+                  <div className="aspect-[3/4] bg-[#F2EFE8] rounded-xl mb-6 flex items-center justify-center overflow-hidden">
                     {livro.image ? (
                       <img
-                        src={resolveImageUrl(livro.image)}
+                        src={resolveImageUrl(livro.image) ?? ''}
                         alt={livro.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <BookOpen className="w-16 h-16 text-gray-400" strokeWidth={1.5} />
-                      </div>
+                      <BookOpen className="w-16 h-16 text-gray-400" strokeWidth={1.5} />
                     )}
                   </div>
                   <div className="text-sm text-[#B6A689] mb-2 font-medium">{livro.price}</div>
@@ -187,6 +186,9 @@ export default function NaMidiaPage() {
           </div>
         </section>
       )}
+
+      {/* Galeria de Fotos */}
+      <EventPhotos />
 
       {/* CTA */}
       <section className="section-padding bg-gray-50">

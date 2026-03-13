@@ -51,7 +51,7 @@ export function FooterRefined() {
           {/* Geometric Lines */}
           <div className="absolute top-0 left-1/4 w-px h-full bg-[#DFDCD4] opacity-60"></div>
           <div className="absolute top-0 right-1/3 w-px h-full bg-[#DFDCD4] opacity-40"></div>
-          
+
           <div className="max-w-[1218px] mx-auto px-6 md:px-12 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
               <div>
@@ -66,13 +66,13 @@ export function FooterRefined() {
                   Agende uma sessão{' '}
                   <span className="italic text-[#385443]">estratégica</span>
                 </h2>
-                
+
                 <p className="text-lg md:text-xl mb-12 leading-relaxed text-[#414141]">
-                  45 minutos para mapear os desafios da sua clínica e receber um plano 
+                  45 minutos para mapear os desafios da sua clínica e receber um plano
                   de ação personalizado. Limitado a{' '}
                   <span className="bg-[#DFDCD4] px-2 py-0.5 font-medium text-[#232323]">15 clínicas por mês</span>.
                 </p>
-                
+
                 <div className="space-y-8">
                   <div>
                     <div className="text-xs font-bold tracking-[0.15em] uppercase text-[#B6A689] mb-4">
@@ -215,7 +215,7 @@ export function FooterRefined() {
           </div>
         </section>
       )}
-      
+
       {/* Footer Links - Refined Dark Theme */}
       <div className="bg-[#2A1F14] text-white">
         <div className="max-w-[1218px] mx-auto px-6 md:px-12 py-16">
@@ -227,20 +227,20 @@ export function FooterRefined() {
                   <Logo />
                 </div>
               </Link>
-              
+
               <h3 className="text-lg font-medium mb-4 text-white">
                 Jania Mesquita
               </h3>
-              
+
               <p className="text-base leading-relaxed mb-8 text-[#D4C5B0] max-w-md">
-                Mentoria executiva para transformação de clínicas de saúde. 
+                Mentoria executiva para transformação de clínicas de saúde.
                 Governança, processos e liderança que escalam.
               </p>
-              
+
               {/* Contact Info */}
               <div className="space-y-3 mb-8">
-                <a 
-                  href="mailto:contato@janiamesquita.com.br" 
+                <a
+                  href="mailto:contato@janiamesquita.com.br"
                   className="flex items-center gap-3 text-[#D4C5B0] hover:text-white transition-colors group"
                 >
                   <Mail className="w-5 h-5 text-[#B8976A]" strokeWidth={1.5} />
@@ -254,15 +254,15 @@ export function FooterRefined() {
 
               {/* Social Icons - Maiores e mais destaque */}
               <div className="flex items-center gap-4">
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   className="w-10 h-10 flex items-center justify-center border-2 border-[#4D3E2F] rounded-full hover:bg-white hover:text-[#2A1F14] hover:border-white transition-all duration-300 text-[#D4C5B0]"
                   aria-label="Instagram"
                 >
                   <Instagram className="w-5 h-5" strokeWidth={1.5} />
                 </a>
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   className="w-10 h-10 flex items-center justify-center border-2 border-[#4D3E2F] rounded-full hover:bg-white hover:text-[#2A1F14] hover:border-white transition-all duration-300 text-[#D4C5B0]"
                   aria-label="LinkedIn"
                 >
@@ -270,7 +270,7 @@ export function FooterRefined() {
                 </a>
               </div>
             </div>
-            
+
             {/* Serviços */}
             <div className="md:col-span-2">
               <h4 className="text-sm font-bold tracking-[0.12em] uppercase text-white mb-6">
@@ -278,32 +278,32 @@ export function FooterRefined() {
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <Link 
-                    to="/mentoria" 
+                  <Link
+                    to="/mentoria"
                     className="text-base text-[#D4C5B0] hover:text-white transition-colors duration-200 inline-block"
                   >
                     Mentoria Executiva
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to="/mentoria-lpv" 
+                  <Link
+                    to="/mentoria-lpv"
                     className="text-base text-[#D4C5B0] hover:text-white transition-colors duration-200 inline-block"
                   >
                     Mentoria LPV
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to="/palestras" 
+                  <Link
+                    to="/palestras"
                     className="text-base text-[#D4C5B0] hover:text-white transition-colors duration-200 inline-block"
                   >
                     Palestras
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to="/acervo" 
+                  <Link
+                    to="/acervo"
                     className="text-base text-[#D4C5B0] hover:text-white transition-colors duration-200 inline-block"
                   >
                     Acervo Digital
@@ -319,32 +319,32 @@ export function FooterRefined() {
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <Link 
-                    to="/sobre" 
+                  <Link
+                    to="/sobre"
                     className="text-base text-[#D4C5B0] hover:text-white transition-colors duration-200 inline-block"
                   >
                     Sobre
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to="/na-midia" 
+                  <Link
+                    to="/na-midia"
                     className="text-base font-medium text-[#B8976A] hover:text-white transition-colors duration-200 inline-block"
                   >
                     Na Mídia ✦
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to="/contato" 
+                  <Link
+                    to="/contato"
                     className="text-base text-[#D4C5B0] hover:text-white transition-colors duration-200 inline-block"
                   >
                     Contato
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to="/privacidade" 
+                  <Link
+                    to="/privacidade"
                     className="text-sm text-[#8B7355] hover:text-[#D4C5B0] transition-colors duration-200 inline-block"
                   >
                     Privacidade
@@ -359,10 +359,10 @@ export function FooterRefined() {
                 Newsletter Executiva
               </h4>
               <p className="text-base leading-relaxed mb-6 text-[#D4C5B0]">
-                Receba insights sobre governança e liderança direto da minha experiência 
+                Receba insights sobre governança e liderança direto da minha experiência
                 com +100 mil funcionários.
               </p>
-              
+
               {!newsletterSubmitted ? (
                 <form onSubmit={handleNewsletterSubmit} className="space-y-3">
                   <input
@@ -373,7 +373,7 @@ export function FooterRefined() {
                     placeholder="seu@email.com"
                     className="w-full px-4 py-3 bg-[#3D2F20] border-2 border-[#4D3E2F] text-white rounded-[7px] text-sm focus:border-[#B8976A] focus:outline-none transition-colors placeholder:text-[#8B7355]"
                   />
-                  <button 
+                  <button
                     type="submit"
                     className="w-full px-6 py-3 bg-[#B8976A] text-[#2A1F14] rounded-[7px] hover:bg-[#D4C5B0] transition-all duration-300 font-bold text-sm flex items-center justify-center gap-2 group"
                   >
@@ -387,7 +387,7 @@ export function FooterRefined() {
                   <p className="text-sm text-[#D4C5B0]">Inscrição confirmada!</p>
                 </div>
               )}
-              
+
               <p className="text-xs text-[#8B7355] mt-3 leading-relaxed">
                 Sem spam. Conteúdo estratégico quinzenal. Cancele quando quiser.
               </p>
@@ -395,12 +395,14 @@ export function FooterRefined() {
           </div>
 
           {/* Bottom Bar - Mais discreto */}
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#8B7355]">
-            <p>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+            <p className="text-[10px] md:text-xs text-[#8B7355] order-2 md:order-1">
               © {new Date().getFullYear()} Jania Mesquita. Todos os direitos reservados.
             </p>
-            <p className="text-[10px]">
-              CNPJ: 46.568.777/0001-58 | MM Mesquita Serviços de Administração LTDA
+            <p className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-[10px] md:text-xs text-[#8B7355] order-1 md:order-2">
+              <span>CNPJ: 46.568.777/0001-58</span>
+              <span className="hidden md:inline">|</span>
+              <span>MM Mesquita Serviços de Administração LTDA</span>
             </p>
           </div>
         </div>

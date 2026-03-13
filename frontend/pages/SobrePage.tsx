@@ -1,8 +1,9 @@
 import React from 'react';
 
+import { Link } from 'react-router-dom';
 import { Award, Users, TrendingUp, Target, BookOpen, Briefcase } from 'lucide-react';
 // import imgJaniaMesquita from 'figma:asset/ec80bb3e3c57326b8068234761e68d2524ebbcb0.png';
-const imgJaniaMesquita = `${import.meta.env.BASE_URL}assets/img/jania_13.webp`;
+const imgJaniaMesquita = `${import.meta.env.BASE_URL}assets/img/herosobre.jpg`;
 
 export default function SobrePage() {
   const stats = [
@@ -88,9 +89,9 @@ export default function SobrePage() {
               </div>
             </div>
             <div className="rounded-3xl overflow-hidden h-[700px] shadow-2xl">
-              <img 
-                src={imgJaniaMesquita} 
-                alt="Jania Mesquita" 
+              <img
+                src={imgJaniaMesquita}
+                alt="Jania Mesquita"
                 className="w-full h-full object-cover object-top p-[0px]"
               />
             </div>
@@ -222,12 +223,12 @@ export default function SobrePage() {
               Se você está pronto para transformar sua clínica em uma empresa escalável, vamos agendar uma conversa estratégica.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <a href="/mentoria" className="px-8 py-4 bg-white text-[#385443] border-2 border-[#385443] rounded-xl hover:bg-[#385443] hover:text-white transition-all">
+              <Link to="/mentoria" className="px-8 py-4 bg-white text-[#385443] border-2 border-[#385443] rounded-xl hover:bg-[#385443] hover:text-white transition-all">
                 Conhecer a Mentoria
-              </a>
-              <a href="/contato" className="px-8 py-4 border-2 border-black text-[#42331C] rounded-xl hover:bg-[#42331C] hover:text-white transition-all text-center">
+              </Link>
+              <Link to="/contato" className="px-8 py-4 border-2 border-black text-[#42331C] rounded-xl hover:bg-[#42331C] hover:text-white transition-all text-center">
                 Agendar Conversa
-              </a>
+              </Link>
             </div>
           </div>
         </div>

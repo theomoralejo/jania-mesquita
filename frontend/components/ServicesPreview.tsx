@@ -46,14 +46,14 @@ export function ServicesPreview() {
               Como posso ajudar
             </span>
           </div>
-          
+
           <h2 className="font-serif text-3xl md:text-[48px] mb-6 leading-[1.1] tracking-tight text-[#232323]">
             Soluções para cada{' '}
             <span className="italic text-[#385443]">estágio da jornada</span>
           </h2>
-          
+
           <p className="text-lg text-[#696969] leading-relaxed">
-            Seja você um médico fundador, gestor de clínica ou líder de equipe, 
+            Seja você um médico fundador, gestor de clínica ou líder de equipe,
             existe um caminho estruturado para transformar sua operação.
           </p>
         </div>
@@ -61,7 +61,7 @@ export function ServicesPreview() {
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <div 
+            <div
               key={index}
               className="group bg-[#F2EFE8] border border-[#DFDCD4] rounded-[7px] p-6 md:p-8 hover:border-[#385443] hover:shadow-xl transition-all duration-300 flex flex-col"
             >
@@ -98,7 +98,7 @@ export function ServicesPreview() {
               </ul>
 
               {/* CTA */}
-              <Link 
+              <Link
                 to={service.link}
                 className="inline-flex items-center gap-2 text-[#385443] hover:text-[#4a6655] font-medium transition-colors duration-300 group/link"
               >
@@ -116,13 +116,24 @@ export function ServicesPreview() {
             <span className="text-[#385443] font-medium">Agende um diagnóstico gratuito</span>{' '}
             e descubra qual caminho faz mais sentido para você.
           </p>
-          <Link 
-            to="#diagnostico"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-[#385443] text-white rounded-[7px] hover:bg-[#4a6655] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 font-bold w-full md:w-auto justify-center"
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              const el = document.getElementById('diagnostico');
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+              } else {
+                window.location.href = '/#/?scrollTo=diagnostico';
+                setTimeout(() => {
+                  document.getElementById('diagnostico')?.scrollIntoView({ behavior: 'smooth' });
+                }, 500);
+              }
+            }}
+            className="inline-flex items-center gap-3 px-8 py-4 bg-[#385443] text-white rounded-[7px] hover:bg-[#4a6655] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 font-bold w-full md:w-auto justify-center cursor-pointer border-none"
           >
             <span>Agendar Diagnóstico Gratuito</span>
             <ArrowRight className="w-5 h-5" strokeWidth={2.5} />
-          </Link>
+          </button>
         </div>
       </div>
     </section>

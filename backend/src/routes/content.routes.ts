@@ -16,6 +16,11 @@ import {
   getGaleriaFotos,
   getSocialProofStats,
   adminGetSummary,
+  adminGetAllMediaItems,
+  adminGetMediaItemById,
+  createMediaItem,
+  updateMediaItem,
+  deleteMediaItem,
 } from '../controllers/content.controller';
 import { authenticate } from '../middleware/auth';
 
@@ -55,6 +60,14 @@ adminContentRouter.get('/depoimentos/:id', authenticate, adminGetDepoimentoById)
 adminContentRouter.put('/depoimentos/:id', authenticate, updateDepoimento);
 adminContentRouter.patch('/depoimentos/:id', authenticate, updateDepoimento);
 adminContentRouter.delete('/depoimentos/:id', authenticate, deleteDepoimento);
+
+// Mídia admin CRUD - montadas em /api/admin/midias
+adminContentRouter.get('/midias', authenticate, adminGetAllMediaItems);
+adminContentRouter.post('/midias', authenticate, createMediaItem);
+adminContentRouter.get('/midias/:id', authenticate, adminGetMediaItemById);
+adminContentRouter.put('/midias/:id', authenticate, updateMediaItem);
+adminContentRouter.patch('/midias/:id', authenticate, updateMediaItem);
+adminContentRouter.delete('/midias/:id', authenticate, deleteMediaItem);
 
 // Dashboard summary (admin)
 adminContentRouter.get('/summary', authenticate, adminGetSummary);

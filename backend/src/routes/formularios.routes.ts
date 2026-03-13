@@ -11,10 +11,15 @@ import {
   adminMarkContatoRead,
   adminDeleteContato,
   adminGetDiagnosticos,
+  adminMarkDiagnosticoRead,
   adminGetMentorias,
+  adminMarkMentoriaRead,
   adminGetPalestras,
+  adminMarkPalestraRead,
   adminGetNewsletters,
+  adminMarkNewsletterRead,
   adminGetAvaliacoes,
+  adminMarkAvaliacaoRead,
 } from '../controllers/formularios.controller';
 import { authenticate } from '../middleware/auth';
 import prisma from '../config/database';
@@ -50,6 +55,10 @@ adminFormulariosRouter.get('/diagnostico/:id', authenticate, async (req: any, re
     res.json(item);
   } catch { res.status(500).json({ error: 'Erro ao buscar' }); }
 });
+adminFormulariosRouter.put('/diagnostico/:id', authenticate, adminMarkDiagnosticoRead);
+adminFormulariosRouter.patch('/diagnostico/:id', authenticate, adminMarkDiagnosticoRead);
+adminFormulariosRouter.put('/diagnostico/:id/read', authenticate, adminMarkDiagnosticoRead);
+adminFormulariosRouter.patch('/diagnostico/:id/read', authenticate, adminMarkDiagnosticoRead);
 
 // Mentoria
 adminFormulariosRouter.get('/mentoria', authenticate, adminGetMentorias);
@@ -60,6 +69,10 @@ adminFormulariosRouter.get('/mentoria/:id', authenticate, async (req: any, res: 
     res.json(item);
   } catch { res.status(500).json({ error: 'Erro ao buscar' }); }
 });
+adminFormulariosRouter.put('/mentoria/:id', authenticate, adminMarkMentoriaRead);
+adminFormulariosRouter.patch('/mentoria/:id', authenticate, adminMarkMentoriaRead);
+adminFormulariosRouter.put('/mentoria/:id/read', authenticate, adminMarkMentoriaRead);
+adminFormulariosRouter.patch('/mentoria/:id/read', authenticate, adminMarkMentoriaRead);
 
 // Palestras
 adminFormulariosRouter.get('/palestras', authenticate, adminGetPalestras);
@@ -70,9 +83,17 @@ adminFormulariosRouter.get('/palestras/:id', authenticate, async (req: any, res:
     res.json(item);
   } catch { res.status(500).json({ error: 'Erro ao buscar' }); }
 });
+adminFormulariosRouter.put('/palestras/:id', authenticate, adminMarkPalestraRead);
+adminFormulariosRouter.patch('/palestras/:id', authenticate, adminMarkPalestraRead);
+adminFormulariosRouter.put('/palestras/:id/read', authenticate, adminMarkPalestraRead);
+adminFormulariosRouter.patch('/palestras/:id/read', authenticate, adminMarkPalestraRead);
 
 // Newsletter
 adminFormulariosRouter.get('/newsletter', authenticate, adminGetNewsletters);
+adminFormulariosRouter.put('/newsletter/:id', authenticate, adminMarkNewsletterRead);
+adminFormulariosRouter.patch('/newsletter/:id', authenticate, adminMarkNewsletterRead);
+adminFormulariosRouter.put('/newsletter/:id/read', authenticate, adminMarkNewsletterRead);
+adminFormulariosRouter.patch('/newsletter/:id/read', authenticate, adminMarkNewsletterRead);
 
 // Avaliação
 adminFormulariosRouter.get('/avaliacao', authenticate, adminGetAvaliacoes);
@@ -83,3 +104,7 @@ adminFormulariosRouter.get('/avaliacao/:id', authenticate, async (req: any, res:
     res.json(item);
   } catch { res.status(500).json({ error: 'Erro ao buscar' }); }
 });
+adminFormulariosRouter.put('/avaliacao/:id', authenticate, adminMarkAvaliacaoRead);
+adminFormulariosRouter.patch('/avaliacao/:id', authenticate, adminMarkAvaliacaoRead);
+adminFormulariosRouter.put('/avaliacao/:id/read', authenticate, adminMarkAvaliacaoRead);
+adminFormulariosRouter.patch('/avaliacao/:id/read', authenticate, adminMarkAvaliacaoRead);

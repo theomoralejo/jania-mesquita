@@ -13,7 +13,7 @@ router.post('/images', authenticate, upload.array('images', 10), uploadImages);
 // Delete image
 router.delete('/image', authenticate, deleteImage);
 
-// List all uploaded images
-router.get('/list', authenticate, listImages);
+// List all uploaded images (Public API path)
+router.get('/list', listImages);
 
 export default router;

@@ -5,7 +5,7 @@ import { ImageWithFallback } from './figma/ImageWithFallback';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { galeriaApi } from '../lib/api';
+import { galeriaApi, resolveImageUrl } from '../lib/api';
 
 export function EventPhotos() {
   const [photos, setPhotos] = useState<any[]>([]);
@@ -14,12 +14,16 @@ export function EventPhotos() {
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
-        const fotos = await galeriaApi.getFotos();
-        setPhotos(fotos.map((foto: any) => ({
-          src: foto.src,
-          alt: foto.alt,
-          title: foto.title
-        })));
+        const data = await galeriaApi.getAllServerImages();
+        if (data.length > 0) {
+          setPhotos(data.map((foto) => ({
+            src: resolveImageUrl(foto.url) || foto.url,
+            alt: foto.filename,
+            title: foto.filename
+          })));
+        } else {
+          throw new Error("Local images empty");
+        }
       } catch (error) {
         console.error('Erro ao buscar fotos:', error);
         // Fallback para fotos padrão em caso de erro
@@ -38,7 +42,7 @@ export function EventPhotos() {
 
   // Re-evaluating infinite for 3 items with 1.5 view. 
   // If infinite=false, we see 1.5, then scroll to see the rest.
-  
+
   const sliderSettings = {
     dots: true,
     infinite: false,
@@ -59,22 +63,25 @@ export function EventPhotos() {
     ]
   };
 
+  // Limit photos or select specific ones just for the hero/slider if there are a lot
+  const displayPhotos = photos.slice(0, 10); // Show max 10 to not overwhelm the slider
+
   return (
     <section className="py-12 md:section-padding bg-[#F5F3F0] overflow-hidden">
       <div className="container-custom">
         <div className="text-center mb-8 md:mb-[50px] mt-[0px] mr-[0px] ml-[0px]">
-          <h2 className="font-serif text-3xl md:text-5xl mb-4 md:mb-6 text-[#232323]">Janía em Ação</h2>
+          <h2 className="font-serif text-3xl md:text-5xl mb-4 md:mb-6 text-[#232323]">Jania em Ação</h2>
           <p className="text-base md:text-xl text-[#696969]">Momentos de transformação e aprendizado</p>
         </div>
-        
+
         {/* Desktop Grid */}
         <div className="hidden md:grid grid-cols-1 md:grid-cols-3 gap-6">
-          {photos.map((photo, index) => (
+          {displayPhotos.slice(0, 3).map((photo, index) => (
             <div key={index} className="aspect-[3/4] rounded-[7px] overflow-hidden border border-[#385443]/10 group relative">
               <div className="absolute inset-0 bg-[#385443]/5 group-hover:bg-transparent transition-all duration-500 z-10" />
               <div className="w-full h-full transform group-hover:scale-105 transition-transform duration-700">
-                <ImageWithFallback 
-                  src={photo.src} 
+                <ImageWithFallback
+                  src={photo.src}
                   alt={photo.alt}
                   className={`w-full h-full object-cover ${index === 1 ? 'object-top' : ''}`}
                   style={index === 0 ? { objectPosition: 'center 20%' } : undefined}
@@ -87,13 +94,13 @@ export function EventPhotos() {
         {/* Mobile Slider */}
         <div className="md:hidden -mr-6"> {/* Negative margin to allow slider to touch right edge */}
           <Slider {...sliderSettings} className="event-photos-slider">
-            {photos.map((photo, index) => (
+            {displayPhotos.map((photo, index) => (
               <div key={index} className="pr-4"> {/* Padding right to create gap between slides */}
                 <div className="aspect-[3/4] rounded-[7px] overflow-hidden border border-[#385443]/10 relative">
-                   {/* Removed hover effects for mobile as they are less relevant */}
+                  {/* Removed hover effects for mobile as they are less relevant */}
                   <div className="w-full h-full">
-                    <ImageWithFallback 
-                      src={photo.src} 
+                    <ImageWithFallback
+                      src={photo.src}
                       alt={photo.alt}
                       className={`w-full h-full object-cover ${index === 1 ? 'object-top' : ''}`}
                       style={index === 0 ? { objectPosition: 'center 20%' } : undefined}

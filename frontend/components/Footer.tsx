@@ -7,7 +7,7 @@ import Logo from '../imports/Logo1';
 export function Footer() {
   return (
     <footer className="bg-white">
-      
+
       {/* Footer Links - Dark Brown Theme from ID */}
       <div className="bg-[#31230D] text-[#F9F9F9]">
         <div className="container-custom px-[20px] py-[60px] md:py-20 md:px-[20px] pt-[80px] pr-[20px] pb-[30px] pl-[20px]">
@@ -32,7 +32,7 @@ export function Footer() {
                 </a>
               </div>
             </div>
-            
+
             {/* Navigation Links */}
             <div className="md:col-span-2 md:col-start- bg-[rgba(223,220,220,0)]">
               <h4 className="text-xs font-bold tracking-[0.15em] uppercase text-[rgb(228,228,228)] mb-5">
@@ -81,13 +81,13 @@ export function Footer() {
           </div>
 
           {/* Bottom Bar */}
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-xs font-light text-[#C9B896]">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] md:text-xs font-light text-[#C9B896]">
             <p className="flex flex-col md:flex-row items-center gap-1 text-center md:text-left">
               <span className="text-[rgb(215,215,215)]">CNPJ: 46.568.777/0001-58</span>
               <span className="hidden md:inline mx-2">|</span>
-              <span className="text-[rgb(215,215,215)]">MM Mesquita Servicos de Administracao LTDA</span>
+              <span className="text-[rgb(215,215,215)] text-center">MM Mesquita Servicos de Administracao LTDA</span>
             </p>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-6 mt-2 md:mt-0">
               <p className="text-[rgb(215,215,215)]">© {new Date().getFullYear()} Jania Mesquita</p>
             </div>
           </div>

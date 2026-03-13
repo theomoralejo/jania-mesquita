@@ -47,9 +47,9 @@ export default function PalestrasPage() {
   const [testimonials, setTestimonials] = useState<Depoimento[]>([]);
 
   useEffect(() => {
-    palestrasApi.getVertentes().then(data => { if (data.length) setVertentes(data); }).catch(() => {});
-    palestrasApi.getEstatisticas().then(data => { if (data.length) setStats(data); }).catch(() => {});
-    depoimentosApi.getDepoimentos().then(data => { if (data.length) setTestimonials(data); }).catch(() => {});
+    palestrasApi.getVertentes().then(data => { if (data.length) setVertentes(data); }).catch(() => { });
+    palestrasApi.getEstatisticas().then(data => { if (data.length) setStats(data); }).catch(() => { });
+    depoimentosApi.getDepoimentos().then(data => { if (data.length) setTestimonials(data); }).catch(() => { });
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -81,7 +81,7 @@ export default function PalestrasPage() {
         {/* Geometric Accents - Linhas sutis sugerindo jornada */}
         <div className="absolute top-20 left-1/4 w-px h-48 bg-gradient-to-b from-transparent via-[#385443]/20 to-transparent"></div>
         <div className="absolute bottom-32 right-1/3 w-px h-64 bg-gradient-to-t from-transparent via-[#385443]/20 to-transparent"></div>
-        
+
         <div className="w-full max-w-[1218px] mx-auto px-6 md:px-12 py-16 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Left Column - Text Content */}
@@ -93,35 +93,35 @@ export default function PalestrasPage() {
                   Palestras Personalizadas
                 </span>
               </div>
-              
+
               {/* Main Heading */}
               <h1 className="font-serif text-[42px] md:text-[52px] mb-10 leading-[1.05] tracking-tight text-[#232323]">
                 Transformação real não vem de{' '}
                 <span className="italic text-[#385443]">conteúdo genérico</span>
               </h1>
-              
+
               {/* Subtitle */}
               <p className="text-lg md:text-xl mb-6 leading-relaxed text-[#42331C] max-w-xl">
-                Cada palestra é construída a partir da sua realidade. Desenhada para o seu contexto. 
+                Cada palestra é construída a partir da sua realidade. Desenhada para o seu contexto.
                 Porque liderança não se ensina com fórmulas prontas.
               </p>
 
               <p className="text-base mb-12 leading-relaxed text-[#42331C]/80 max-w-xl">
-                Nenhuma palestra é igual à outra. O tema é definido em contato direto com você, 
+                Nenhuma palestra é igual à outra. O tema é definido em contato direto com você,
                 respeitando o momento da sua organização e os desafios do seu público.
               </p>
-              
+
               {/* CTA Buttons - Stack vertical */}
               <div className="flex flex-col gap-5 mb-20">
-                <a 
+                <a
                   href="#contato"
                   className="group px-10 py-5 bg-[#385443] text-[#F2EFE8] rounded-[7px] transition-all duration-300 hover:bg-[#4a6655] hover:shadow-lg hover:-translate-y-0.5 font-medium tracking-wide flex items-center justify-center gap-3"
                 >
                   <span>Vamos conversar sobre seu evento</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" strokeWidth={2} />
                 </a>
-                
-                <a 
+
+                <a
                   href="#trajetoria"
                   className="px-10 py-5 border border-[#385443] text-[#385443] rounded-[7px] transition-all duration-300 hover:bg-[#DFDCD4] hover:-translate-y-0.5 font-medium tracking-wide flex items-center justify-center gap-2"
                 >
@@ -152,69 +152,7 @@ export default function PalestrasPage() {
         </div>
       </section>
 
-      {/* Video Section - Player de vídeo */}
-      <section className="py-20 bg-white relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/4 w-px h-64 bg-gradient-to-b from-transparent via-[#385443]/10 to-transparent"></div>
-        
-        <div className="max-w-[1218px] mx-auto px-6 md:px-12 relative z-10">
-          <div className="max-w-5xl mx-auto">
-            {/* Header */}
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-3 mb-8">
-                <div className="w-12 h-px bg-[#385443]"></div>
-                <span className="text-xs font-bold tracking-[0.22em] uppercase text-[#385443]">
-                  Veja na prática
-                </span>
-                <div className="w-12 h-px bg-[#385443]"></div>
-              </div>
-              
-              <h2 className="font-serif text-[42px] md:text-[52px] mb-6 leading-[1.05] tracking-tight text-[#232323]">
-                Jania em{' '}
-                <span className="italic text-[#385443]">ação</span>
-              </h2>
-              
-              <p className="text-lg leading-relaxed text-[#42331C] max-w-2xl mx-auto">
-                Assista um trecho de palestra e veja como conteúdo estratégico se transforma em transformação real
-              </p>
-            </div>
 
-            {/* Video Player Container */}
-            <div className="relative group">
-              {/* Accent border effect */}
-              <div className="absolute -inset-4 bg-gradient-to-br from-[#385443]/5 to-transparent rounded-[12px] -z-10"></div>
-              
-              {/* Video wrapper */}
-              <div className="relative aspect-video rounded-[7px] overflow-hidden bg-[#232323] shadow-2xl border border-[#385443]/20">
-                {/* Placeholder - Substitua o src pelo link real do vídeo do YouTube/Vimeo */}
-                <iframe
-                  className="absolute inset-0 w-full h-full"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                  title="Jania Mesquita - Palestra"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              
-              {/* Decorative corner accent */}
-              <div className="absolute -bottom-3 -right-3 w-24 h-24 border-r-2 border-b-2 border-[#385443]/20 rounded-br-[7px] -z-10"></div>
-            </div>
-
-            {/* Bottom CTA */}
-            <div className="mt-16 text-center">
-              <p className="text-base text-[#42331C] mb-6">
-                Quer levar esse impacto para o seu evento?
-              </p>
-              <a 
-                href="#contato"
-                className="inline-flex items-center gap-2 text-[#385443] hover:text-[#4a6655] transition-colors duration-300 group"
-              >
-                <span className="font-medium tracking-wide">Solicitar orçamento</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" strokeWidth={2} />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Trajetória Section - Nova seção sobre contexto e história */}
       <section id="trajetoria" className="py-20 bg-[rgb(242,239,232)] text-[#F2EFE8] relative overflow-hidden">
@@ -222,7 +160,7 @@ export default function PalestrasPage() {
         <div className="absolute top-1/4 right-20 opacity-10">
           <Anchor className="w-32 h-32 text-[#F2EFE8]" strokeWidth={0.5} />
         </div>
-        
+
         <div className="max-w-[1218px] mx-auto px-6 md:px-12 relative z-10">
           <div className="max-w-4xl mx-auto">
             {/* Header */}
@@ -234,7 +172,7 @@ export default function PalestrasPage() {
                 </span>
                 <div className="w-12 h-px bg-[#B6A689]"></div>
               </div>
-              
+
               <h2 className="font-serif text-[48px] md:text-[58px] mb-8 leading-[1.05] tracking-tight text-white">
                 De onde falo quando falo de{' '}
                 <span className="italic text-[#B6A689]">liderança</span>
@@ -244,14 +182,14 @@ export default function PalestrasPage() {
             {/* Narrative */}
             <div className="space-y-6 text-lg leading-relaxed text-[#F2EFE8]/90">
               <p>
-                Minha trajetória não começou em salas de diretoria. Começou com trabalho duro, 
-                responsabilidade cedo demais e a certeza de que, para ir além, seria preciso esforço, 
+                Minha trajetória não começou em salas de diretoria. Começou com trabalho duro,
+                responsabilidade cedo demais e a certeza de que, para ir além, seria preciso esforço,
                 disciplina e constância.
               </p>
 
               <p>
-                Entrei na enfermagem não por vocação romântica, mas por necessidade. E foi ali, 
-                entre plantões, processos e emergências, que aprendi o que é liderar sob pressão real. 
+                Entrei na enfermagem não por vocação romântica, mas por necessidade. E foi ali,
+                entre plantões, processos e emergências, que aprendi o que é liderar sob pressão real.
                 Não a pressão de planilhas, mas a de vida e morte.
               </p>
 
@@ -274,7 +212,7 @@ export default function PalestrasPage() {
             {/* Bottom Statement */}
             <div className="mt-20 pt-12 border-t border-[#B6A689]/30 text-center">
               <p className="text-xl text-[#B6A689] max-w-3xl mx-auto">
-                Hoje, cada palestra que construo carrega essa experiência. Não é teoria de manual. 
+                Hoje, cada palestra que construo carrega essa experiência. Não é teoria de manual.
                 É vivência de quem liderou de verdade. E é isso que entrego ao seu público.
               </p>
             </div>
@@ -287,7 +225,7 @@ export default function PalestrasPage() {
         {/* Linhas sutis sugerindo direção */}
         <div className="absolute top-1/3 left-1/4 w-px h-80 bg-gradient-to-b from-transparent via-[#385443]/10 to-transparent"></div>
         <div className="absolute bottom-1/4 right-1/3 w-px h-64 bg-gradient-to-t from-transparent via-[#385443]/10 to-transparent"></div>
-        
+
         <div className="max-w-[1218px] mx-auto px-6 md:px-12 relative z-10">
           <div className="max-w-5xl mx-auto">
             {/* Header */}
@@ -298,14 +236,14 @@ export default function PalestrasPage() {
                   Abordagem
                 </span>
               </div>
-              
+
               <h2 className="font-serif text-[48px] md:text-[58px] mb-10 leading-[1.05] tracking-tight text-[#232323]">
                 Por que nenhuma palestra{' '}
                 <span className="italic text-[#385443]">é igual à outra</span>
               </h2>
-              
+
               <p className="text-xl leading-relaxed text-[#42331C] max-w-3xl">
-                Porque cada organização está em um momento diferente. Cada público carrega desafios únicos. 
+                Porque cada organização está em um momento diferente. Cada público carrega desafios únicos.
                 E conteúdo genérico não transforma ninguém.
               </p>
             </div>
@@ -323,8 +261,8 @@ export default function PalestrasPage() {
                   </h3>
                 </div>
                 <p className="text-base leading-relaxed text-[#42331C] pl-13">
-                  Antes de definir o tema, eu escuto. Qual é o momento da organização? 
-                  Quais são os desafios reais? O que o público precisa ouvir — não o que 
+                  Antes de definir o tema, eu escuto. Qual é o momento da organização?
+                  Quais são os desafios reais? O que o público precisa ouvir — não o que
                   é bonito dizer.
                 </p>
               </div>
@@ -340,7 +278,7 @@ export default function PalestrasPage() {
                   </h3>
                 </div>
                 <p className="text-base leading-relaxed text-[#42331C] pl-13">
-                  A palestra é desenhada do zero. Não existe slide reciclado. Cada narrativa 
+                  A palestra é desenhada do zero. Não existe slide reciclado. Cada narrativa
                   é construída para ressoar com o contexto específico do seu evento.
                 </p>
               </div>
@@ -356,7 +294,7 @@ export default function PalestrasPage() {
                   </h3>
                 </div>
                 <p className="text-base leading-relaxed text-[#42331C] pl-13">
-                  Conteúdo denso, mas acessível. Eu não ensino conceitos: eu mostro 
+                  Conteúdo denso, mas acessível. Eu não ensino conceitos: eu mostro
                   como aplicá-los no dia seguinte. A transformação começa na saída da sala.
                 </p>
               </div>
@@ -372,7 +310,7 @@ export default function PalestrasPage() {
                   </h3>
                 </div>
                 <p className="text-base leading-relaxed text-[#42331C] pl-13">
-                  Baseado na metáfora da navegação: saber onde está, definir para onde vai, 
+                  Baseado na metáfora da navegação: saber onde está, definir para onde vai,
                   entender quem vai com você, e liderar essa jornada com clareza, coragem e coerência.
                 </p>
               </div>
@@ -381,12 +319,12 @@ export default function PalestrasPage() {
             {/* CTA */}
             <div className="pt-16 border-t border-[#DFDCD4] text-center">
               <p className="text-xl text-[#232323] mb-8 max-w-2xl mx-auto">
-                Os temas não são públicos. A palestra é definida em contato direto. 
+                Os temas não são públicos. A palestra é definida em contato direto.
                 <span className="block mt-3 text-[#385443] font-medium">
                   Vamos construir juntos o conteúdo ideal para você.
                 </span>
               </p>
-              <a 
+              <a
                 href="#contato"
                 className="inline-flex items-center gap-2 text-[#385443] hover:text-[#4a6655] transition-colors duration-300 group"
               >
@@ -402,7 +340,7 @@ export default function PalestrasPage() {
       <section className="py-32 bg-[#F2EFE8] relative overflow-hidden">
         {/* Linha vertical sutil */}
         <div className="absolute top-1/4 right-1/4 w-px h-80 bg-gradient-to-b from-transparent via-[#385443]/10 to-transparent"></div>
-        
+
         <div className="max-w-[1218px] mx-auto px-6 md:px-12 relative z-10">
           {/* Header */}
           <div className="max-w-3xl mb-24">
@@ -412,7 +350,7 @@ export default function PalestrasPage() {
                 Vertentes
               </span>
             </div>
-            
+
             <p className="font-serif text-lg md:text-xl mb-4 text-[#42331C] italic">
               De onde falo quando falo de
             </p>
@@ -421,9 +359,9 @@ export default function PalestrasPage() {
               Temas que constroem{' '}
               <span className="italic text-[#385443]">trajetórias</span>
             </h2>
-            
+
             <p className="text-xl leading-relaxed text-[#42331C]">
-              As palestras partem de vertentes amplas que se entrelaçam com a sua realidade. 
+              As palestras partem de vertentes amplas que se entrelaçam com a sua realidade.
               Cada uma delas pode ser o ponto de partida para a palestra personalizada do seu evento.
             </p>
           </div>
@@ -462,7 +400,7 @@ export default function PalestrasPage() {
               Essas vertentes se combinam de formas únicas para criar{' '}
               <span className="text-[#385443] font-medium">a palestra ideal para seu contexto</span>
             </p>
-            <a 
+            <a
               href="#contato"
               className="inline-flex items-center gap-2 text-[#385443] hover:text-[#4a6655] transition-colors duration-300 group"
             >
@@ -476,7 +414,7 @@ export default function PalestrasPage() {
       {/* Formatos Section */}
       <section className="py-28 bg-white relative overflow-hidden">
         <div className="absolute top-0 left-1/4 w-px h-64 bg-gradient-to-b from-transparent via-[#385443]/10 to-transparent"></div>
-        
+
         <div className="max-w-[1218px] mx-auto px-6 md:px-12 relative z-10">
           <div className="max-w-3xl mb-20">
             <div className="inline-flex items-center gap-3 mb-10">
@@ -485,14 +423,14 @@ export default function PalestrasPage() {
                 Formatos
               </span>
             </div>
-            
+
             <h2 className="font-serif text-[48px] md:text-[58px] mb-10 leading-[1.05] tracking-tight text-[#232323]">
               Adaptável ao seu{' '}
               <span className="italic text-[#385443]">momento</span>
             </h2>
-            
+
             <p className="text-lg leading-relaxed text-[#42331C]">
-              De keynotes inspiracionais a imersões profundas. 
+              De keynotes inspiracionais a imersões profundas.
               O formato se ajusta ao objetivo que você deseja alcançar.
             </p>
           </div>
@@ -525,7 +463,7 @@ export default function PalestrasPage() {
       {/* Testimonials Section */}
       <section className="py-32 bg-[#F2EFE8] relative overflow-hidden">
         <div className="absolute bottom-1/3 right-0 w-px h-80 bg-gradient-to-t from-transparent via-[#385443]/10 to-transparent"></div>
-        
+
         <div className="max-w-[1218px] mx-auto px-6 md:px-12 relative z-10">
           <div className="max-w-3xl mb-20">
             <div className="inline-flex items-center gap-3 mb-10">
@@ -534,7 +472,7 @@ export default function PalestrasPage() {
                 Depoimentos
               </span>
             </div>
-            
+
             <h2 className="font-serif text-[48px] md:text-[58px] mb-10 leading-[1.05] tracking-tight text-[#232323]">
               O que dizem os{' '}
               <span className="italic text-[#385443]">organizadores</span>
@@ -569,7 +507,7 @@ export default function PalestrasPage() {
       {/* Form Section - CTA estratégico */}
       <section id="contato" className="py-32 bg-white relative overflow-hidden">
         <div className="absolute top-1/3 left-0 w-px h-96 bg-gradient-to-b from-transparent via-[#385443]/10 to-transparent"></div>
-        
+
         <div className="max-w-[1218px] mx-auto px-6 md:px-12 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-20">
@@ -581,20 +519,20 @@ export default function PalestrasPage() {
                     Vamos começar
                   </span>
                 </div>
-                
+
                 <h2 className="font-serif text-[42px] md:text-[48px] mb-10 leading-[1.1] tracking-tight text-[#232323]">
                   Construa a palestra{' '}
                   <span className="italic text-[#385443]">ideal</span>{' '}
                   para você
                 </h2>
-                
+
                 <p className="text-lg leading-relaxed text-[#42331C] mb-6">
-                  Conte-me sobre seu evento, seu público e seus objetivos. 
+                  Conte-me sobre seu evento, seu público e seus objetivos.
                 </p>
 
                 <p className="text-base leading-relaxed text-[#42331C]/80 mb-12">
-                  O tema da palestra será definido em conversa direta com você, 
-                  respeitando o contexto da sua organização e as necessidades específicas 
+                  O tema da palestra será definido em conversa direta com você,
+                  respeitando o contexto da sua organização e as necessidades específicas
                   do seu público.
                 </p>
 

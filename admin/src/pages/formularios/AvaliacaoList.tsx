@@ -5,7 +5,7 @@ import {
   DateField,
   EmailField,
 } from '@refinedev/antd';
-import { Table, Space, Tag } from 'antd';
+import { Table, Space, Tag, Alert } from 'antd';
 
 export const AvaliacaoList = () => {
   const { tableProps } = useTable({
@@ -34,6 +34,13 @@ export const AvaliacaoList = () => {
 
   return (
     <List>
+      <Alert
+        message="Teste de Maturidade (Avaliação / Diagnóstico Completo)"
+        description={<>Estes contatos concluíram o quiz longo de pontuação de Maturidade da Clínica. <a href="https://janiamesquita.com.br/avaliacao" target="_blank" rel="noreferrer">Ver quiz no site</a></>}
+        type="info"
+        showIcon
+        style={{ marginBottom: 16 }}
+      />
       <Table {...tableProps} rowKey="id">
         <Table.Column
           dataIndex="name"

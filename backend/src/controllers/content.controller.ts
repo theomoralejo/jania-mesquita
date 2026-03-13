@@ -267,6 +267,10 @@ export const adminGetSummary = async (req: AuthRequest, res: Response): Promise<
       totalGaleriaFotos,
       unreadContatos,
       newsletterCount,
+      diagnosticoCount,
+      mentoriaCount,
+      palestrasCount,
+      avaliacoesCount,
     ] = await Promise.all([
       prisma.blogPost.count(),
       prisma.blogPost.count({ where: { published: true } }),
@@ -274,6 +278,10 @@ export const adminGetSummary = async (req: AuthRequest, res: Response): Promise<
       prisma.galeriaFoto.count(),
       prisma.formularioContato.count({ where: { read: false } }),
       prisma.formularioNewsletter.count(),
+      prisma.formularioDiagnostico.count({ where: { read: false } }),
+      prisma.formularioMentoria.count({ where: { read: false } }),
+      prisma.formularioPalestras.count({ where: { read: false } }),
+      prisma.formularioAvaliacao.count({ where: { read: false } }),
     ]);
 
     res.json({
@@ -283,10 +291,88 @@ export const adminGetSummary = async (req: AuthRequest, res: Response): Promise<
       totalGaleriaFotos,
       unreadContatos,
       newsletterCount,
+      diagnosticoCount,
+      mentoriaCount,
+      palestrasCount,
+      avaliacoesCount,
     });
   } catch (error) {
     console.error('Erro ao buscar resumo do admin:', error);
     res.status(500).json({ error: 'Erro ao buscar resumo' });
+  }
+};
+
+// ===========================
+// MÍDIA ADMIN CRUD
+// ===========================
+
+export const adminGetAllMediaItems = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const items = await prisma.mediaItem.findMany({ orderBy: { order: 'asc' } });
+    res.json(items);
+  } catch (error) {
+    console.error('Erro ao buscar media items:', error);
+    res.status(500).json({ error: 'Erro ao buscar media items' });
+  }
+};
+
+export const adminGetMediaItemById = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const id = String(req.params.id);
+    const item = await prisma.mediaItem.findUnique({ where: { id } });
+    if (!item) { res.status(404).json({ error: 'Item não encontrado' }); return; }
+    res.json(item);
+  } catch (error) {
+    console.error('Erro ao buscar media item:', error);
+    res.status(500).json({ error: 'Erro ao buscar media item' });
+  }
+};
+
+export const createMediaItem = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { type, icon, outlet, title, date, link, order } = req.body;
+    if (!title || !link) { res.status(400).json({ error: 'Título e link são obrigatórios' }); return; }
+    const item = await prisma.mediaItem.create({
+      data: { type: type || 'Artigo', icon: icon || 'FileText', outlet: outlet || '', title, date: date || '', link, order: order || 0 },
+    });
+    res.status(201).json(item);
+  } catch (error) {
+    console.error('Erro ao criar media item:', error);
+    res.status(500).json({ error: 'Erro ao criar media item' });
+  }
+};
+
+export const updateMediaItem = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const id = String(req.params.id);
+    const { type, icon, outlet, title, date, link, order } = req.body;
+    const item = await prisma.mediaItem.update({
+      where: { id },
+      data: {
+        ...(type !== undefined && { type }),
+        ...(icon !== undefined && { icon }),
+        ...(outlet !== undefined && { outlet }),
+        ...(title !== undefined && { title }),
+        ...(date !== undefined && { date }),
+        ...(link !== undefined && { link }),
+        ...(order !== undefined && { order }),
+      },
+    });
+    res.json(item);
+  } catch (error) {
+    console.error('Erro ao atualizar media item:', error);
+    res.status(500).json({ error: 'Erro ao atualizar media item' });
+  }
+};
+
+export const deleteMediaItem = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const id = String(req.params.id);
+    await prisma.mediaItem.delete({ where: { id } });
+    res.json({ message: 'Item deletado com sucesso' });
+  } catch (error) {
+    console.error('Erro ao deletar media item:', error);
+    res.status(500).json({ error: 'Erro ao deletar media item' });
   }
 };
 
@@ -306,4 +392,9 @@ export default {
   getMediaPress,
   getGaleriaFotos,
   getSocialProofStats,
+  adminGetAllMediaItems,
+  adminGetMediaItemById,
+  createMediaItem,
+  updateMediaItem,
+  deleteMediaItem,
 };

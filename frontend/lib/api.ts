@@ -296,11 +296,18 @@ export interface GaleriaFoto {
 }
 
 export const galeriaApi = {
-  // Listar fotos
+  // Listar fotos cadastradas no DB (ordem manual)
   getFotos: async (): Promise<GaleriaFoto[]> => {
     const { data } = await api.get('/galeria/fotos');
     return data;
   },
+
+  // Listar todas as imagens do servidor (direto da pasta uploads)
+  getAllServerImages: async (): Promise<{ url: string; filename: string; folder: string }[]> => {
+    // Busca direto da rota de upload que o admin usa
+    const { data } = await api.get('/upload/list');
+    return data;
+  }
 };
 
 // ============================================

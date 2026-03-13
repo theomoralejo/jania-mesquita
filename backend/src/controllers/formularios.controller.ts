@@ -84,6 +84,11 @@ export const submitMentoria = async (req: Request, res: Response): Promise<void>
       data: { name, email, phone, clinic, revenue, tier },
     });
 
+    // Enviar email de notificação
+    emailService.notifyNewMentoria({ name, email, phone, clinic, revenue, tier }).catch((error) => {
+      console.error('Erro ao enviar email de mentoria:', error);
+    });
+
     res.status(201).json({
       success: true,
       message: 'Inscrição enviada com sucesso!',
@@ -107,6 +112,11 @@ export const submitPalestras = async (req: Request, res: Response): Promise<void
 
     const palestra = await prisma.formularioPalestras.create({
       data: { name, email, phone, company, eventType, attendees, date, message },
+    });
+
+    // Enviar email de notificação
+    emailService.notifyNewPalestras({ name, email, phone, company, eventType, attendees, date, message }).catch((error) => {
+      console.error('Erro ao enviar email de palestra:', error);
     });
 
     res.status(201).json({
@@ -158,6 +168,11 @@ export const submitNewsletter = async (req: Request, res: Response): Promise<voi
 
     await prisma.formularioNewsletter.create({
       data: { email },
+    });
+
+    // Enviar email de notificação
+    emailService.notifyNewNewsletter({ email }).catch((error) => {
+      console.error('Erro ao enviar email de newsletter:', error);
     });
 
     res.status(201).json({
@@ -328,6 +343,76 @@ export const adminDeleteContato = async (req: AuthRequest, res: Response): Promi
   }
 };
 
+export const adminMarkDiagnosticoRead = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const id = String(req.params.id);
+    const { read } = req.body;
+    const item = await prisma.formularioDiagnostico.update({
+      where: { id },
+      data: { read: read !== undefined ? read : true },
+    });
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao atualizar diagnóstico' });
+  }
+};
+
+export const adminMarkMentoriaRead = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const id = String(req.params.id);
+    const { read } = req.body;
+    const item = await prisma.formularioMentoria.update({
+      where: { id },
+      data: { read: read !== undefined ? read : true },
+    });
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao atualizar mentoria' });
+  }
+};
+
+export const adminMarkPalestraRead = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const id = String(req.params.id);
+    const { read } = req.body;
+    const item = await prisma.formularioPalestras.update({
+      where: { id },
+      data: { read: read !== undefined ? read : true },
+    });
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao atualizar palestra' });
+  }
+};
+
+export const adminMarkNewsletterRead = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const id = String(req.params.id);
+    const { active } = req.body;
+    const item = await prisma.formularioNewsletter.update({
+      where: { id },
+      data: { active: active !== undefined ? active : true },
+    });
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao atualizar newsletter' });
+  }
+};
+
+export const adminMarkAvaliacaoRead = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const id = String(req.params.id);
+    const { read } = req.body;
+    const item = await prisma.formularioAvaliacao.update({
+      where: { id },
+      data: { read: read !== undefined ? read : true },
+    });
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao atualizar avaliação' });
+  }
+};
+
 // Similar para outros formulários...
 export const adminGetDiagnosticos = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
@@ -431,8 +516,13 @@ export default {
   adminMarkContatoRead,
   adminDeleteContato,
   adminGetDiagnosticos,
+  adminMarkDiagnosticoRead,
   adminGetMentorias,
+  adminMarkMentoriaRead,
   adminGetPalestras,
+  adminMarkPalestraRead,
   adminGetNewsletters,
+  adminMarkNewsletterRead,
   adminGetAvaliacoes,
+  adminMarkAvaliacaoRead,
 };

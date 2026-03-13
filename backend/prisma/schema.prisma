@@ -370,3 +370,15 @@ model FormularioAvaliacao {
   @@index([read])
   @@map("formulario_avaliacao")
 }
+
+// ===========================
+// CONFIGURAÇÕES DO SITE
+// ===========================
+model SiteConfig {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String   // Armazena JSON stringificado ou texto puro
+  updatedAt DateTime @updatedAt
+
+  @@map("site_configs")
+}

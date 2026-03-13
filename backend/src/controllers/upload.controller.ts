@@ -107,6 +107,7 @@ export const listImages = async (req: AuthRequest, res: Response): Promise<void>
     const uploadsDir = path.join(process.cwd(), 'uploads');
     const results: { url: string; filename: string; folder: string }[] = [];
 
+    // 1. Scan backend uploads directory
     if (fs.existsSync(uploadsDir)) {
       const folders = fs.readdirSync(uploadsDir, { withFileTypes: true })
         .filter(d => d.isDirectory())
@@ -123,6 +124,20 @@ export const listImages = async (req: AuthRequest, res: Response): Promise<void>
             folder,
           });
         }
+      }
+    }
+
+    // 2. Scan frontend static assets (site images)
+    const frontendImgDir = path.join(process.cwd(), '..', 'frontend', 'assets', 'img');
+    if (fs.existsSync(frontendImgDir)) {
+      const files = fs.readdirSync(frontendImgDir)
+        .filter(f => /\.(jpg|jpeg|png|webp|gif)$/i.test(f));
+      for (const file of files) {
+        results.push({
+          url: `/assets/img/${file}`,
+          filename: file,
+          folder: 'site-assets',
+        });
       }
     }
 

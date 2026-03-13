@@ -7,6 +7,7 @@ export function PricingSection() {
     {
       name: 'Basic',
       tagline: 'Fundamentos de Governança',
+      price: '',
       description: 'Para clínicas que estão começando a estruturação e precisam dos pilares essenciais de governança.',
       features: [
         'Metodologia completa (5 pilares)',
@@ -23,6 +24,7 @@ export function PricingSection() {
     {
       name: 'Premium',
       tagline: 'Implementação Acelerada',
+      price: '',
       description: 'Para clínicas que querem implementação rápida com acompanhamento personalizado e suporte direto.',
       features: [
         'Tudo do Basic, mais:',
@@ -40,6 +42,7 @@ export function PricingSection() {
     {
       name: 'VIP',
       tagline: 'Transformação Completa',
+      price: '',
       description: 'Para clínicas que querem aceleração máxima com implementação presencial e consultoria estratégica completa.',
       features: [
         'Tudo do Premium, mais:',
@@ -73,11 +76,11 @@ export function PricingSection() {
               Investimento
             </span>
           </div>
-          
+
           <h2 className="font-serif text-5xl md:text-6xl lg:text-7xl mb-12 leading-[1.05] tracking-tight text-[#232323]">
             Três Níveis de <span className="italic text-[#385443]">Transformação</span>
           </h2>
-          
+
           <p className="text-lg md:text-xl leading-relaxed max-w-3xl text-[#414141] font-light">
             Escolha o tier com diferentes níveis de suporte e implementação. O investimento se paga em{' '}
             <span className="bg-[#DFDCD4] px-1 text-[#232323] font-medium">eficiência operacional</span> e{' '}
@@ -88,13 +91,12 @@ export function PricingSection() {
         {/* Pricing Grid - Editorial */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-20">
           {tiers.map((tier, index) => (
-            <div 
+            <div
               key={index}
-              className={`bg-white p-10 relative group transition-all duration-500 rounded-[9px] border ${
-                tier.highlight 
-                  ? 'border-[#385443] shadow-xl lg:-mt-8 lg:mb-8 lg:z-10' 
+              className={`bg-white p-10 relative group transition-all duration-500 rounded-[9px] border ${tier.highlight
+                  ? 'border-[#385443] shadow-xl lg:-mt-8 lg:mb-8 lg:z-10'
                   : 'border-[#DFDCD4] hover:border-[#B6A689] hover:shadow-md'
-              }`}
+                }`}
             >
               {/* Most Popular Badge */}
               {tier.highlight && (
@@ -133,16 +135,14 @@ export function PricingSection() {
               {/* Features */}
               <div className="space-y-4">
                 {tier.features.map((feature, idx) => (
-                  <div 
-                    key={idx} 
-                    className={`flex items-start gap-3 ${
-                      feature.includes('Tudo do') ? 'mt-6 pt-6 border-t border-[#DFDCD4]' : ''
-                    }`}
+                  <div
+                    key={idx}
+                    className={`flex items-start gap-3 ${feature.includes('Tudo do') ? 'mt-6 pt-6 border-t border-[#DFDCD4]' : ''
+                      }`}
                   >
                     <Check className="w-4 h-4 text-[#385443] mt-0.5" strokeWidth={1.5} />
-                    <span className={`text-sm font-light leading-relaxed text-[#696969] ${
-                      feature.includes('Tudo do') ? 'font-medium text-[#232323]' : ''
-                    }`}>
+                    <span className={`text-sm font-light leading-relaxed text-[#696969] ${feature.includes('Tudo do') ? 'font-medium text-[#232323]' : ''
+                      }`}>
                       {feature}
                     </span>
                   </div>
@@ -154,7 +154,7 @@ export function PricingSection() {
 
         {/* Single CTA Button */}
         <div className="text-center">
-          <button 
+          <button
             onClick={() => {
               const element = document.getElementById('aplicar');
               if (element) element.scrollIntoView({ behavior: 'smooth' });
@@ -162,9 +162,9 @@ export function PricingSection() {
             className="px-12 py-5 bg-[#385443] text-white border border-[#385443] rounded-[7px] transition-all duration-500 hover:bg-[#42331C] flex items-center justify-center gap-3 font-bold text-base tracking-wide uppercase mx-auto group"
           >
             <span>Quero Transformar Minha Clínica</span>
-            <ArrowRight 
-              className="w-5 h-5 group-hover:translate-x-1 transition-transform" 
-              strokeWidth={2} 
+            <ArrowRight
+              className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+              strokeWidth={2}
             />
           </button>
           <p className="text-sm text-[#78877E] mt-6 font-light">

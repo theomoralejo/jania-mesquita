@@ -43,8 +43,18 @@ export const AvaliacaoShow = () => {
     return colors[level] || 'default';
   };
 
-  const quizAnswers = record?.quizAnswers ? JSON.parse(record.quizAnswers as string) : {};
-
+  let quizAnswers: Record<string, any> = {};
+  if (record?.quizAnswers) {
+    if (typeof record.quizAnswers === 'string') {
+      try {
+        quizAnswers = JSON.parse(record.quizAnswers);
+      } catch (e) {
+        console.error('Failed to parse quizAnswers:', e);
+      }
+    } else if (typeof record.quizAnswers === 'object') {
+      quizAnswers = record.quizAnswers;
+    }
+  }
   return (
     <Show
       isLoading={isLoading}
@@ -127,14 +137,75 @@ export const AvaliacaoShow = () => {
         <Card title="Respostas do Questionário" size="small">
           {Object.keys(quizAnswers).length > 0 ? (
             <Space direction="vertical" size="small" style={{ width: '100%' }}>
-              {Object.entries(quizAnswers).map(([question, answer]: [string, any]) => (
-                <div key={question}>
-                  <Text strong>{question}:</Text>
-                  <br />
-                  <Text>{answer}</Text>
-                  <Divider style={{ margin: '8px 0' }} />
-                </div>
-              ))}
+              {Object.entries(quizAnswers).map(([questionId, answerValue]: [string, any]) => {
+                const qId = parseInt(questionId);
+                const aVal = parseInt(answerValue);
+
+                const questionsMap: Record<number, { title: string, options: Record<number, string> }> = {
+                  1: {
+                    title: 'Como estão documentados os processos da sua clínica?',
+                    options: {
+                      1: 'Não temos processos documentados - Tudo está na cabeça das pessoas',
+                      2: 'Alguns processos informais - Anotações básicas e WhatsApp',
+                      3: 'Processos principais documentados - Documentação dos fluxos core',
+                      4: 'Todos processos otimizados - Documentação completa e atualizada',
+                      5: 'Melhoria contínua sistêmica - Processos revisados e otimizados constantemente'
+                    }
+                  },
+                  2: {
+                    title: 'Como funciona a gestão do seu tempo na clínica?',
+                    options: {
+                      1: 'Dependência total do dono - Todas decisões passam por mim',
+                      2: 'Apagar incêndios é rotina - Vivo resolvendo crises diárias',
+                      3: 'Delegação funcional estabelecida - Time consegue operar sem mim em algumas áreas',
+                      4: 'Liderança operacional capacitada - Time opera de forma autônoma',
+                      5: 'Múltiplas unidades viáveis - Estrutura permite expansão'
+                    }
+                  },
+                  3: {
+                    title: 'Que tipo de métricas você acompanha regularmente?',
+                    options: {
+                      1: 'Sem métricas de gestão - Decisões por intuição',
+                      2: 'Métricas básicas (faturamento) - Apenas controle financeiro básico',
+                      3: 'Dashboard com KPIs básicos - Acompanhamento de indicadores principais',
+                      4: 'Sistema de BI implementado - Análise avançada de dados',
+                      5: 'Valuation claro - Métricas de valor empresarial'
+                    }
+                  },
+                  4: {
+                    title: 'Como é o planejamento estratégico da clínica?',
+                    options: {
+                      1: 'Não temos planejamento - Vamos tocando o dia a dia',
+                      2: 'Planejamento informal - Ideias soltas sem estrutura',
+                      3: 'Planejamento trimestral - Metas definidas por período',
+                      4: 'Planejamento estratégico anual - Estrutégia estruturada de longo prazo',
+                      5: 'Exit strategy definida - Planejamento de crescimento e saída'
+                    }
+                  },
+                  5: {
+                    title: 'Como está a previsibilidade financeira da operação?',
+                    options: {
+                      1: 'Margem imprevisível - Não sei quanto vou lucrar mês a mês',
+                      2: 'Lucro existe, mas instável - Varia muito de mês para mês',
+                      3: 'Margem previsível - Consigo prever resultados com razoável precisão',
+                      4: 'Crescimento sustentável - Crescimento consistente e previsível',
+                      5: 'Inovação estruturada - Investimento programado em crescimento'
+                    }
+                  }
+                };
+
+                const questionText = questionsMap[qId]?.title || `Pergunta ${qId}`;
+                const answerText = questionsMap[qId]?.options[aVal] || `Resposta ${aVal}`;
+
+                return (
+                  <div key={questionId}>
+                    <Text strong>{questionText}</Text>
+                    <br />
+                    <Text>{answerText}</Text>
+                    <Divider style={{ margin: '8px 0' }} />
+                  </div>
+                );
+              })}
             </Space>
           ) : (
             <Text type="secondary">Nenhuma resposta registrada</Text>

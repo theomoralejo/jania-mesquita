@@ -24,6 +24,9 @@ import {
   FormOutlined,
   PictureOutlined,
   BookOutlined,
+  PlaySquareOutlined,
+  SettingOutlined,
+  FolderOpenOutlined,
 } from '@ant-design/icons';
 import { DashboardPage } from './pages/Dashboard';
 import { PostList } from './pages/blog/PostList';
@@ -38,7 +41,9 @@ import { ContatoShow } from './pages/formularios/ContatoShow';
 import { DiagnosticoList } from './pages/formularios/DiagnosticoList';
 import { DiagnosticoShow } from './pages/formularios/DiagnosticoShow';
 import { MentoriaList } from './pages/formularios/MentoriaList';
+import { MentoriaShow } from './pages/formularios/MentoriaShow';
 import { PalestrasList } from './pages/formularios/PalestrasList';
+import { PalestrasShow } from './pages/formularios/PalestrasShow';
 import { NewsletterList } from './pages/formularios/NewsletterList';
 import { AvaliacaoList } from './pages/formularios/AvaliacaoList';
 import { AvaliacaoShow } from './pages/formularios/AvaliacaoShow';
@@ -53,6 +58,11 @@ import { AcervoList } from './pages/acervo/AcervoList';
 import { AcervoCreate } from './pages/acervo/AcervoCreate';
 import { AcervoEdit } from './pages/acervo/AcervoEdit';
 import { AcervoShow } from './pages/acervo/AcervoShow';
+import { MidiaList } from './pages/midias/MidiaList';
+import { MidiaCreate } from './pages/midias/MidiaCreate';
+import { MidiaEdit } from './pages/midias/MidiaEdit';
+import { BibliotecaMidia } from './pages/BibliotecaMidia';
+import { SettingsPage } from './pages/Settings';
 import { AdminLoginLogo } from './components/AdminLoginLogo';
 
 function App() {
@@ -140,231 +150,280 @@ function App() {
           },
         }}
       >
-          <AntdApp>
-            <Refine
-              dataProvider={dataProvider((import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin` : 'http://localhost:3000/api/admin'), axiosInstance)}
-              notificationProvider={useNotificationProvider}
-              routerProvider={routerBindings}
-              authProvider={authProvider}
-              options={{
-                warnWhenUnsavedChanges: true,
-                useNewQueryKeys: true,
-                projectId: 'jania-admin',
-                syncWithLocation: true,
-              }}
-              resources={[
-                {
-                  name: 'dashboard',
-                  list: '/',
-                  meta: {
-                    label: 'Dashboard',
-                    icon: <DashboardOutlined />,
-                  },
+        <AntdApp>
+          <Refine
+            dataProvider={dataProvider((import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin` : 'http://localhost:3000/api/admin'), axiosInstance)}
+            notificationProvider={useNotificationProvider}
+            routerProvider={routerBindings}
+            authProvider={authProvider}
+            options={{
+              warnWhenUnsavedChanges: true,
+              useNewQueryKeys: true,
+              projectId: 'jania-admin',
+              syncWithLocation: true,
+            }}
+            resources={[
+              {
+                name: 'dashboard',
+                list: '/',
+                meta: {
+                  label: 'Dashboard',
+                  icon: <DashboardOutlined />,
                 },
-                {
-                  name: 'blog',
-                  meta: {
-                    label: 'Blog',
-                    icon: <FileTextOutlined />,
-                  },
+              },
+              {
+                name: 'blog',
+                meta: {
+                  label: 'Blog',
+                  icon: <FileTextOutlined />,
                 },
-                {
-                  name: 'blog/posts',
-                  list: '/blog/posts',
-                  create: '/blog/posts/create',
-                  edit: '/blog/posts/edit/:id',
-                  show: '/blog/posts/show/:id',
-                  meta: {
-                    parent: 'blog',
-                    label: 'Posts',
-                  },
+              },
+              {
+                name: 'blog/posts',
+                list: '/blog/posts',
+                create: '/blog/posts/create',
+                edit: '/blog/posts/edit/:id',
+                show: '/blog/posts/show/:id',
+                meta: {
+                  parent: 'blog',
+                  label: 'Posts',
                 },
-                {
-                  name: 'blog/categories',
-                  list: '/blog/categories',
-                  create: '/blog/categories/create',
-                  edit: '/blog/categories/edit/:id',
-                  meta: {
-                    parent: 'blog',
-                    label: 'Categorias',
-                  },
+              },
+              {
+                name: 'blog/categories',
+                list: '/blog/categories',
+                create: '/blog/categories/create',
+                edit: '/blog/categories/edit/:id',
+                meta: {
+                  parent: 'blog',
+                  label: 'Categorias',
                 },
-                {
-                  name: 'formularios',
-                  meta: {
-                    label: 'Formulários',
-                    icon: <FormOutlined />,
-                  },
+              },
+              {
+                name: 'formularios',
+                meta: {
+                  label: 'Formulários',
+                  icon: <FormOutlined />,
                 },
-                {
-                  name: 'formularios/contato',
-                  list: '/formularios/contato',
-                  show: '/formularios/contato/show/:id',
-                  meta: {
-                    parent: 'formularios',
-                    label: 'Contato',
-                  },
+              },
+              {
+                name: 'formularios/contato',
+                list: '/formularios/contato',
+                show: '/formularios/contato/show/:id',
+                meta: {
+                  parent: 'formularios',
+                  label: 'Contato',
                 },
-                {
-                  name: 'formularios/diagnostico',
-                  list: '/formularios/diagnostico',
-                  show: '/formularios/diagnostico/show/:id',
-                  meta: {
-                    parent: 'formularios',
-                    label: 'Diagnóstico',
-                  },
+              },
+              {
+                name: 'formularios/diagnostico',
+                list: '/formularios/diagnostico',
+                show: '/formularios/diagnostico/show/:id',
+                meta: {
+                  parent: 'formularios',
+                  label: 'Diagnóstico',
                 },
-                {
-                  name: 'formularios/mentoria',
-                  list: '/formularios/mentoria',
-                  meta: {
-                    parent: 'formularios',
-                    label: 'Mentoria',
-                  },
+              },
+              {
+                name: 'formularios/mentoria',
+                list: '/formularios/mentoria',
+                show: '/formularios/mentoria/show/:id',
+                meta: {
+                  parent: 'formularios',
+                  label: 'Mentoria',
                 },
-                {
-                  name: 'formularios/palestras',
-                  list: '/formularios/palestras',
-                  meta: {
-                    parent: 'formularios',
-                    label: 'Palestras',
-                  },
+              },
+              {
+                name: 'formularios/palestras',
+                list: '/formularios/palestras',
+                show: '/formularios/palestras/show/:id',
+                meta: {
+                  parent: 'formularios',
+                  label: 'Palestras',
                 },
-                {
-                  name: 'formularios/newsletter',
-                  list: '/formularios/newsletter',
-                  meta: {
-                    parent: 'formularios',
-                    label: 'Newsletter',
-                  },
+              },
+              {
+                name: 'formularios/newsletter',
+                list: '/formularios/newsletter',
+                meta: {
+                  parent: 'formularios',
+                  label: 'Newsletter',
                 },
-                {
-                  name: 'formularios/avaliacao',
-                  list: '/formularios/avaliacao',
-                  show: '/formularios/avaliacao/show/:id',
-                  meta: {
-                    parent: 'formularios',
-                    label: 'Avaliações',
-                  },
+              },
+              {
+                name: 'formularios/avaliacao',
+                list: '/formularios/avaliacao',
+                show: '/formularios/avaliacao/show/:id',
+                meta: {
+                  parent: 'formularios',
+                  label: 'Avaliações',
                 },
-                {
-                  name: 'acervo',
-                  list: '/acervo',
-                  create: '/acervo/create',
-                  edit: '/acervo/edit/:id',
-                  show: '/acervo/show/:id',
-                  meta: {
-                    label: 'Acervo',
-                    icon: <BookOutlined />,
-                  },
+              },
+              {
+                name: 'acervo',
+                list: '/acervo',
+                create: '/acervo/create',
+                edit: '/acervo/edit/:id',
+                show: '/acervo/show/:id',
+                meta: {
+                  label: 'Acervo',
+                  icon: <BookOutlined />,
                 },
-                {
-                  name: 'depoimentos',
-                  list: '/depoimentos',
-                  create: '/depoimentos/create',
-                  edit: '/depoimentos/edit/:id',
-                  show: '/depoimentos/show/:id',
-                  meta: {
-                    label: 'Depoimentos',
-                    icon: <CommentOutlined />,
-                  },
+              },
+              {
+                name: 'depoimentos',
+                list: '/depoimentos',
+                create: '/depoimentos/create',
+                edit: '/depoimentos/edit/:id',
+                show: '/depoimentos/show/:id',
+                meta: {
+                  label: 'Depoimentos',
+                  icon: <CommentOutlined />,
                 },
-                {
-                  name: 'galeria/fotos',
-                  list: '/galeria',
-                  create: '/galeria/create',
-                  edit: '/galeria/edit/:id',
-                  meta: {
-                    label: 'Galeria',
-                    icon: <PictureOutlined />,
-                  },
+              },
+              {
+                name: 'galeria/fotos',
+                list: '/galeria',
+                create: '/galeria/create',
+                edit: '/galeria/edit/:id',
+                meta: {
+                  label: 'Galeria',
+                  icon: <PictureOutlined />,
                 },
-              ]}
-            >
-              <Routes>
-                <Route
-                  element={
-                    <ThemedLayoutV2
-                      Sider={() => (
-                        <ThemedSiderV2
-                          Title={() => (
-                            <div className="admin-logo">
-                              <div className="admin-logo-name">Jania Mesquita</div>
-                              <div className="admin-logo-sub">Painel Admin</div>
+              },
+              {
+                name: 'midias',
+                list: '/midias',
+                create: '/midias/create',
+                edit: '/midias/edit/:id',
+                meta: {
+                  label: 'Mídias',
+                  icon: <PlaySquareOutlined />,
+                },
+              },
+              {
+                name: 'biblioteca',
+                list: '/biblioteca',
+                meta: {
+                  label: 'Arquivos do Servidor',
+                  icon: <FolderOpenOutlined />,
+                },
+              },
+              {
+                name: 'settings',
+                list: '/settings',
+                meta: {
+                  label: 'Configurações',
+                  icon: <SettingOutlined />,
+                },
+              },
+            ]}
+          >
+            <Routes>
+              <Route
+                element={
+                  <ThemedLayoutV2
+                    Header={() => null}
+                    Sider={() => (
+                      <ThemedSiderV2
+                        Title={() => (
+                          <div className="admin-logo" style={{ padding: '0px', textAlign: 'center', width: '100%', marginTop: '16px' }}>
+                            <div style={{ transform: 'scale(0.8)', transformOrigin: 'center center', display: 'flex', justifyContent: 'center' }}>
+                              <AdminLoginLogo />
                             </div>
-                          )}
-                        />
-                      )}
-                    >
-                      <Outlet />
-                    </ThemedLayoutV2>
-                  }
-                >
-                  <Route index element={<DashboardPage />} />
+                            <div style={{ color: '#d4c4a8', fontSize: '13px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px', marginTop: '-8px' }}>
+                              Admin
+                            </div>
+                          </div>
+                        )}
+                      />
+                    )}
+                  >
+                    <Outlet />
+                  </ThemedLayoutV2>
+                }
+              >
+                <Route index element={<DashboardPage />} />
 
-                  <Route path="/blog/posts">
-                    <Route index element={<PostList />} />
-                    <Route path="create" element={<PostCreate />} />
-                    <Route path="edit/:id" element={<PostEdit />} />
-                    <Route path="show/:id" element={<PostShow />} />
-                  </Route>
-
-                  <Route path="/blog/categories">
-                    <Route index element={<CategoryList />} />
-                    <Route path="create" element={<CategoryCreate />} />
-                    <Route path="edit/:id" element={<CategoryEdit />} />
-                  </Route>
-
-                  <Route path="/formularios/contato">
-                    <Route index element={<ContatoList />} />
-                    <Route path="show/:id" element={<ContatoShow />} />
-                  </Route>
-
-                  <Route path="/formularios/diagnostico">
-                    <Route index element={<DiagnosticoList />} />
-                    <Route path="show/:id" element={<DiagnosticoShow />} />
-                  </Route>
-
-                  <Route path="/formularios/mentoria" element={<MentoriaList />} />
-                  <Route path="/formularios/palestras" element={<PalestrasList />} />
-                  <Route path="/formularios/newsletter" element={<NewsletterList />} />
-
-                  <Route path="/formularios/avaliacao">
-                    <Route index element={<AvaliacaoList />} />
-                    <Route path="show/:id" element={<AvaliacaoShow />} />
-                  </Route>
-
-                  <Route path="/acervo">
-                    <Route index element={<AcervoList />} />
-                    <Route path="create" element={<AcervoCreate />} />
-                    <Route path="edit/:id" element={<AcervoEdit />} />
-                    <Route path="show/:id" element={<AcervoShow />} />
-                  </Route>
-
-                  <Route path="/depoimentos">
-                    <Route index element={<DepoimentoList />} />
-                    <Route path="create" element={<DepoimentoCreate />} />
-                    <Route path="edit/:id" element={<DepoimentoEdit />} />
-                    <Route path="show/:id" element={<DepoimentoShow />} />
-                  </Route>
-
-                  <Route path="/galeria">
-                    <Route index element={<GaleriaList />} />
-                    <Route path="create" element={<GaleriaCreate />} />
-                    <Route path="edit/:id" element={<GaleriaEdit />} />
-                  </Route>
-
-                  <Route path="*" element={<ErrorComponent />} />
+                <Route path="/blog/posts">
+                  <Route index element={<PostList />} />
+                  <Route path="create" element={<PostCreate />} />
+                  <Route path="edit/:id" element={<PostEdit />} />
+                  <Route path="show/:id" element={<PostShow />} />
                 </Route>
 
-                <Route path="/login" element={<AuthPage type="login" title={<AdminLoginLogo />} registerLink={false} />} />
-              </Routes>
+                <Route path="/blog/categories">
+                  <Route index element={<CategoryList />} />
+                  <Route path="create" element={<CategoryCreate />} />
+                  <Route path="edit/:id" element={<CategoryEdit />} />
+                </Route>
 
-              <UnsavedChangesNotifier />
-              <DocumentTitleHandler />
-            </Refine>
-          </AntdApp>
-        </ConfigProvider>
+                <Route path="/formularios/contato">
+                  <Route index element={<ContatoList />} />
+                  <Route path="show/:id" element={<ContatoShow />} />
+                </Route>
+
+                <Route path="/formularios/diagnostico">
+                  <Route index element={<DiagnosticoList />} />
+                  <Route path="show/:id" element={<DiagnosticoShow />} />
+                </Route>
+
+                <Route path="/formularios/mentoria">
+                  <Route index element={<MentoriaList />} />
+                  <Route path="show/:id" element={<MentoriaShow />} />
+                </Route>
+
+                <Route path="/formularios/palestras">
+                  <Route index element={<PalestrasList />} />
+                  <Route path="show/:id" element={<PalestrasShow />} />
+                </Route>
+                <Route path="/formularios/newsletter" element={<NewsletterList />} />
+
+                <Route path="/formularios/avaliacao">
+                  <Route index element={<AvaliacaoList />} />
+                  <Route path="show/:id" element={<AvaliacaoShow />} />
+                </Route>
+
+                <Route path="/acervo">
+                  <Route index element={<AcervoList />} />
+                  <Route path="create" element={<AcervoCreate />} />
+                  <Route path="edit/:id" element={<AcervoEdit />} />
+                  <Route path="show/:id" element={<AcervoShow />} />
+                </Route>
+
+                <Route path="/depoimentos">
+                  <Route index element={<DepoimentoList />} />
+                  <Route path="create" element={<DepoimentoCreate />} />
+                  <Route path="edit/:id" element={<DepoimentoEdit />} />
+                  <Route path="show/:id" element={<DepoimentoShow />} />
+                </Route>
+
+                <Route path="/galeria">
+                  <Route index element={<GaleriaList />} />
+                  <Route path="create" element={<GaleriaCreate />} />
+                  <Route path="edit/:id" element={<GaleriaEdit />} />
+                </Route>
+
+                <Route path="/midias">
+                  <Route index element={<MidiaList />} />
+                  <Route path="create" element={<MidiaCreate />} />
+                  <Route path="edit/:id" element={<MidiaEdit />} />
+                </Route>
+
+                <Route path="/biblioteca" element={<BibliotecaMidia />} />
+                <Route path="/settings" element={<SettingsPage />} />
+
+                <Route path="*" element={<ErrorComponent />} />
+              </Route>
+
+              <Route path="/login" element={<AuthPage type="login" title={<AdminLoginLogo />} registerLink={false} />} />
+            </Routes>
+
+            <UnsavedChangesNotifier />
+            <DocumentTitleHandler />
+          </Refine>
+        </AntdApp>
+      </ConfigProvider>
     </BrowserRouter>
   );
 }

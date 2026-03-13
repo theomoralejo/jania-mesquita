@@ -23,7 +23,7 @@ export function HeroMentoria() {
       <div className="absolute top-0 left-1/4 w-px h-64 bg-gradient-to-b from-transparent via-[#B6A689] to-transparent opacity-30"></div>
       <div className="absolute top-1/3 right-1/3 w-px h-96 bg-gradient-to-b from-transparent via-[#B6A689] to-transparent opacity-20"></div>
       <div className="absolute bottom-0 right-1/4 w-px h-80 bg-gradient-to-t from-transparent via-[#B6A689] to-transparent opacity-20"></div>
-      
+
       {/* Warm Glow */}
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-br from-white/60 to-transparent rounded-full blur-3xl pointer-events-none"></div>
 
@@ -33,10 +33,9 @@ export function HeroMentoria() {
           {/* Left Column - Text (7 cols) */}
           <div className="lg:col-span-7">
             {/* Kicker com Badge */}
-            <div 
-              className={`mb-4 transition-all duration-1000 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
+            <div
+              className={`mb-4 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
             >
               <div className="flex items-center gap-4 flex-wrap">
                 <div className="inline-flex items-center gap-3">
@@ -51,36 +50,33 @@ export function HeroMentoria() {
                 </div>
               </div>
             </div>
-            
+
             {/* Main Headline - DOR específica */}
-            <h1 
-              className={`font-serif text-[46px] md:text-[52px] lg:text-[58px] mb-4 leading-[1.05] tracking-tight text-[#232323] transition-all duration-1000 delay-150 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
+            <h1
+              className={`font-serif text-[46px] md:text-[52px] lg:text-[58px] mb-4 leading-[1.05] tracking-tight text-[#232323] transition-all duration-1000 delay-150 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
             >
               Transforme sua clínica em uma{' '}
               <span className="italic text-[#385443]">operação escalável</span>
             </h1>
-            
+
             {/* Value Prop */}
-            <p 
-              className={`text-xl md:text-2xl max-w-2xl mb-6 leading-relaxed text-[#232323] transition-all duration-1000 delay-250 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
+            <p
+              className={`text-xl md:text-2xl max-w-2xl mb-6 leading-relaxed text-[#232323] transition-all duration-1000 delay-250 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
             >
-              Pare de apagar incêndios. Construa governança, processos e liderança 
+              Pare de apagar incêndios. Construa governança, processos e liderança
               que funcionam sem você presente.
             </p>
 
             {/* Mobile Only: Visual Stats Card */}
-            <div className={`lg:hidden mb-8 transition-all duration-1000 delay-400 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}>
+            <div className={`lg:hidden mb-8 transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}>
               <div className="relative">
                 {/* Geometric Frame */}
                 <div className="absolute -top-3 -left-3 w-full h-full border-t-2 border-l-2 border-[#385443] opacity-20 pointer-events-none rounded-[7px]"></div>
                 <div className="absolute -bottom-3 -right-3 w-full h-full border-b-2 border-r-2 border-[#42331C] opacity-20 pointer-events-none rounded-[7px]"></div>
-                
+
                 {/* Card */}
                 <div className="relative bg-white border-2 border-[#DFDCD4] rounded-[7px] p-6 shadow-xl">
                   {/* Card Header */}
@@ -121,20 +117,18 @@ export function HeroMentoria() {
               </div>
             </div>
 
-            <p 
-              className={`text-base max-w-2xl mb-6 leading-relaxed text-[#696969] transition-all duration-1000 delay-350 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
+            <p
+              className={`text-base max-w-2xl mb-6 leading-relaxed text-[#696969] transition-all duration-1000 delay-350 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
             >
-              Programa de 6 meses com acompanhamento semanal. Diagnóstico completo, 
+              Programa de 6 meses com acompanhamento semanal. Diagnóstico completo,
               implementação guiada e resultados mensuráveis. Apenas 15 vagas por turma.
             </p>
-            
+
             {/* Quick Wins - Visual */}
-            <div 
-              className={`mb-6 pb-6 border-b border-[#DFDCD4] transition-all duration-1000 delay-450 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
+            <div
+              className={`mb-6 pb-6 border-b border-[#DFDCD4] transition-all duration-1000 delay-450 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
             >
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {quickWins.map((win, index) => (
@@ -149,37 +143,43 @@ export function HeroMentoria() {
                 ))}
               </div>
             </div>
-            
+
             {/* CTA Buttons */}
-            <div 
-              className={`flex flex-col gap-4 mb-8 transition-all duration-1000 delay-550 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
+            <div
+              className={`flex flex-col gap-4 mb-8 transition-all duration-1000 delay-550 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
             >
-              <Link 
-                to="#aplicar"
+              <a
+                href="#aplicar"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('aplicar')?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="group px-10 py-5 bg-[#385443] text-white rounded-[7px] transition-all duration-300 hover:bg-[#4a6655] hover:shadow-2xl hover:-translate-y-1 font-bold tracking-wide flex items-center justify-center gap-3"
               >
                 <span>Aplicar para a Mentoria</span>
-                <ArrowRight 
-                  className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" 
-                  strokeWidth={2.5} 
+                <ArrowRight
+                  className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300"
+                  strokeWidth={2.5}
                 />
-              </Link>
-              
-              <Link 
-                to="#como-funciona"
+              </a>
+
+              <a
+                href="#metodologia"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('metodologia')?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="px-10 py-4 border-2 border-[#385443] text-[#385443] rounded-[7px] transition-all duration-300 hover:bg-[#385443] hover:text-white font-medium tracking-wide flex items-center justify-center"
               >
                 Como funciona o programa
-              </Link>
+              </a>
             </div>
 
             {/* Trust Indicators */}
-            <div 
-              className={`flex flex-wrap items-center gap-6 md:gap-8 text-sm text-[#696969] transition-all duration-1000 delay-650 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
+            <div
+              className={`flex flex-wrap items-center gap-6 md:gap-8 text-sm text-[#696969] transition-all duration-1000 delay-650 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
             >
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-[#385443] rounded-full"></div>
@@ -197,16 +197,15 @@ export function HeroMentoria() {
           </div>
 
           {/* Right Column - Stats Card (5 cols) */}
-          <div 
-            className={`lg:col-span-5 transition-all duration-1000 delay-400 ${
-              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
-            }`}
+          <div
+            className={`lg:col-span-5 transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+              }`}
           >
             <div className="relative">
               {/* Geometric Frame */}
               <div className="absolute -top-4 -left-4 w-full h-full border-t-2 border-l-2 border-[#385443] opacity-20 pointer-events-none rounded-[7px]"></div>
               <div className="absolute -bottom-4 -right-4 w-full h-full border-b-2 border-r-2 border-[#42331C] opacity-20 pointer-events-none rounded-[7px]"></div>
-              
+
               {/* Card */}
               <div className="relative bg-white border-2 border-[#DFDCD4] rounded-[7px] p-8 md:p-10 shadow-xl">
                 {/* Card Header */}
@@ -260,7 +259,7 @@ export function HeroMentoria() {
                 {/* Card Footer */}
                 <div className="mt-8 pt-6 border-t border-[#DFDCD4]">
                   <p className="text-xs text-[#696969] leading-relaxed">
-                    * Média calculada com base em clínicas mentoradas entre 2020-2024. 
+                    * Média calculada com base em clínicas mentoradas entre 2020-2024.
                     Resultados individuais podem variar conforme comprometimento e implementação.
                   </p>
                 </div>
@@ -270,10 +269,9 @@ export function HeroMentoria() {
         </div>
 
         {/* Bottom Trust Bar */}
-        <div 
-          className={`mt-20 pt-12 border-t border-[#DFDCD4] transition-all duration-1000 delay-750 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
+        <div
+          className={`mt-20 pt-12 border-t border-[#DFDCD4] transition-all duration-1000 delay-750 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
         >
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
             <div>

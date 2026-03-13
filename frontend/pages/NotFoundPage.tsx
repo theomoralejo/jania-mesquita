@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { Home, Search, ArrowLeft } from 'lucide-react';
+import { Home, Search, ArrowLeft, Users, Mic, BookOpen, Info, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function NotFoundPage() {
   const suggestions = [
     { label: 'Início', path: '/', icon: Home },
-    { label: 'Mentoria Executiva', path: '/mentoria', icon: null },
-    { label: 'Palestras', path: '/palestras', icon: null },
-    { label: 'Acervo Digital', path: '/acervo', icon: null },
-    { label: 'Sobre', path: '/sobre', icon: null },
-    { label: 'Contato', path: '/contato', icon: null }
+    { label: 'Mentoria Executiva', path: '/mentoria', icon: Users },
+    { label: 'Palestras', path: '/palestras', icon: Mic },
+    { label: 'Acervo Digital', path: '/acervo', icon: BookOpen },
+    { label: 'Sobre', path: '/sobre', icon: Info },
+    { label: 'Contato', path: '/contato', icon: Phone }
   ];
 
   return (
@@ -46,13 +46,13 @@ export default function NotFoundPage() {
                 <Link
                   key={index}
                   to={item.path}
-                  className="p-4 bg-white border-2 border-gray-200 rounded-xl hover:border-black hover:shadow-lg transition-all duration-300 group"
+                  className="p-4 bg-white border-2 border-gray-200 rounded-xl hover:border-[#385443] hover:shadow-lg transition-all duration-300 group flex flex-col items-center justify-center min-h-[120px]"
                 >
                   <div className="text-center">
                     {item.icon && (
-                      <item.icon className="w-6 h-6 text-[#42331C] mx-auto mb-2 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
+                      <item.icon className="w-8 h-8 text-[#42331C] group-hover:text-[#385443] mx-auto mb-3 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
                     )}
-                    <div className="text-[#42331C]">{item.label}</div>
+                    <div className="text-[#42331C] font-semibold">{item.label}</div>
                   </div>
                 </Link>
               ))}
@@ -61,18 +61,11 @@ export default function NotFoundPage() {
 
           {/* Actions */}
           <div className="flex flex-wrap gap-4 justify-center">
-            <Link
-              to="/"
-              className="px-8 py-4 bg-[#42331C] text-white rounded-xl hover:bg-gray-900 transition-all flex items-center gap-2"
-            >
-              <Home className="w-5 h-5" strokeWidth={1.5} />
-              Voltar ao Início
-            </Link>
             <button
               onClick={() => window.history.back()}
-              className="px-8 py-4 border-2 border-black text-[#42331C] rounded-xl hover:bg-[#42331C] hover:text-white transition-all flex items-center gap-2"
+              className="px-8 py-4 border-2 border-[#42331C] text-[#42331C] rounded-xl hover:bg-[#42331C] hover:text-white transition-all flex items-center gap-2 font-bold"
             >
-              <ArrowLeft className="w-5 h-5" strokeWidth={1.5} />
+              <ArrowLeft className="w-5 h-5" strokeWidth={2} />
               Página Anterior
             </button>
           </div>

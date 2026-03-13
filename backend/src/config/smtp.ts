@@ -15,7 +15,7 @@ export const transporter = nodemailer.createTransport({
 
 export const emailConfig = {
   from: process.env.SMTP_FROM || 'noreply@janiamesquita.com.br',
-  notificationEmail: process.env.NOTIFICATION_EMAIL || 'admin@janiamesquita.com.br',
+  notificationEmail: process.env.NOTIFICATION_EMAIL || 'janiamesquita@outlook.com',
 };
 
 // Verificar conexão SMTP

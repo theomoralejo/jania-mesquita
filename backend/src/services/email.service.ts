@@ -311,9 +311,165 @@ export const notifyNewAvaliacao = async (data: {
   }
 };
 
+// Notificação Admin - Nova Mentoria
+export const notifyNewMentoria = async (data: {
+  name: string;
+  email: string;
+  phone: string;
+  clinic: string;
+  revenue: string;
+  tier: string;
+}) => {
+  try {
+    const content = `
+      <h2 style="color: #333333; margin: 0 0 20px 0;">Nova Inscrição para Mentoria</h2>
+      <p style="color: #666666; line-height: 1.6; margin: 0 0 20px 0;">
+        Uma nova inscrição de mentoria foi recebida.
+      </p>
+
+      <table width="100%" cellpadding="8" style="border-collapse: collapse; margin: 20px 0;">
+        <tr style="background-color: #f9f9f9;">
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333; width: 140px;">Nome:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.name}</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333;">Email:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.email}</td>
+        </tr>
+        <tr style="background-color: #f9f9f9;">
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333;">Telefone:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.phone}</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333;">Clínica:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.clinic}</td>
+        </tr>
+        <tr style="background-color: #f9f9f9;">
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333;">Faturamento:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.revenue}</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333;">Plano (Tier):</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.tier}</td>
+        </tr>
+      </table>
+    `;
+
+    await transporter.sendMail({
+      from: emailConfig.from,
+      to: emailConfig.notificationEmail,
+      subject: '[Site] Nova Inscrição de Mentoria',
+      html: emailTemplate(content),
+    });
+
+    console.log('✅ Email de mentoria enviado para admin');
+    return { success: true };
+  } catch (error) {
+    console.error('❌ Erro ao enviar email de mentoria:', error);
+    throw error;
+  }
+};
+
+// Notificação Admin - Nova Palestra
+export const notifyNewPalestras = async (data: {
+  name: string;
+  email: string;
+  phone: string;
+  company: string;
+  eventType: string;
+  attendees: string;
+  date: string;
+  message: string;
+}) => {
+  try {
+    const content = `
+      <h2 style="color: #333333; margin: 0 0 20px 0;">Nova Solicitação de Palestra</h2>
+
+      <table width="100%" cellpadding="8" style="border-collapse: collapse; margin: 20px 0;">
+        <tr style="background-color: #f9f9f9;">
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333; width: 140px;">Nome:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.name}</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333;">Email:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.email}</td>
+        </tr>
+        <tr style="background-color: #f9f9f9;">
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333;">Telefone:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.phone}</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333;">Empresa:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.company}</td>
+        </tr>
+        <tr style="background-color: #f9f9f9;">
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333;">Tipo Evento:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.eventType}</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333;">Público Esperado:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.attendees}</td>
+        </tr>
+        <tr style="background-color: #f9f9f9;">
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333;">Data Pretendida:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.date}</td>
+        </tr>
+      </table>
+
+      ${data.message ? `
+      <div style="background-color: #f9f9f9; padding: 20px; border-radius: 6px; margin: 20px 0;">
+        <p style="margin: 0 0 10px 0; font-weight: bold; color: #333333;">Detalhes/Mensagem:</p>
+        <p style="margin: 0; color: #666666; line-height: 1.6; white-space: pre-wrap;">${data.message}</p>
+      </div>
+      ` : ''}
+    `;
+
+    await transporter.sendMail({
+      from: emailConfig.from,
+      to: emailConfig.notificationEmail,
+      subject: '[Site] Nova Solicitação de Palestra',
+      html: emailTemplate(content),
+    });
+
+    console.log('✅ Email de palestra enviado para admin');
+    return { success: true };
+  } catch (error) {
+    console.error('❌ Erro ao enviar email de palestra:', error);
+    throw error;
+  }
+};
+
+// Notificação Admin - Newsletter
+export const notifyNewNewsletter = async (data: { email: string }) => {
+  try {
+    const content = `
+      <h2 style="color: #333333; margin: 0 0 20px 0;">Nova Inscrição na Newsletter</h2>
+      <p style="color: #666666; line-height: 1.6; margin: 0 0 20px 0;">
+        O email <strong>${data.email}</strong> acabou de se inscrever para receber novidades.
+      </p>
+    `;
+
+    await transporter.sendMail({
+      from: emailConfig.from,
+      to: emailConfig.notificationEmail,
+      subject: '[Site] Nova Inscrição na Newsletter',
+      html: emailTemplate(content),
+    });
+
+    console.log('✅ Email de newsletter enviado para admin');
+    return { success: true };
+  } catch (error) {
+    console.error('❌ Erro ao enviar email de newsletter:', error);
+    throw error;
+  }
+};
+
 export default {
   notifyNewContato,
   sendContatoConfirmation,
   notifyNewDiagnostico,
   notifyNewAvaliacao,
+  notifyNewMentoria,
+  notifyNewPalestras,
+  notifyNewNewsletter,
 };

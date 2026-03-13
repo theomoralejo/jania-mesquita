@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, Clock, Share2, BookOpen } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Calendar, Clock, Share2, BookOpen } from 'lucide-react';
 import { blogApi, resolveImageUrl } from '../lib/api';
 
 export default function BlogSinglePage() {
@@ -95,7 +95,7 @@ export default function BlogSinglePage() {
       <section className="pt-32 pb-12 bg-gradient-to-b from-[#42331C] to-[#42331C]/95">
         <div className="max-w-4xl mx-auto px-6">
           {/* Back Button */}
-          <Link 
+          <Link
             to="/blog"
             className="inline-flex items-center gap-2 text-[#F2EFE8] hover:text-white transition-colors mb-8 group"
           >
@@ -134,8 +134,8 @@ export default function BlogSinglePage() {
       {/* Featured Image */}
       <section className="max-w-5xl mx-auto px-6 -mt-8">
         <div className="aspect-[21/9] rounded-2xl overflow-hidden shadow-2xl">
-          <img 
-            src={post.image} 
+          <img
+            src={post.image}
             alt={post.title}
             className="w-full h-full object-cover"
           />
@@ -144,7 +144,7 @@ export default function BlogSinglePage() {
 
       {/* Content */}
       <article className="max-w-3xl mx-auto px-6 py-16">
-        <div 
+        <div
           className="prose prose-lg prose-headings:font-serif prose-headings:text-[#42331C] prose-p:text-[#414141] prose-p:leading-relaxed prose-a:text-[#385443] prose-a:no-underline hover:prose-a:underline prose-strong:text-[#42331C] prose-ul:text-[#414141] prose-ol:text-[#414141]"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
@@ -164,8 +164,8 @@ export default function BlogSinglePage() {
                 className="group"
               >
                 <div className="aspect-video mb-4 rounded-xl overflow-hidden">
-                  <img 
-                    src={relatedPost.image} 
+                  <img
+                    src={relatedPost.image}
                     alt={relatedPost.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
@@ -193,7 +193,7 @@ export default function BlogSinglePage() {
           <p className="text-lg mb-8 text-white/90">
             Conheça nossa mentoria executiva e transforme sua clínica em uma operação escalável
           </p>
-          <Link 
+          <Link
             to="/mentoria"
             className="inline-flex items-center gap-2 px-8 py-4 bg-white text-[#385443] rounded-lg font-bold hover:bg-[#F2EFE8] transition-colors"
           >

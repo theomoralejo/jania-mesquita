@@ -1,0 +1,18 @@
+vite v5.4.21 building for production...
+transforming...
+✓ 1613 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               1.74 kB │ gzip:   0.88 kB
+dist/assets/slick-BlzDm7g2.svg                2.15 kB │ gzip:   0.92 kB
+dist/assets/ajax-loader-BcnMEykj.gif          4.18 kB
+dist/assets/index-DeuHIE4q.css              118.37 kB │ gzip:  21.98 kB
+dist/assets/PricingSection-DvdhZGOS.js        5.46 kB │ gzip:   2.09 kB
+dist/assets/ProblemSection-DYpmYKSK.js        5.53 kB │ gzip:   2.25 kB
+dist/assets/JourneySection-DCQbgqh9.js        5.65 kB │ gzip:   2.02 kB
+dist/assets/MaturityLevels-C2wCYSdh.js        7.21 kB │ gzip:   2.59 kB
+dist/assets/ROISection-Daj1KaLI.js            7.97 kB │ gzip:   2.20 kB
+dist/assets/MethodologySection-B_stUed3.js    8.18 kB │ gzip:   2.91 kB
+dist/assets/HeroMentoria-CMJ8jp0g.js         10.83 kB │ gzip:   2.36 kB
+dist/assets/index-CPGDSrTG.js               474.95 kB │ gzip: 130.67 kB
+✓ built in 1.66s
