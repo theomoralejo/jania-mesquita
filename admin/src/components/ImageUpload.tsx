@@ -16,6 +16,7 @@ const apiBase = apiBaseLocal.replace(/\/api\/?$/, '');
 function resolveAdminImageUrl(url?: string | null): string {
   if (!url) return '';
   if (url.startsWith('/uploads')) return `${apiBase}${url}`;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
   return url;
 }
 

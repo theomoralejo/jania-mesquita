@@ -1,46 +1,36 @@
 import { Request, Response } from 'express';
 import multer from 'multer';
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import path from 'path';
 import fs from 'fs';
 import { AuthRequest } from '../middleware/auth';
 
-// Configuração do Multer
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const { category } = req.body;
-    const uploadPath = path.join(process.cwd(), 'uploads', category || 'general');
+// Configuração do Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-    // Criar pasta se não existir
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
+// Configuração do Storage do Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    const { category } = req?.body || {};
+    const folderName = `jania-mesquita/${category || 'general'}`;
 
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    const name = path.basename(file.originalname, ext)
-      .toLowerCase()
-      .replace(/\s+/g, '-')
-      .replace(/[^a-z0-9-]/g, '');
-    cb(null, `${name}-${uniqueSuffix}${ext}`);
+    // Configura formato e nome
+    return {
+      folder: folderName,
+      allowed_formats: ['jpg', 'png', 'jpeg', 'gif', 'webp'],
+      public_id: path.parse(file.originalname).name.replace(/\s+/g, '-').toLowerCase() + '-' + Date.now().toString().slice(-6),
+    };
   },
 });
 
-const fileFilter = (req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
-  const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
-
-  if (allowedMimes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error('Tipo de arquivo não permitido. Use: JPG, PNG, WEBP ou GIF'));
-  }
-};
-
 export const upload = multer({
   storage,
-  fileFilter,
   limits: {
     fileSize: 5 * 1024 * 1024, // 5MB
   },
@@ -54,12 +44,10 @@ export const uploadImage = async (req: AuthRequest, res: Response): Promise<void
       return;
     }
 
-    const { category } = req.body;
-    const fileUrl = `/uploads/${category || 'general'}/${req.file.filename}`;
-
+    // O path da URL gerada pelo cloudinary
     res.json({
       success: true,
-      url: fileUrl,
+      url: req.file.path,
       filename: req.file.filename,
       originalName: req.file.originalname,
       size: req.file.size,
@@ -81,9 +69,8 @@ export const uploadImages = async (req: AuthRequest, res: Response): Promise<voi
       return;
     }
 
-    const { category } = req.body;
     const uploadedFiles = files.map((file) => ({
-      url: `/uploads/${category || 'general'}/${file.filename}`,
+      url: file.path,
       filename: file.filename,
       originalName: file.originalname,
       size: file.size,
@@ -104,26 +91,27 @@ export const uploadImages = async (req: AuthRequest, res: Response): Promise<voi
 // List uploaded images
 export const listImages = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const uploadsDir = path.join(process.cwd(), 'uploads');
     const results: { url: string; filename: string; folder: string }[] = [];
 
-    // 1. Scan backend uploads directory
-    if (fs.existsSync(uploadsDir)) {
-      const folders = fs.readdirSync(uploadsDir, { withFileTypes: true })
-        .filter(d => d.isDirectory())
-        .map(d => d.name);
+    // 1. Scan Cloudinary API for the jania-mesquita folder
+    if (process.env.CLOUDINARY_API_KEY) {
+      try {
+        // Obter submolders / general e buscar asssets
+        const cloudinaryResponse = await cloudinary.search
+          .expression('folder:jania-mesquita/*')
+          .sort_by('created_at', 'desc')
+          .max_results(500)
+          .execute();
 
-      for (const folder of folders) {
-        const folderPath = path.join(uploadsDir, folder);
-        const files = fs.readdirSync(folderPath)
-          .filter(f => /\.(jpg|jpeg|png|webp|gif)$/i.test(f));
-        for (const file of files) {
+        for (const asset of cloudinaryResponse.resources) {
           results.push({
-            url: `/uploads/${folder}/${file}`,
-            filename: file,
-            folder,
+            url: asset.secure_url,
+            filename: asset.public_id.split('/').pop() || asset.public_id,
+            folder: asset.folder.replace('jania-mesquita/', ''),
           });
         }
+      } catch (cloudErr) {
+        console.error('Erro ao buscar CLOUDINARY:', cloudErr);
       }
     }
 
@@ -158,18 +146,33 @@ export const deleteImage = async (req: AuthRequest, res: Response): Promise<void
       return;
     }
 
-    // Remover /uploads/ do início se existir
-    const cleanPath = filepath.replace(/^\/uploads\//, '');
-    const fullPath = path.join(process.cwd(), 'uploads', cleanPath);
+    let isCloudinary = filepath.includes('cloudinary.com');
+    let publicId = '';
 
-    // Verificar se arquivo existe
-    if (!fs.existsSync(fullPath)) {
-      res.status(404).json({ error: 'Arquivo não encontrado' });
-      return;
+    if (isCloudinary) {
+      // Extrai o public ID da URL do Cloudinary:
+      // Ex: https://res.cloudinary.com/cloud_name/image/upload/v12345/jania-mesquita/general/nome-imagem.jpg
+      const urlParts = filepath.split('/');
+      const versionIndex = urlParts.findIndex(p => p.startsWith('v') && !isNaN(p.substring(1)));
+      if (versionIndex > -1) {
+        const pathAfterVersion = urlParts.slice(versionIndex + 1).join('/');
+        // remove extension
+        publicId = pathAfterVersion.substring(0, pathAfterVersion.lastIndexOf('.'));
+      }
     }
 
-    // Deletar arquivo
-    fs.unlinkSync(fullPath);
+    if (publicId && process.env.CLOUDINARY_API_KEY) {
+      try {
+        await cloudinary.uploader.destroy(publicId);
+      } catch (cloudErr) {
+        console.error('Erro destruindo no cloudinary:', cloudErr);
+      }
+    } else {
+      // Tenta apagar localmente caso seja fallback/legado
+      const cleanPath = filepath.replace(/^\/uploads\//, '');
+      const fullPath = path.join(process.cwd(), 'uploads', cleanPath);
+      if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
+    }
 
     res.json({
       success: true,

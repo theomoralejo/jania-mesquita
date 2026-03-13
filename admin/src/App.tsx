@@ -305,7 +305,7 @@ function App() {
                 name: 'biblioteca',
                 list: '/biblioteca',
                 meta: {
-                  label: 'Arquivos do Servidor',
+                  label: 'Arquivos',
                   icon: <FolderOpenOutlined />,
                 },
               },
@@ -416,7 +416,9 @@ function App() {
                 <Route path="*" element={<ErrorComponent />} />
               </Route>
 
-              <Route path="/login" element={<AuthPage type="login" title={<AdminLoginLogo />} registerLink={false} />} />
+              <Route path="/login" element={<AuthPage type="login" title={<AdminLoginLogo />} registerLink={false} formProps={{
+                autoComplete: 'on',
+              }} />} />
             </Routes>
 
             <UnsavedChangesNotifier />

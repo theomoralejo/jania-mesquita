@@ -61,7 +61,7 @@ export function AvaliacaoCTA() {
           </div>
 
           {/* Right Column - Visual Element */}
-          <div className="hidden lg:block">
+          <div className="mt-12 lg:mt-0 block">
             <div className="relative">
               {/* Card Stack Visual */}
               <div className="relative">
