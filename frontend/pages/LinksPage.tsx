@@ -1,13 +1,19 @@
 import React from 'react';
-import { ArrowRight, Instagram, Linkedin, Facebook, Link as LinkIcon, Youtube } from 'lucide-react';
+import { ArrowRight, Instagram, Linkedin, Facebook, Link as LinkIcon, Youtube, Users, Mic } from 'lucide-react';
 
 export default function LinksPage() {
   const links = [
     {
-      icon: Instagram,
-      title: 'Instagram',
-      url: 'https://www.instagram.com/jania.mesquita/',
-      external: true
+      icon: Users,
+      title: 'Mentoria',
+      url: '/mentoria',
+      external: false
+    },
+    {
+      icon: Mic,
+      title: 'Palestra',
+      url: '/palestras',
+      external: false
     },
     {
       icon: Linkedin,
