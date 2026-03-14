@@ -1,37 +1,98 @@
-Deployment steps — Backend (Render) + Frontend (GitHub Pages)
+# Deployment Steps — VPS (Ubuntu + Nginx + PM2)
 
-Quick summary
+Este documento descreve o processo atualizado de deploy para o site **Jania Mesquita**, separando admin, frontend e backend em uma VPS (Virtual Private Server).
 
-- Backend: deploy to Render (with managed PostgreSQL). The repo already contains `render.yaml` + `backend/Dockerfile` to help Render auto-provision the service and DB.
-- Frontend: the GH Actions workflow reads `RENDER_BACKEND_URL` secret and sets `VITE_API_URL` at build time.
+## Pré-requisitos
+- Acesso SSH à VPS (`root@65.109.172.180`).
+- Node.js e NPM instalados localmente e na VPS.
+- `pm2` instalado na VPS (para gerenciar o backend).
+- `nginx` instalado na VPS (para servir arquivos estáticos e agir como proxy reverso).
 
-Steps (create Render service)
+---
 
-1. Go to https://dashboard.render.com and create a new Web Service.
-   - Connect your GitHub repository and choose `main` branch.
-   - Render will detect `render.yaml` and can create the `jania-backend` service and `jania-db` Postgres database.
-   - If Render asks, confirm the settings (region, plan). The manifest uses `free`/`starter`.
+## 1. Deploy do Frontend (janiamesquita.com.br)
 
-2. After the service is created, open the service details and copy the public URL of the backend.
-   - The backend public API base should look like: `https://<your-service>.onrender.com`.
-   - The API endpoints are rooted at `/api` (e.g. `https://<your-service>.onrender.com/api/blog/posts`).
+O site principal é um projeto estático gerado por Vite e publicado via Nginx.
 
-3. In the Render dashboard add any production environment variables you need (SMTP, JWT_SECRET, etc.).
-   - Required: `JWT_SECRET` (set to a secure random string).
-   - Optionally set `SMTP_*` if you plan to use email features.
-   - `FRONTEND_URL` is already set in `render.yaml` but you can change it if needed.
+1. Navegue até a pasta do `frontend` localmente.
+2. Construa os arquivos estáticos para produção:
+   ```bash
+   cd frontend
+   npm install
+   VITE_API_URL=https://janiamesquita.com.br/api npm run build
+   ```
+3. Comprima os arquivos da pasta `dist`:
+   ```bash
+   tar -czf deploy_frontend.tar.gz -C dist .
+   ```
+4. Envie o arquivo para o servidor via `scp`:
+   ```bash
+   scp deploy_frontend.tar.gz root@65.109.172.180:/var/www/jania-mesquita/
+   ```
+5. No servidor, extraia os arquivos estáticos atualizados na pasta pública correspondente, sobrescrevendo a versão anterior no lugar (`/var/www/jania-mesquita/frontend/dist`):
+   ```bash
+   ssh root@65.109.172.180
+   cd /var/www/jania-mesquita
+   rm -rf frontend/dist
+   mkdir -p frontend/dist
+   tar -xzf deploy_frontend.tar.gz -C frontend/dist
+   ```
 
-4. Run database migrations and seed (once service is live):
-   - You can run `npx prisma migrate deploy` against the production `DATABASE_URL` (Render's shell or locally with the `DATABASE_URL` env var set).
-   - Or use the Render shell (Instance → Shell) to run `npx prisma migrate deploy && npm run prisma:generate && npm run seed`.
+---
 
-Steps (update frontend)
+## 2. Deploy do Painel Admin (admin.janiamesquita.com.br)
 
-1. In your GitHub repository settings -> Secrets, add a secret named `RENDER_BACKEND_URL` with value `https://<your-service>.onrender.com/api`.
-2. Push to `main` (or re-run the workflow) — GitHub Actions will build the frontend with `VITE_API_URL` set to the secret and publish the site to GitHub Pages.
+O paniel admin funciona como uma subaplicação front-end, servida separadamente debaixo do subdomínio `admin`.
 
-Notes & recommendations
+1. Navegue até a pasta do `admin` localmente.
+2. Construa a aplicação:
+   ```bash
+   cd admin
+   npm install
+   VITE_API_URL=https://janiamesquita.com.br/api npm run build
+   ```
+3. Comprima os arquivos gerados:
+   ```bash
+   tar -czf deploy_admin.tar.gz -C dist .
+   ```
+4. Envie o arquivo para o servidor:
+   ```bash
+   scp deploy_admin.tar.gz root@65.109.172.180:/var/www/jania-mesquita/
+   ```
+5. Extraia no servidor sob `/var/www/jania-mesquita/admin/dist`:
+   ```bash
+   ssh root@65.109.172.180
+   cd /var/www/jania-mesquita
+   rm -rf admin/dist
+   mkdir -p admin/dist
+   tar -xzf deploy_admin.tar.gz -C admin/dist
+   ```
 
-- Use the managed Postgres (recommended) instead of SQLite for production — `render.yaml` configures a Postgres `jania-db`.
-- Keep a secure `JWT_SECRET` in Render's environment variables.
-- If you want me to finish the steps that require your Render/GitHub access (create service, set secrets), I can provide exact commands and the values to paste.
+---
+
+## 3. Restarts e Deploy do Backend
+
+O backend Node.js (/api) roda via `pm2` na porta `3020`.
+
+Se você fez alterações no backend:
+1. Puxe ou transfira os arquivos do backend para a VPS (`/var/www/jania-mesquita/backend`).
+2. Acesse a pasta na VPS:
+   ```bash
+   ssh root@65.109.172.180 "cd /var/www/jania-mesquita/backend && npm install && npm run build"
+   ```
+3. Reinicie o serviço `jania-backend` no `pm2`:
+   ```bash
+   ssh root@65.109.172.180 "pm2 restart jania-backend"
+   ```
+*(Nota: O banco de dados e arquivos estáticos (uploads do backend) são mantidos, o Nginx está configurado para expor `/uploads/` como um Alias.)*
+
+---
+
+## 4. Notas de Arquitetura
+
+- **NGINX:** 
+  - `janiamesquita.com.br` serve os arquivos de `/var/www/jania-mesquita/frontend/dist`.
+  - `admin.janiamesquita.com.br` serve os arquivos de `/var/www/jania-mesquita/admin/dist`.
+  - Em ambos os casos, a rota `/api/` é direcionada para o backend via `proxy_pass http://localhost:3020/api/`.
+- **Certificados SSL:** Let's Encrypt / Certbot já estão parametrizados.
+- **Processo do PM2:** O nome do script pm2 é `jania-backend`.
