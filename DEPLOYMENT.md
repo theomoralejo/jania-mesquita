@@ -1,33 +1,37 @@
 Deployment steps — Backend (Render) + Frontend (GitHub Pages)
 
-# Visão Geral da Arquitetura
-Este projeto está dividido em duas partes hospedadas em locais diferentes:
-1. **Backend (Render):** Onde fica o banco de dados (PostgreSQL), o painel de Administração (`/admin`) e a API (`/api`).
-2. **Frontend (GitHub Pages):** Onde fica o site principal (`janiamesquita.com.br`). Toda vez que você altera algo na pasta `frontend/`, o GitHub compila o código automaticamente (via GitHub Actions) e publica.
+Quick summary
 
----
+- Backend: deploy to Render (with managed PostgreSQL). The repo already contains `render.yaml` + `backend/Dockerfile` to help Render auto-provision the service and DB.
+- Frontend: the GH Actions workflow reads `RENDER_BACKEND_URL` secret and sets `VITE_API_URL` at build time.
 
-# 1. Backend (Render)
+Steps (create Render service)
 
-- **Hospedagem:** Render (Plano Free ou Pago). Recomendado ter um "Persistent Disk" se for usar uploads locais, ou integrar com Cloudinary/S3 (como feito para as imagens).
-- **Deploy:** Automático ao dar `git push` na branch `main`. O Render lê o arquivo `render.yaml` e atualiza a API.
-- **Variáveis Necessárias (Environment Variables no Render):**
-  - `DATABASE_URL` (Conexão do PostgreSQL)
-  - `JWT_SECRET` (Chave secreta para login do painel admin)
-  - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` (Para salvar as imagens do painel)
+1. Go to https://dashboard.render.com and create a new Web Service.
+   - Connect your GitHub repository and choose `main` branch.
+   - Render will detect `render.yaml` and can create the `jania-backend` service and `jania-db` Postgres database.
+   - If Render asks, confirm the settings (region, plan). The manifest uses `free`/`starter`.
 
-Para rodar sementes (usuário admin) no banco de dados do Render, acesse a aba "Shell" da sua instância e rode: `npx prisma migrate deploy && npm run prisma:generate && npm run seed`
+2. After the service is created, open the service details and copy the public URL of the backend.
+   - The backend public API base should look like: `https://<your-service>.onrender.com`.
+   - The API endpoints are rooted at `/api` (e.g. `https://<your-service>.onrender.com/api/blog/posts`).
 
----
+3. In the Render dashboard add any production environment variables you need (SMTP, JWT_SECRET, etc.).
+   - Required: `JWT_SECRET` (set to a secure random string).
+   - Optionally set `SMTP_*` if you plan to use email features.
+   - `FRONTEND_URL` is already set in `render.yaml` but you can change it if needed.
 
-# 2. Frontend (GitHub Pages / Actions)
+4. Run database migrations and seed (once service is live):
+   - You can run `npx prisma migrate deploy` against the production `DATABASE_URL` (Render's shell or locally with the `DATABASE_URL` env var set).
+   - Or use the Render shell (Instance → Shell) to run `npx prisma migrate deploy && npm run prisma:generate && npm run seed`.
 
-O Frontend é o site final. Ele não roda pelo Render, logo, atualizações no site não dependem do painel do Render.
+Steps (update frontend)
 
-- **Deploy:** É 100% automático sempre que um código novo é empurrado via Git para a pasta `frontend/`. 
-- **O Processo:** O GitHub roda um "computador" virtual (Actions) lendo o arquivo `.github/workflows/deploy.yml`, executa `npm run build` e joga os arquivos gerados no ar no seu Domínio Personalizado.
+1. In your GitHub repository settings -> Secrets, add a secret named `RENDER_BACKEND_URL` with value `https://<your-service>.onrender.com/api`.
+2. Push to `main` (or re-run the workflow) — GitHub Actions will build the frontend with `VITE_API_URL` set to the secret and publish the site to GitHub Pages.
 
-**🛑 Como consertar erros no GitHub Actions (Ex: All jobs have failed)**
-1. **Permissões de Leitura e Escrita:** O erro mais frequente é o permissivo. Vá até o repositório no GitHub -> `Settings` -> `Actions` -> `General`. Role até "Workflow permissions" e marque a opção **Read and write permissions**. Sem isso, o GitHub não consegue publicar as edições do site.
-2. **Segredos (Secrets):** O Action usa o backend na hora de gerar a tela. Em `Settings` -> `Secrets and variables` -> `Actions`, certifique-se de ter um Secret chamado `RENDER_BACKEND_URL` apontando para o seu render, ex: `https://jania-backend.onrender.com/api`.
-3. Se os dois pontos acima estiverem OK e mesmo assim o Workflow falhar, abra a aba "Actions" no menu do repositório, clique no Workflow que falhou e na opção "Deploy" veja qual foi a última linha de erro impressa na tela preta.
+Notes & recommendations
+
+- Use the managed Postgres (recommended) instead of SQLite for production — `render.yaml` configures a Postgres `jania-db`.
+- Keep a secure `JWT_SECRET` in Render's environment variables.
+- If you want me to finish the steps that require your Render/GitHub access (create service, set secrets), I can provide exact commands and the values to paste.
