@@ -27,12 +27,14 @@ export function Navigation() {
   return (
     <nav 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled 
-          ? 'bg-[#F2EFE8]/95 backdrop-blur-md shadow-sm' 
-          : 'bg-transparent backdrop-blur-none'
+        mobileMenuOpen
+          ? 'bg-[#F2EFE8]' // Fundo sólido sem blur e garante cobrir tela cheia do menu
+          : scrolled 
+            ? 'bg-[#F2EFE8]/95 backdrop-blur-md shadow-sm' 
+            : 'bg-transparent'
       }`}
       style={{
-        borderBottom: scrolled 
+        borderBottom: (scrolled && !mobileMenuOpen)
           ? '1px solid #DFDCD4' 
           : '1px solid transparent'
       }}
@@ -189,13 +191,13 @@ export function Navigation() {
 
       {/* Mobile Menu */}
       <div 
-        className={`lg:hidden fixed inset-0 bg-[#F2EFE8] z-40 transition-all duration-700 ${
+        className={`lg:hidden fixed inset-0 bg-[#F2EFE8] z-40 transition-all duration-700 overflow-y-auto ${
           mobileMenuOpen 
             ? 'opacity-100 pointer-events-auto' 
             : 'opacity-0 pointer-events-none'
         }`}
       >
-        <div className="flex flex-col items-center justify-center h-full gap-8 px-6">
+        <div className="flex flex-col items-center justify-start min-h-full py-24 gap-8 px-6">
           <Link 
             to="/" 
             className="font-serif text-3xl text-[#232323]"
@@ -246,6 +248,14 @@ export function Navigation() {
             onClick={() => setMobileMenuOpen(false)}
           >
             Na Mídia
+          </Link>
+
+          <Link 
+            to="/avaliacao" 
+            className="font-serif text-3xl text-[#232323]"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Avaliação
           </Link>
 
           <Link 

@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { AlertTriangle, Activity, TrendingUp, Target, Award, ChevronRight, Check } from 'lucide-react';
 
 export function MaturityLevels() {
   const [activeLevel, setActiveLevel] = useState(0);
+  const detailsRef = useRef<HTMLDivElement>(null);
 
   const levels = [
     {
@@ -107,7 +108,14 @@ export function MaturityLevels() {
           {levels.map((item, index) => (
             <button
               key={index}
-              onClick={() => setActiveLevel(index)}
+              onClick={() => {
+                setActiveLevel(index);
+                if (window.innerWidth < 1024 && detailsRef.current) {
+                  setTimeout(() => {
+                    detailsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }, 50);
+                }
+              }}
               className={`relative p-6 rounded-xl transition-all duration-300 text-left border-2 ${
                 activeLevel === index
                   ? 'bg-[#385443] text-white border-[#385443] shadow-lg'
@@ -136,7 +144,7 @@ export function MaturityLevels() {
         </div>
 
         {/* Active Level Details */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div ref={detailsRef} className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-8 lg:mt-0 pt-8 lg:pt-0 scroll-mt-24 lg:scroll-mt-0">
           <div className="bg-gray-50 border border-gray-200 rounded-2xl p-10">
             <div className="flex items-center gap-4 mb-8">
               <div className="w-14 h-14 bg-[#385443] rounded-xl flex items-center justify-center">
@@ -180,7 +188,8 @@ export function MaturityLevels() {
             {levels.map((item, index) => (
               <div 
                 key={index}
-                className={`relative flex items-center gap-4 p-5 rounded-xl transition-all duration-300 ${
+                onClick={() => setActiveLevel(index)}
+                className={`relative flex items-center gap-4 p-5 rounded-xl transition-all duration-300 cursor-pointer ${
                   index === activeLevel 
                     ? 'bg-[#385443] text-white border-2 border-[#385443]'
                     : index < activeLevel

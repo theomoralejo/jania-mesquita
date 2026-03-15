@@ -1,8 +1,14 @@
 import React from 'react';
-import { ArrowRight, Instagram, Linkedin, Facebook, Link as LinkIcon, Youtube, Users, Mic } from 'lucide-react';
+import { ArrowRight, Instagram, Linkedin, Facebook, Link as LinkIcon, Youtube, Users, Mic, ClipboardCheck } from 'lucide-react';
 
 export default function LinksPage() {
   const links = [
+    {
+      icon: ClipboardCheck,
+      title: 'Diagnóstico Gratuito',
+      url: 'https://janiamesquita.com.br/avaliacao#/avaliacao',
+      external: true
+    },
     {
       icon: Users,
       title: 'Mentoria',

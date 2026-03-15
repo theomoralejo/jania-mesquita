@@ -92,12 +92,12 @@ export default function BlogSinglePage() {
   return (
     <main className="min-h-screen bg-[#F2EFE8]">
       {/* Header */}
-      <section className="pt-32 pb-12 bg-gradient-to-b from-[#42331C] to-[#42331C]/95">
+      <section className="pt-32 pb-12 bg-[#F2EFE8]">
         <div className="max-w-4xl mx-auto px-6">
           {/* Back Button */}
           <Link
             to="/blog"
-            className="inline-flex items-center gap-2 text-[#F2EFE8] hover:text-white transition-colors mb-8 group"
+            className="inline-flex items-center gap-2 text-[#42331C] hover:text-[#385443] transition-colors mb-8 group font-medium"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             Voltar para o blog
@@ -109,12 +109,12 @@ export default function BlogSinglePage() {
           </div>
 
           {/* Title */}
-          <h1 className="font-serif text-4xl md:text-5xl text-[#F2EFE8] mb-6 leading-tight">
+          <h1 className="font-serif text-4xl md:text-5xl text-[#42331C] mb-6 leading-tight">
             {post.title}
           </h1>
 
           {/* Meta */}
-          <div className="flex flex-wrap items-center gap-6 text-[#F2EFE8]/80 text-sm">
+          <div className="flex flex-wrap items-center gap-6 text-[#696969] text-sm font-medium">
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />
               <span>{post.date}</span>
@@ -123,7 +123,7 @@ export default function BlogSinglePage() {
               <Clock className="w-4 h-4" />
               <span>{post.readTime} de leitura</span>
             </div>
-            <button className="flex items-center gap-2 hover:text-white transition-colors">
+            <button className="flex items-center gap-2 hover:text-[#42331C] transition-colors">
               <Share2 className="w-4 h-4" />
               <span>Compartilhar</span>
             </button>

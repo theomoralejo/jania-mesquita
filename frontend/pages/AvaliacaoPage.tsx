@@ -179,7 +179,7 @@ export default function AvaliacaoPage() {
 
     return (
       <main className="min-h-screen bg-gradient-to-br from-[#F2EFE8] to-white">
-        <div className="container-custom py-24">
+        <div className="container-custom py-24 px-6 md:px-0">
           <div className="max-w-4xl mx-auto">
             {/* Success Header */}
             <div className="text-center mb-12">
@@ -291,7 +291,7 @@ export default function AvaliacaoPage() {
   if (currentStep === 'form') {
     return (
       <main className="min-h-screen bg-gradient-to-br from-[#F2EFE8] to-white">
-        <div className="container-custom py-24">
+        <div className="container-custom py-24 px-6 md:px-0">
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-12">
               <h1 className="text-4xl md:text-5xl font-serif mb-4 text-[#385443]">
@@ -433,7 +433,7 @@ export default function AvaliacaoPage() {
   // Quiz Step - One Question at a Time
   return (
     <main className="min-h-screen bg-gradient-to-br from-[#F2EFE8] to-white">
-      <div className="container-custom py-24">
+      <div className="container-custom py-24 px-6 md:px-0">
         <div className="max-w-3xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">

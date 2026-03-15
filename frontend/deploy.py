@@ -19,7 +19,7 @@ def deploy():
     print("Extracting and moving files...")
     # remove old files except assets, htaccess etc might be rewritten
     # actually let's just extract and overwrite
-    stdin, stdout, stderr = client.exec_command('cd /var/www/jania-mesquita/frontend && tar -xzf dist.tar.gz && cp -r dist/* . && rm -rf dist.tar.gz dist')
+    stdin, stdout, stderr = client.exec_command('cd /var/www/jania-mesquita/frontend && rm -rf dist_old && mv dist dist_old 2>/dev/null || true && tar -xzf dist.tar.gz && rm -f dist.tar.gz')
     print("STDOUT:", stdout.read().decode())
     print("STDERR:", stderr.read().decode())
     

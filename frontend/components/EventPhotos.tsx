@@ -14,12 +14,12 @@ export function EventPhotos() {
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
-        const data = await galeriaApi.getAllServerImages();
-        if (data.length > 0) {
+        const data = await galeriaApi.getFotos();
+        if (data && data.length > 0) {
           setPhotos(data.map((foto) => ({
-            src: resolveImageUrl(foto.url) || foto.url,
-            alt: foto.filename,
-            title: foto.filename
+            src: resolveImageUrl(foto.src) || foto.src,
+            alt: foto.alt || "Jania em Ação",
+            title: foto.title || "Jania em Ação"
           })));
         } else {
           throw new Error("Local images empty");
@@ -67,7 +67,7 @@ export function EventPhotos() {
   const displayPhotos = photos.slice(0, 10); // Show max 10 to not overwhelm the slider
 
   return (
-    <section className="py-12 md:section-padding bg-[#F5F3F0] overflow-hidden">
+    <section className="py-12 md:section-padding bg-[#F5F3F0] px-6 md:px-0 overflow-hidden">
       <div className="container-custom">
         <div className="text-center mb-8 md:mb-[50px] mt-[0px] mr-[0px] ml-[0px]">
           <h2 className="font-serif text-3xl md:text-5xl mb-4 md:mb-6 text-[#232323]">Jania em Ação</h2>

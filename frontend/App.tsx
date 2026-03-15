@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
+import { ScrollToTop } from './components/ScrollToTop';
 
 // Pages
 import HomePage from './pages/HomePage';
@@ -89,6 +90,7 @@ function AppContent() {
 
   return (
     <div className="min-h-screen">
+      <ScrollToTop />
       {!hideNavigation && <Navigation />}
       <Suspense fallback={<PageLoader />}>
         <Routes>

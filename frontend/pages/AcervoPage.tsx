@@ -111,7 +111,7 @@ export default function AcervoPage() {
       {/* Hero Section */}
       <section className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-full bg-[#DFDCD4]/20 -z-10"></div>
-        <div className="container-custom relative z-10">
+        <div className="container-custom px-6 md:px-0 relative z-10">
           <div className="max-w-4xl">
             <div className="editorial-label mb-8">
               Biblioteca & Loja
@@ -130,7 +130,7 @@ export default function AcervoPage() {
 
       {/* Filters Section */}
       <section className="sticky top-20 z-40 bg-[#F2EFE8]/95 backdrop-blur-sm border-b border-[#DFDCD4] py-6">
-        <div className="container-custom">
+        <div className="container-custom px-6 md:px-0">
           <div className="flex flex-col md:flex-row gap-8 md:items-center justify-between">
             {/* Search */}
             <div className="relative w-full md:w-96 group">
@@ -167,7 +167,7 @@ export default function AcervoPage() {
 
       {/* Results Grid */}
       <section className="section-padding">
-        <div className="container-custom">
+        <div className="container-custom px-6 md:px-0">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
             {filteredResources.map((resource, index) => (
               <Link

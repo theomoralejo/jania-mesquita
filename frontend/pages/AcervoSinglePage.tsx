@@ -130,7 +130,7 @@ export default function AcervoSinglePage() {
   if (isArticle) {
     return (
       <main className="min-h-screen bg-[#F2EFE8] pt-28 pb-20">
-        <div className="container-custom">
+        <div className="container-custom px-6 md:px-0">
           {/* Header */}
           <div className="max-w-4xl mx-auto text-center mb-12">
             <div className="inline-flex items-center gap-2 mb-6 text-sm tracking-widest uppercase text-[#B6A689] font-bold">
@@ -247,7 +247,7 @@ export default function AcervoSinglePage() {
       {/* 1. HERO SECTION */}
       <section className="pt-32 pb-20 lg:pt-40 lg:pb-32 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[#DFDCD4]/20 -z-10"></div>
-        <div className="container-custom">
+        <div className="container-custom px-6 md:px-0">
           <Link to="/acervo" className="inline-flex items-center gap-2 text-[#696969] hover:text-[#42331C] transition-colors text-xs tracking-widest uppercase font-bold mb-12">
             <ArrowLeft className="w-4 h-4" />
             Voltar ao Acervo
@@ -314,7 +314,7 @@ export default function AcervoSinglePage() {
 
       {/* 2. SOCIAL PROOF / AUTHORITY */}
       <section className="py-20 bg-gradient-to-b from-[#F9F9F9] via-[#F2EFE8]/50 to-[#F2EFE8]">
-        <div className="container-custom">
+        <div className="container-custom px-6 md:px-0">
           {/* Editorial Label */}
           <div className="flex items-center justify-center gap-4 mb-16">
             <div className="w-16 h-[1px] bg-[#B6A689]"></div>
@@ -374,36 +374,13 @@ export default function AcervoSinglePage() {
             </div>
           </div>
 
-          {/* Media Logos - Refined */}
-          <div className="border-t border-[#DFDCD4] pt-12">
-            <p className="text-center text-xs font-bold tracking-[0.2em] uppercase text-[#B6A689] mb-8">
-              Destaque na Mídia Especializada
-            </p>
-            <div className="flex flex-wrap justify-center items-center gap-12 lg:gap-16">
-              <div className="flex items-center gap-2 opacity-40 hover:opacity-100 transition-opacity">
-                <BookOpen className="w-5 h-5 text-[#42331C]" />
-                <span className="font-serif text-xl text-[#42331C]">Forbes</span>
-              </div>
-              <div className="flex items-center gap-2 opacity-40 hover:opacity-100 transition-opacity">
-                <BookOpen className="w-5 h-5 text-[#42331C]" />
-                <span className="font-serif text-xl text-[#42331C]">Exame</span>
-              </div>
-              <div className="flex items-center gap-2 opacity-40 hover:opacity-100 transition-opacity">
-                <BookOpen className="w-5 h-5 text-[#42331C]" />
-                <span className="font-serif text-xl text-[#42331C]">Valor</span>
-              </div>
-              <div className="flex items-center gap-2 opacity-40 hover:opacity-100 transition-opacity">
-                <BookOpen className="w-5 h-5 text-[#42331C]" />
-                <span className="font-serif text-xl text-[#42331C]">Medicina S/A</span>
-              </div>
-            </div>
-          </div>
+
         </div>
       </section>
 
       {/* 3. PROBLEM / SOLUTION (STORY) */}
       <section className="section-padding">
-        <div className="container-custom">
+        <div className="container-custom px-6 md:px-0">
           <div className="max-w-4xl mx-auto text-center mb-16">
             <h2 className="font-serif text-4xl md:text-5xl text-[#42331C] mb-6">
               A Medicina Mudou. <br/><span className="italic text-[#385443]">Sua Gestão Também Precisa Mudar.</span>
@@ -423,7 +400,7 @@ export default function AcervoSinglePage() {
         <div className="absolute top-20 left-0 w-72 h-72 border border-[#B6A689]/20 rounded-full -translate-x-1/2"></div>
         <div className="absolute bottom-20 right-0 w-96 h-96 border border-[#B6A689]/20 rounded-full translate-x-1/2"></div>
         
-        <div className="container-custom relative z-10">
+        <div className="container-custom px-6 md:px-0 relative z-10">
           {/* Editorial Header with Number Badge */}
           <div className="max-w-[1218px] mx-auto mb-20">
             <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8 pb-12 border-b border-[#B6A689]/30">
@@ -559,7 +536,7 @@ export default function AcervoSinglePage() {
 
       {/* 5. PRICING / OFFER */}
       <section className="section-padding bg-[#F2EFE8]">
-        <div className="container-custom">
+        <div className="container-custom px-6 md:px-0">
           <div className="max-w-5xl mx-auto bg-white rounded-[20px] p-6 md:p-10 border border-[#DFDCD4] shadow-[var(--shadow-xl)] relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#385443]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
             
@@ -616,7 +593,7 @@ export default function AcervoSinglePage() {
 
       {/* 6. AUTHOR BIO (Brief) */}
       <section className="py-24 border-t border-[#DFDCD4]">
-        <div className="container-custom">
+        <div className="container-custom px-6 md:px-0">
           <div className="flex flex-col md:flex-row items-center gap-12">
             <div className="w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-[#DFDCD4] shadow-xl flex-shrink-0">
               <img
