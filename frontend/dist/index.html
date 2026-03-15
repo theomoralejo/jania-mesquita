@@ -1,34 +1,38 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Jania Mesquita - Especialista em Gestão de Clínicas" />
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Lato:wght@300;400;500;700&family=Nunito:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Jania Mesquita - Especialista em Gestão de Clínicas" />
 
-    <title>Jania Mesquita - Governança e Escalabilidade para Clínicas</title>
+  <!-- Google Fonts -> Async Load for Core Web Vitals Optimization -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Lato:wght@300;400;500;700&family=Nunito:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Lato:wght@300;400;500;700&family=Nunito:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Lato:wght@300;400;500;700&family=Nunito:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" />
+  </noscript>
 
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-TB78X75P');</script>
-    <!-- End Google Tag Manager -->
-    <script type="module" crossorigin src="/assets/index-BkAyPAs_.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-Bxd04UZ7.css">
-  </head>
-  <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TB78X75P"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+  <!-- Preloads for LCP Optimization -->
+  <link rel="preload" href="/assets/img/jania_msc_bg-mobile.webp" as="image" media="(max-width: 768px)">
+  <link rel="preload" href="/assets/img/jania_bg_3-2.webp" as="image" media="(min-width: 769px)">
 
-    <div id="root"></div>
-  </body>
+  <title>Jania Mesquita - Governança e Escalabilidade para Clínicas</title>
+  <script type="module" crossorigin src="/assets/index-COAc7fom.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/vendor-DO_l_6gl.js">
+  <link rel="stylesheet" crossorigin href="/assets/index-BaGQ1Lu7.css">
+</head>
+
+<body>
+
+  <div id="root"></div>
+</body>
+
 </html>

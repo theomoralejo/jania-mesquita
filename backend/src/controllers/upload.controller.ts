@@ -96,7 +96,6 @@ export const listImages = async (req: AuthRequest, res: Response): Promise<void>
     // 1. Scan Cloudinary API for the jania-mesquita folder
     if (process.env.CLOUDINARY_API_KEY) {
       try {
-        // Obter submolders / general e buscar asssets
         const cloudinaryResponse = await cloudinary.search
           .expression('folder:jania-mesquita/*')
           .sort_by('created_at', 'desc')
@@ -115,16 +114,35 @@ export const listImages = async (req: AuthRequest, res: Response): Promise<void>
       }
     }
 
-    // 2. Scan frontend static assets (site images)
-    const frontendImgDir = path.join(process.cwd(), '..', 'frontend', 'assets', 'img');
+    // 2. Scan frontend static assets (site images and videos)
+    const frontendDistImgDir = path.join(process.cwd(), '..', 'frontend', 'dist', 'assets', 'img');
+    const frontendPublicImgDir = path.join(process.cwd(), '..', 'frontend', 'public', 'assets', 'img');
+
+    const frontendImgDir = fs.existsSync(frontendDistImgDir) ? frontendDistImgDir : frontendPublicImgDir;
+
     if (fs.existsSync(frontendImgDir)) {
       const files = fs.readdirSync(frontendImgDir)
-        .filter(f => /\.(jpg|jpeg|png|webp|gif)$/i.test(f));
+        .filter(f => !f.startsWith('.') && !f.startsWith('._') && /\.(jpg|jpeg|png|webp|gif|svg|mp4|webm|mov|avi|mkv)$/i.test(f));
       for (const file of files) {
         results.push({
           url: `/assets/img/${file}`,
           filename: file,
           folder: 'site-assets',
+        });
+      }
+    }
+
+    // 3. Scan local backend uploads (e.g. general)
+    const localUploadsDir = path.join(process.cwd(), 'uploads', 'general');
+    if (fs.existsSync(localUploadsDir)) {
+      const dbFiles = fs.readdirSync(localUploadsDir)
+        .filter(f => !f.startsWith('.') && !f.startsWith('._') && /\.(jpg|jpeg|png|webp|gif|svg|mp4|webm|mov|avi|mkv)$/i.test(f));
+
+      for (const file of dbFiles) {
+        results.push({
+          url: `/uploads/general/${file}`,
+          filename: file,
+          folder: 'general',
         });
       }
     }
@@ -153,7 +171,7 @@ export const deleteImage = async (req: AuthRequest, res: Response): Promise<void
       // Extrai o public ID da URL do Cloudinary:
       // Ex: https://res.cloudinary.com/cloud_name/image/upload/v12345/jania-mesquita/general/nome-imagem.jpg
       const urlParts = filepath.split('/');
-      const versionIndex = urlParts.findIndex(p => p.startsWith('v') && !isNaN(p.substring(1)));
+      const versionIndex = urlParts.findIndex((p: string) => p.startsWith('v') && !isNaN(Number(p.substring(1))));
       if (versionIndex > -1) {
         const pathAfterVersion = urlParts.slice(versionIndex + 1).join('/');
         // remove extension

@@ -74,7 +74,9 @@ export const BibliotecaMidia = () => {
             <Row gutter={[16, 16]}>
                 {images.map((img) => {
                     const apiBase = (import.meta.env.VITE_API_URL || 'https://janiamesquita.com.br/api').replace(/\/api\/?$/, '');
-                    const src = `${apiBase}${img.url}`;
+                    const src = img.url.startsWith('http') ? img.url : `${apiBase}${img.url}`;
+
+                    const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(img.filename);
 
                     return (
                         <Col xs={24} sm={12} md={8} lg={6} xl={4} key={`${img.folder}-${img.filename}`}>
@@ -82,12 +84,29 @@ export const BibliotecaMidia = () => {
                                 hoverable
                                 cover={
                                     <div style={{ height: '150px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f5f5f5' }}>
-                                        <Image
-                                            src={src}
-                                            alt={img.filename}
-                                            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-                                            fallback="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='%23999' font-size='10'%3ESem imagem%3C/text%3E%3C/svg%3E"
-                                        />
+                                        {isVideo ? (
+                                            <video
+                                                src={src}
+                                                style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                                                muted
+                                                loop
+                                                playsInline
+                                                controls={false}
+                                                onMouseOver={(e) => (e.target as HTMLVideoElement).play()}
+                                                onMouseOut={(e) => {
+                                                    const video = e.target as HTMLVideoElement;
+                                                    video.pause();
+                                                    video.currentTime = 0;
+                                                }}
+                                            />
+                                        ) : (
+                                            <Image
+                                                src={src}
+                                                alt={img.filename}
+                                                style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                                                fallback="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='%23999' font-size='10'%3ESem imagem%3C/text%3E%3C/svg%3E"
+                                            />
+                                        )}
                                     </div>
                                 }
                                 actions={[

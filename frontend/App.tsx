@@ -5,19 +5,24 @@ import { Footer } from './components/Footer';
 
 // Pages
 import HomePage from './pages/HomePage';
-import MentoriaPage from './pages/MentoriaPage';
-import PalestrasPage from './pages/PalestrasPage';
-import AcervoPage from './pages/AcervoPage';
-import AcervoSinglePage from './pages/AcervoSinglePage';
-import ContatoPage from './pages/ContatoPage';
-import SobrePage from './pages/SobrePage';
-import BlogPage from './pages/BlogPage';
-import BlogSinglePage from './pages/BlogSinglePage';
-import NaMidiaPage from './pages/NaMidiaPage';
-import PrivacidadePage from './pages/PrivacidadePage';
-import NotFoundPage from './pages/NotFoundPage';
-import LinksPage from './pages/LinksPage';
-import AvaliacaoPage from './pages/AvaliacaoPage';
+
+// Lazy Loaded Sub-Pages for Performance
+const MentoriaPage = React.lazy(() => import('./pages/MentoriaPage'));
+const PalestrasPage = React.lazy(() => import('./pages/PalestrasPage'));
+const AcervoPage = React.lazy(() => import('./pages/AcervoPage'));
+const AcervoSinglePage = React.lazy(() => import('./pages/AcervoSinglePage'));
+const ContatoPage = React.lazy(() => import('./pages/ContatoPage'));
+const SobrePage = React.lazy(() => import('./pages/SobrePage'));
+const BlogPage = React.lazy(() => import('./pages/BlogPage'));
+const BlogSinglePage = React.lazy(() => import('./pages/BlogSinglePage'));
+const NaMidiaPage = React.lazy(() => import('./pages/NaMidiaPage'));
+const PrivacidadePage = React.lazy(() => import('./pages/PrivacidadePage'));
+const NotFoundPage = React.lazy(() => import('./pages/NotFoundPage'));
+const LinksPage = React.lazy(() => import('./pages/LinksPage'));
+const AvaliacaoPage = React.lazy(() => import('./pages/AvaliacaoPage'));
+
+import { Suspense } from 'react';
+import { PageLoader } from './components/PageLoader';
 
 function AppContent() {
   const location = useLocation();
@@ -29,16 +34,19 @@ function AppContent() {
     fetch(`${apiBase}/config/scripts`)
       .then(res => res.json())
       .then(data => {
+        // Limpar scripts injetados anteriormente
+        document.querySelectorAll('[data-config="head"]').forEach(el => el.remove());
+        document.querySelectorAll('[data-config="body"]').forEach(el => el.remove());
+
         if (data && data.value) {
           const params = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
 
-          if (params.head && !document.querySelector('[data-config="head"]')) {
+          if (params.head) {
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = params.head;
             Array.from(tempDiv.childNodes).forEach(node => {
               if (node.nodeType === 1) {
                 const el = node as Element;
-                el.setAttribute('data-config', 'head');
                 if (el.tagName === 'SCRIPT') {
                   const scriptEl = document.createElement('script');
                   Array.from(el.attributes).forEach(attr => scriptEl.setAttribute(attr.name, attr.value));
@@ -46,19 +54,20 @@ function AppContent() {
                   scriptEl.setAttribute('data-config', 'head');
                   document.head.appendChild(scriptEl);
                 } else {
-                  document.head.appendChild(node.cloneNode(true));
+                  const cloned = node.cloneNode(true) as Element;
+                  cloned.setAttribute('data-config', 'head');
+                  document.head.appendChild(cloned);
                 }
               }
             });
           }
 
-          if (params.body && !document.querySelector('[data-config="body"]')) {
+          if (params.body) {
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = params.body;
             Array.from(tempDiv.childNodes).forEach(node => {
               if (node.nodeType === 1) {
                 const el = node as Element;
-                el.setAttribute('data-config', 'body');
                 if (el.tagName === 'SCRIPT') {
                   const scriptEl = document.createElement('script');
                   Array.from(el.attributes).forEach(attr => scriptEl.setAttribute(attr.name, attr.value));
@@ -66,7 +75,9 @@ function AppContent() {
                   scriptEl.setAttribute('data-config', 'body');
                   document.body.appendChild(scriptEl);
                 } else {
-                  document.body.appendChild(node.cloneNode(true));
+                  const cloned = node.cloneNode(true) as Element;
+                  cloned.setAttribute('data-config', 'body');
+                  document.body.appendChild(cloned);
                 }
               }
             });
@@ -79,22 +90,24 @@ function AppContent() {
   return (
     <div className="min-h-screen">
       {!hideNavigation && <Navigation />}
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/mentoria" element={<MentoriaPage />} />
-        <Route path="/palestras" element={<PalestrasPage />} />
-        <Route path="/acervo" element={<AcervoPage />} />
-        <Route path="/acervo/:slug" element={<AcervoSinglePage />} />
-        <Route path="/contato" element={<ContatoPage />} />
-        <Route path="/sobre" element={<SobrePage />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/blog/:slug" element={<BlogSinglePage />} />
-        <Route path="/na-midia" element={<NaMidiaPage />} />
-        <Route path="/privacidade" element={<PrivacidadePage />} />
-        <Route path="/links" element={<LinksPage />} />
-        <Route path="/avaliacao" element={<AvaliacaoPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/mentoria" element={<MentoriaPage />} />
+          <Route path="/palestras" element={<PalestrasPage />} />
+          <Route path="/acervo" element={<AcervoPage />} />
+          <Route path="/acervo/:slug" element={<AcervoSinglePage />} />
+          <Route path="/contato" element={<ContatoPage />} />
+          <Route path="/sobre" element={<SobrePage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogSinglePage />} />
+          <Route path="/na-midia" element={<NaMidiaPage />} />
+          <Route path="/privacidade" element={<PrivacidadePage />} />
+          <Route path="/links" element={<LinksPage />} />
+          <Route path="/avaliacao" element={<AvaliacaoPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
       <Footer />
     </div>
   );
