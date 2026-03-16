@@ -87,9 +87,18 @@ export interface AcervoProduct {
   image: string;
   price: string;
   originalPrice?: string;
+  installmentsPrice?: string;
   hotmartLink?: string;
   published: boolean;
   order: number;
+  badge1Text?: string;
+  badge1Enabled?: boolean;
+  badge2Text?: string;
+  badge2Enabled?: boolean;
+  descriptionTitleText?: string;
+  descriptionTitleEnabled?: boolean;
+  bestsellerText?: string;
+  readersText?: string;
   category: {
     id: string;
     label: string;

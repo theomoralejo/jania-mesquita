@@ -104,12 +104,60 @@ export const AcervoEdit = () => {
         </Form.Item>
 
         <Form.Item
+          label="Preço Parcelado"
+          name="installmentsPrice"
+          extra="Opcional - Ex: 12x de R$ 9,90"
+        >
+          <Input placeholder="12x de R$ 9,90" />
+        </Form.Item>
+
+        <Form.Item
           label="Link Hotmart"
           name="hotmartLink"
           extra="Opcional - URL de compra no Hotmart"
         >
           <Input placeholder="https://pay.hotmart.com/..." />
         </Form.Item>
+
+        {/* SECÇÕES DINÂMICAS E BADGES */}
+        <div style={{ padding: '24px', backgroundColor: '#f9f9f9', borderRadius: '8px', marginBottom: '24px' }}>
+          <h3 style={{ marginBottom: '16px' }}>Textos de Alta Conversão (LP)</h3>
+          
+          <Space align="start" style={{ width: '100%' }}>
+            <Form.Item label="Ativar Badge 1" name="badge1Enabled" valuePropName="checked">
+              <Switch />
+            </Form.Item>
+            <Form.Item label="Texto do Badge 1" name="badge1Text" style={{ flexGrow: 1, minWidth: '300px' }}>
+              <Input />
+            </Form.Item>
+          </Space>
+
+          <Space align="start" style={{ width: '100%' }}>
+            <Form.Item label="Ativar Badge 2" name="badge2Enabled" valuePropName="checked">
+              <Switch />
+            </Form.Item>
+            <Form.Item label="Texto do Badge 2" name="badge2Text" style={{ flexGrow: 1, minWidth: '300px' }}>
+              <Input />
+            </Form.Item>
+          </Space>
+
+          <Space align="start" style={{ width: '100%' }}>
+            <Form.Item label="Ativar Título da Descrição" name="descriptionTitleEnabled" valuePropName="checked">
+              <Switch />
+            </Form.Item>
+            <Form.Item label="Título da Descrição" name="descriptionTitleText" style={{ flexGrow: 1, minWidth: '300px' }}>
+              <Input />
+            </Form.Item>
+          </Space>
+
+          <Form.Item label="Texto Bestseller" name="bestsellerText">
+            <Input />
+          </Form.Item>
+          
+          <Form.Item label="Texto Leitores (Social Proof)" name="readersText">
+            <Input />
+          </Form.Item>
+        </div>
 
         <Form.Item label="Features (Itens do Pricebox)">
           <Form.List name="features">

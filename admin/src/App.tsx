@@ -58,6 +58,14 @@ import { AcervoList } from './pages/acervo/AcervoList';
 import { AcervoCreate } from './pages/acervo/AcervoCreate';
 import { AcervoEdit } from './pages/acervo/AcervoEdit';
 import { AcervoShow } from './pages/acervo/AcervoShow';
+
+import { AcervoCategoryList } from './pages/acervo/CategoryList';
+import { AcervoCategoryCreate } from './pages/acervo/CategoryCreate';
+import { AcervoCategoryEdit } from './pages/acervo/CategoryEdit';
+
+import { FormatList } from './pages/acervo/FormatList';
+import { FormatCreate } from './pages/acervo/FormatCreate';
+import { FormatEdit } from './pages/acervo/FormatEdit';
 import { MidiaList } from './pages/midias/MidiaList';
 import { MidiaCreate } from './pages/midias/MidiaCreate';
 import { MidiaEdit } from './pages/midias/MidiaEdit';
@@ -271,6 +279,26 @@ function App() {
                 },
               },
               {
+                name: 'acervo/categories',
+                list: '/acervo/categories',
+                create: '/acervo/categories/create',
+                edit: '/acervo/categories/edit/:id',
+                meta: {
+                  parent: 'acervo',
+                  label: 'Categorias',
+                },
+              },
+              {
+                name: 'acervo/formats',
+                list: '/acervo/formats',
+                create: '/acervo/formats/create',
+                edit: '/acervo/formats/edit/:id',
+                meta: {
+                  parent: 'acervo',
+                  label: 'Formatos',
+                },
+              },
+              {
                 name: 'depoimentos',
                 list: '/depoimentos',
                 create: '/depoimentos/create',
@@ -389,6 +417,18 @@ function App() {
                   <Route path="create" element={<AcervoCreate />} />
                   <Route path="edit/:id" element={<AcervoEdit />} />
                   <Route path="show/:id" element={<AcervoShow />} />
+                </Route>
+
+                <Route path="/acervo/categories">
+                  <Route index element={<AcervoCategoryList />} />
+                  <Route path="create" element={<AcervoCategoryCreate />} />
+                  <Route path="edit/:id" element={<AcervoCategoryEdit />} />
+                </Route>
+
+                <Route path="/acervo/formats">
+                  <Route index element={<FormatList />} />
+                  <Route path="create" element={<FormatCreate />} />
+                  <Route path="edit/:id" element={<FormatEdit />} />
                 </Route>
 
                 <Route path="/depoimentos">

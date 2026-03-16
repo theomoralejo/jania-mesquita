@@ -5,7 +5,13 @@ import {
   getAcervoProducts,
   getAcervoProductBySlug,
   adminGetAcervoCategories,
+  adminCreateAcervoCategory,
+  adminUpdateAcervoCategory,
+  adminDeleteAcervoCategory,
   adminGetAcervoFormats,
+  adminCreateAcervoFormat,
+  adminUpdateAcervoFormat,
+  adminDeleteAcervoFormat,
   adminGetAcervoProducts,
   adminGetAcervoProduct,
   adminCreateAcervoProduct,
@@ -28,7 +34,17 @@ export default router;
 export const adminAcervoRouter = Router();
 
 adminAcervoRouter.get('/categories', authenticate, adminGetAcervoCategories);
+adminAcervoRouter.post('/categories', authenticate, adminCreateAcervoCategory);
+adminAcervoRouter.put('/categories/:id', authenticate, adminUpdateAcervoCategory);
+adminAcervoRouter.patch('/categories/:id', authenticate, adminUpdateAcervoCategory);
+adminAcervoRouter.delete('/categories/:id', authenticate, adminDeleteAcervoCategory);
+
 adminAcervoRouter.get('/formats', authenticate, adminGetAcervoFormats);
+adminAcervoRouter.post('/formats', authenticate, adminCreateAcervoFormat);
+adminAcervoRouter.put('/formats/:id', authenticate, adminUpdateAcervoFormat);
+adminAcervoRouter.patch('/formats/:id', authenticate, adminUpdateAcervoFormat);
+adminAcervoRouter.delete('/formats/:id', authenticate, adminDeleteAcervoFormat);
+
 adminAcervoRouter.get('/', authenticate, adminGetAcervoProducts);
 adminAcervoRouter.get('/:id', authenticate, adminGetAcervoProduct);
 adminAcervoRouter.post('/', authenticate, adminCreateAcervoProduct);

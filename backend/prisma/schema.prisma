@@ -87,26 +87,40 @@ model AcervoFormat {
 }
 
 model AcervoProduct {
-  id          String         @id @default(uuid())
-  slug        String         @unique
-  title       String
-  description String
-  fullContent String?        // HTML
-  image        String
-  price        String         // Ex: "R$ 89,90"
-  originalPrice String?       // Ex: "R$ 119,90" - Preço cortado
-  hotmartLink  String?
-  published   Boolean        @default(true)
-  order       Int            @default(0) // Para ordenação manual
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  categoryId  String
-  category    AcervoCategory @relation(fields: [categoryId], references: [id])
-  formatId    String
-  format      AcervoFormat   @relation(fields: [formatId], references: [id])
-  tags        AcervoTag[]
-  features    AcervoFeature[]
-  benefits    AcervoBenefit[]
+  id                      String         @id @default(uuid())
+  slug                    String         @unique
+  title                   String
+  description             String
+  fullContent             String?        // HTML
+  image                   String
+  price                   String         // Ex: "R$ 89,90"
+  originalPrice           String?       // Ex: "R$ 119,90" - Preço cortado
+  installmentsPrice       String?       // Ex: "12x de R$ 9,90"
+  
+  badge1Text              String         @default("Nova Edição 2025")
+  badge1Enabled           Boolean        @default(true)
+  
+  badge2Text              String         @default("Oferta Especial")
+  badge2Enabled           Boolean        @default(true)
+  
+  descriptionTitleText    String         @default("A Medicina Mudou. Sua Gestão Também Precisa Mudar.")
+  descriptionTitleEnabled Boolean        @default(true)
+  
+  bestsellerText          String         @default("Bestseller #1 em Gestão Médica")
+  readersText             String         @default("Junte-se a 2.000+ médicos leitores")
+  
+  hotmartLink             String?
+  published               Boolean        @default(true)
+  order                   Int            @default(0) // Para ordenação manual
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
+  categoryId              String
+  category                AcervoCategory @relation(fields: [categoryId], references: [id])
+  formatId                String
+  format                  AcervoFormat   @relation(fields: [formatId], references: [id])
+  tags                    AcervoTag[]
+  features                AcervoFeature[]
+  benefits                AcervoBenefit[]
 
   @@index([slug])
   @@index([categoryId])

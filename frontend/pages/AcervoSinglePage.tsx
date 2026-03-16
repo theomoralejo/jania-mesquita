@@ -13,6 +13,8 @@ export default function AcervoSinglePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  const [acervoDepoimentos, setAcervoDepoimentos] = useState<any[]>([]);
+
   // Buscar produto da API
   useEffect(() => {
     const fetchProduct = async () => {
@@ -25,7 +27,10 @@ export default function AcervoSinglePage() {
           return;
         }
 
-        const productData = await acervoApi.getProductBySlug(slug);
+        const [productData, depoimentosData] = await Promise.all([
+           acervoApi.getProductBySlug(slug),
+           fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000/api'}/public/depoimentos`).then(res => res.json())
+        ]);
 
         // Transformar dados da API para o formato do componente
         const transformedProduct = {
@@ -35,6 +40,15 @@ export default function AcervoSinglePage() {
           category: productData.category.label,
           price: productData.price,
           originalPrice: productData.originalPrice,
+          installmentsPrice: productData.installmentsPrice,
+          badge1Text: productData.badge1Text,
+          badge1Enabled: productData.badge1Enabled,
+          badge2Text: productData.badge2Text,
+          badge2Enabled: productData.badge2Enabled,
+          descriptionTitleText: productData.descriptionTitleText,
+          descriptionTitleEnabled: productData.descriptionTitleEnabled,
+          bestsellerText: productData.bestsellerText,
+          readersText: productData.readersText,
           format: productData.format.slug,
           image: productData.image,
           description: productData.description,
@@ -47,8 +61,13 @@ export default function AcervoSinglePage() {
         };
 
         setProduct(transformedProduct);
+
+        // Filter valid depoimentos ensuring at least 1 image and proper content
+        if (Array.isArray(depoimentosData)) {
+           setAcervoDepoimentos(depoimentosData.slice(0, 2));
+        }
       } catch (error) {
-        console.error('Erro ao buscar produto:', error);
+        console.error('Erro ao buscar dados:', error);
         setError(true);
       } finally {
         setLoading(false);
@@ -256,10 +275,10 @@ export default function AcervoSinglePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Left Content */}
             <div className="space-y-8">
-              <div className="inline-flex items-center gap-3 px-3 py-1 bg-[#385443]/10 rounded-full border border-[#385443]/20">
+              {resource.bestsellerText && <div className="inline-flex items-center gap-3 px-3 py-1 bg-[#385443]/10 rounded-full border border-[#385443]/20">
                 <Star className="w-3 h-3 text-[#385443] fill-current" />
-                <span className="text-[10px] uppercase tracking-widest font-bold text-[#385443]">Bestseller #1 em Gestão Médica</span>
-              </div>
+                <span className="text-[10px] uppercase tracking-widest font-bold text-[#385443]">{resource.bestsellerText}</span>
+              </div>}
               
               <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.05] text-[#42331C]">
                 {resource.title}
@@ -289,7 +308,7 @@ export default function AcervoSinglePage() {
                     </div>
                   ))}
                 </div>
-                <p>Junte-se a <span className="font-bold text-[#42331C]">2.000+</span> médicos leitores</p>
+                {resource.readersText && <p dangerouslySetInnerHTML={{ __html: resource.readersText.replace(/(\d.*?\+)/, '<span class="font-bold text-[#42331C]">$1</span>') }}></p>}
               </div>
             </div>
 
@@ -303,9 +322,9 @@ export default function AcervoSinglePage() {
                     className="w-full h-full object-cover rounded-[5px] border border-[#DFDCD4]"
                   />
                   {/* Badge Overlay */}
-                  <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#385443] rounded-full flex items-center justify-center text-white font-serif text-center p-2 shadow-xl animate-pulse">
-                    <span className="text-sm leading-tight">Nova Edição 2025</span>
-                  </div>
+                  {resource.badge1Enabled && resource.badge1Text && <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#385443] rounded-full flex items-center justify-center text-white font-serif text-center p-2 shadow-xl">
+                    <span className="text-sm leading-tight">{resource.badge1Text}</span>
+                  </div>}
                </div>
             </div>
           </div>
@@ -325,54 +344,60 @@ export default function AcervoSinglePage() {
           </div>
 
           {/* Testimonials Grid - Editorial Magazine Style */}
-          <div className="max-w-[1218px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {/* Testimonial 1 - Featured Large */}
-            <div className="md:col-span-2 bg-white p-8 rounded-[7px] border border-[#DFDCD4] shadow-[var(--shadow-lg)] relative">
-              <div className="absolute top-6 right-6">
-                <Award className="w-10 h-10 text-[#d4af37] opacity-20" />
-              </div>
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#385443]">
-                  <img src="https://i.pravatar.cc/100?img=33" alt="Dra. Mariana" className="w-full h-full object-cover" />
+          {acervoDepoimentos.length > 0 && (
+            <div className="max-w-[1218px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+              {/* Testimonial 1 - Featured Large */}
+              {acervoDepoimentos[0] && (
+                <div className="md:col-span-2 bg-white p-8 rounded-[7px] border border-[#DFDCD4] shadow-[var(--shadow-lg)] relative">
+                  <div className="absolute top-6 right-6">
+                    <Award className="w-10 h-10 text-[#d4af37] opacity-20" />
+                  </div>
+                  <div className="flex items-start gap-4 mb-6">
+                    <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#385443]">
+                      <img src={resolveImageUrl(acervoDepoimentos[0].image) || `https://ui-avatars.com/api/?name=${encodeURIComponent(acervoDepoimentos[0].name)}&background=385443&color=fff`} alt={acervoDepoimentos[0].name} className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <h4 className="font-serif text-lg text-[#42331C] mb-1">{acervoDepoimentos[0].name}</h4>
+                      <p className="text-xs text-[#B6A689] uppercase tracking-wider">{acervoDepoimentos[0].role} {acervoDepoimentos[0].event && `• ${acervoDepoimentos[0].event}`}</p>
+                    </div>
+                  </div>
+                  <p className="text-[#696969] font-light leading-relaxed italic mb-6">
+                    "{acervoDepoimentos[0].quote}"
+                  </p>
+                  <div className="flex items-center gap-2">
+                    {[1,2,3,4,5].map(i => (
+                      <Star key={i} className="w-4 h-4 text-[#d4af37] fill-current" />
+                    ))}
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-serif text-lg text-[#42331C] mb-1">Dra. Mariana Costa</h4>
-                  <p className="text-xs text-[#B6A689] uppercase tracking-wider">Dermatologia • São Paulo</p>
-                </div>
-              </div>
-              <p className="text-[#696969] font-light leading-relaxed italic mb-6">
-                "Implementei os 4 pilares da governança e, em 6 meses, minha clínica saiu de um faturamento caótico para resultados previsíveis e crescentes. Jania não vende teoria: ela entrega método."
-              </p>
-              <div className="flex items-center gap-2">
-                {[1,2,3,4,5].map(i => (
-                  <Star key={i} className="w-4 h-4 text-[#d4af37] fill-current" />
-                ))}
-              </div>
-            </div>
+              )}
 
-            {/* Testimonial 2 - Compact */}
-            <div className="bg-[#385443] p-8 rounded-[7px] text-[#F2EFE8] flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#F2EFE8]">
-                    <img src="https://i.pravatar.cc/100?img=28" alt="Dr. Ricardo" className="w-full h-full object-cover" />
-                  </div>
+              {/* Testimonial 2 - Compact */}
+              {acervoDepoimentos[1] && (
+                <div className="bg-[#385443] p-8 rounded-[7px] text-[#F2EFE8] flex flex-col justify-between">
                   <div>
-                    <h4 className="font-serif text-[#F2EFE8] mb-0">Dr. Ricardo Alves</h4>
-                    <p className="text-[10px] text-[#DFDCD4] uppercase tracking-wider">Ortopedia • BH</p>
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#F2EFE8]">
+                        <img src={resolveImageUrl(acervoDepoimentos[1].image) || `https://ui-avatars.com/api/?name=${encodeURIComponent(acervoDepoimentos[1].name)}&background=F2EFE8&color=385443`} alt={acervoDepoimentos[1].name} className="w-full h-full object-cover" />
+                      </div>
+                      <div>
+                        <h4 className="font-serif text-[#F2EFE8] mb-0">{acervoDepoimentos[1].name}</h4>
+                        <p className="text-[10px] text-[#DFDCD4] uppercase tracking-wider">{acervoDepoimentos[1].role} {acervoDepoimentos[1].event && `• ${acervoDepoimentos[1].event}`}</p>
+                      </div>
+                    </div>
+                    <p className="text-sm font-light leading-relaxed italic text-white line-clamp-4">
+                      "{acervoDepoimentos[1].quote}"
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-1 mt-6">
+                    {[1,2,3,4,5].map(i => (
+                      <Star key={i} className="w-3 h-3 text-[#d4af37] fill-current" />
+                    ))}
                   </div>
                 </div>
-                <p className="text-sm font-light leading-relaxed italic text-white">
-                  "Finalmente consegui delegar sem medo. O livro me deu a estrutura que faltava."
-                </p>
-              </div>
-              <div className="flex items-center gap-1 mt-6">
-                {[1,2,3,4,5].map(i => (
-                  <Star key={i} className="w-3 h-3 text-[#d4af37] fill-current" />
-                ))}
-              </div>
+              )}
             </div>
-          </div>
+          )}
 
 
         </div>
@@ -382,9 +407,7 @@ export default function AcervoSinglePage() {
       <section className="section-padding">
         <div className="container-custom px-6 md:px-0">
           <div className="max-w-4xl mx-auto text-center mb-16">
-            <h2 className="font-serif text-4xl md:text-5xl text-[#42331C] mb-6">
-              A Medicina Mudou. <br/><span className="italic text-[#385443]">Sua Gestão Também Precisa Mudar.</span>
-            </h2>
+            {resource.descriptionTitleEnabled && resource.descriptionTitleText && <h2 className="font-serif text-4xl md:text-5xl text-[#42331C] mb-6 whitespace-pre-line" dangerouslySetInnerHTML={{ __html: resource.descriptionTitleText.replace(/\.(?=\s|$)/, '. <br/><span class="italic text-[#385443]">').replace(/$/, '</span>') }}></h2>}
             <div className="w-24 h-1 bg-[#d4af37] mx-auto mb-8"></div>
             <div 
               className="prose prose-lg prose-brown mx-auto text-[#696969] font-light leading-relaxed"
@@ -537,17 +560,17 @@ export default function AcervoSinglePage() {
       {/* 5. PRICING / OFFER */}
       <section className="section-padding bg-[#F2EFE8]">
         <div className="container-custom px-6 md:px-0">
-          <div className="max-w-5xl mx-auto bg-white rounded-[20px] p-6 md:p-10 border border-[#DFDCD4] shadow-[var(--shadow-xl)] relative overflow-hidden">
+          <div className="max-w-5xl mx-auto bg-white rounded-[20px] p-0 md:p-10 border border-[#DFDCD4] shadow-[var(--shadow-xl)] relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#385443]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10 px-6 py-8 md:p-0">
               <div>
-                <span className="inline-block px-4 py-1 bg-[#385443] text-white text-xs font-bold tracking-widest uppercase rounded-full mb-6">
-                  Oferta Especial
-                </span>
-                <h2 className="font-serif text-4xl text-[#42331C] mb-6">
-                  Adquira o Manual Completo
-                </h2>
+              {resource.badge2Enabled && resource.badge2Text && <span className="inline-block px-4 py-1 bg-[#385443] text-white text-xs font-bold tracking-widest uppercase rounded-full mb-6">
+                {resource.badge2Text}
+              </span>}
+              <h2 className="font-serif text-4xl text-[#42331C] mb-6">
+                Adquira o Manual Completo
+              </h2>
                 <ul className="space-y-4 mb-8">
                   {resource.features.map((feature, i) => (
                     <li key={i} className="flex items-center gap-3 text-[#696969]">
@@ -566,13 +589,17 @@ export default function AcervoSinglePage() {
                 </ul>
               </div>
 
-              <div className="text-center bg-white p-8 rounded-[10px] border border-[#DFDCD4] shadow-lg">
-                <div className="text-sm text-[#696969] mb-2 font-medium">De <span className="line-through">{resource.originalPrice}</span> por apenas:</div>
-                <div className="text-6xl font-serif text-[#385443] mb-2">{resource.price}</div>
-                <div className="text-xs text-[#B6A689] uppercase tracking-widest font-bold mb-8">Pagamento Único</div>
-                
-                <a 
-                  href={resource.hotmartLink}
+            <div className="text-center bg-white p-8 rounded-[10px] border border-[#DFDCD4] shadow-lg flex flex-col items-center justify-center">
+              {resource.originalPrice && <div className="text-sm text-[#696969] mb-2 font-medium">De <span className="line-through">{resource.originalPrice}</span> por apenas:</div>}
+              {resource.installmentsPrice && <div className="text-xs text-[#B6A689] uppercase tracking-widest font-bold mb-2">Parcelado</div>}
+              {resource.installmentsPrice && <div className="text-4xl md:text-5xl font-serif text-[#385443] mb-4">{resource.installmentsPrice}</div>}
+              {resource.installmentsPrice && <div className="text-sm text-[#696969] mb-4">À vista por {resource.price}</div>}
+              
+              {!resource.installmentsPrice && <div className="text-5xl md:text-6xl font-serif text-[#385443] mb-2">{resource.price}</div>}
+              {!resource.installmentsPrice && <div className="text-xs text-[#B6A689] uppercase tracking-widest font-bold mb-8">Pagamento Único</div>}
+              
+              <a 
+                href={resource.hotmartLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-5 bg-[#385443] text-white rounded-[7px] hover:bg-[#2A4032] transition-all shadow-lg flex items-center justify-center gap-2 font-bold text-lg mb-4"
