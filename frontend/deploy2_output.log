@@ -1,0 +1,38 @@
+spawn scp -o StrictHostKeyChecking=no dist.zip root@65.109.172.180:/var/www/jania-mesquita/
+root@65.109.172.180's password: 
+   0%    0     0.0KB/s   --:--   0%    0     0.0KB/s   --:--   6%  255KB 253.9KB/s   00:14 100% 3896KB   1.5MB/s   00:02
+spawn ssh -o StrictHostKeyChecking=no root@65.109.172.180
+root@65.109.172.180's password: 
+Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.8.0-101-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Mon Mar 16 08:15:08 PM UTC 2026
+
+  System load:  0.19               Processes:             286
+  Usage of /:   50.2% of 74.79GB   Users logged in:       1
+  Memory usage: 70%                IPv4 address for eth0: 65.109.172.180
+  Swap usage:   0%                 IPv6 address for eth0: 2a01:4f9:c013:e989::1
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+Expanded Security Maintenance for Applications is not enabled.
+
+72 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+12 additional security updates can be applied with ESM Apps.
+Learn more about enabling ESM Apps service at https://ubuntu.com/esm
+
+
+You have new mail.
+Last login: Mon Mar 16 20:12:19 2026 from 189.18.76.183
+[?2004h]0;root@n8n: ~root@n8n:~# cd /var/www/jania-mesquita/ && rm -rf frontend-dist-old && mv frontend frontend-dist-old && unzip -q dist.zip -d . && mv dist frontend && rm dist.zip
+[?2004l[?2004h]0;root@n8n: /var/www/jania-mesquitaroot@n8n:/var/www/jania-mesquita# exit
+[?2004llogout
+Connection to 65.109.172.180 closed.

@@ -1,0 +1,7 @@
+#!/usr/bin/expect -f
+set timeout -1
+set password "d4rHKRdw9NgU"
+spawn scp -o StrictHostKeyChecking=no deploy.tar.gz root@65.109.172.180:/var/www/jania-mesquita/
+expect "*assword:*"
+send "$password\r"
+expect eof

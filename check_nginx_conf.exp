@@ -1,0 +1,18 @@
+#!/usr/bin/expect -f
+set timeout 10
+set password "d4rHKRdw9NgU"
+
+spawn ssh -o StrictHostKeyChecking=no root@65.109.172.180
+expect "*assword:*"
+send "$password\r"
+expect "# "
+send "grep -R 'root' /etc/nginx/sites-enabled/ > /tmp/nginx_root.txt\r"
+expect "# "
+send "ls -la /var/www/jania-mesquita/frontend-dist-old > /tmp/ls_old.txt\r"
+expect "# "
+send "cat /tmp/nginx_root.txt\r"
+expect "# "
+send "head -n 20 /tmp/ls_old.txt\r"
+expect "# "
+send "exit\r"
+expect eof

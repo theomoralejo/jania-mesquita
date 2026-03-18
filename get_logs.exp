@@ -1,0 +1,6 @@
+#!/usr/bin/expect -f
+set password "d4rHKRdw9NgU"
+spawn ssh -o StrictHostKeyChecking=no root@65.109.172.180 "tail -n 50 /var/log/nginx/error.log; ls -la /var/www/jania-mesquita/"
+expect "*assword:*"
+send "$password\r"
+expect eof

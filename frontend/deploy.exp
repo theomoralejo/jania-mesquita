@@ -1,0 +1,19 @@
+#!/usr/bin/expect -f
+set timeout -1
+set password "d4rHKRdw9NgU"
+
+# Upload zip
+spawn scp -o StrictHostKeyChecking=no dist.zip root@65.109.172.180:/var/www/jania-mesquita/
+expect "*assword:*"
+send "$password\r"
+expect eof
+
+# Deploy on Server
+spawn ssh -o StrictHostKeyChecking=no root@65.109.172.180
+expect "*assword:*"
+send "$password\r"
+expect "# "
+send "cd /var/www/jania-mesquita/ && rm -rf frontend-dist-old && mv frontend frontend-dist-old && unzip -q dist.zip -d . && mv dist frontend && rm dist.zip\r"
+expect "# "
+send "exit\r"
+expect eof

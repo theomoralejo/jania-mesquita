@@ -1,0 +1,7 @@
+#!/usr/bin/expect -f
+set timeout -1
+set password "d4rHKRdw9NgU"
+spawn ssh -o StrictHostKeyChecking=no root@65.109.172.180 "cd /var/www/jania-mesquita && tar -xzvf deploy.tar.gz && cd backend && npm install && pm2 restart jania-backend"
+expect "*assword:*"
+send "$password\r"
+expect eof

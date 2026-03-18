@@ -1,0 +1,20 @@
+#!/usr/bin/expect -f
+set timeout 10
+set password "d4rHKRdw9NgU"
+
+spawn ssh -o StrictHostKeyChecking=no root@65.109.172.180
+expect "*assword:*"
+send "$password\r"
+expect "# "
+send "tail -n 20 /var/log/nginx/error.log > /tmp/error.log.txt\r"
+expect "# "
+send "ls -la /var/www/jania-mesquita/ > /tmp/ls.txt\r"
+expect "# "
+send "ls -la /var/www/jania-mesquita/frontend/ >> /tmp/ls.txt\r"
+expect "# "
+send "cat /tmp/error.log.txt\r"
+expect "# "
+send "cat /tmp/ls.txt\r"
+expect "# "
+send "exit\r"
+expect eof

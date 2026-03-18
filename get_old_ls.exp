@@ -1,0 +1,14 @@
+#!/usr/bin/expect -f
+set timeout 10
+set password "d4rHKRdw9NgU"
+
+spawn ssh -o StrictHostKeyChecking=no root@65.109.172.180
+expect "*assword:*"
+send "$password\r"
+expect "# "
+send "ls -la /var/www/jania-mesquita/frontend-dist-old | head -n 15 > /tmp/old_ls.txt\r"
+expect "# "
+send "cat /tmp/old_ls.txt\r"
+expect "# "
+send "exit\r"
+expect eof

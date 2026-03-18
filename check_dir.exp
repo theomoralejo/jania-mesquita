@@ -1,0 +1,7 @@
+#!/usr/bin/expect -f
+set timeout 10
+set password "d4rHKRdw9NgU"
+spawn ssh -o StrictHostKeyChecking=no root@65.109.172.180 "ls -la /var/www/jania-mesquita/"
+expect "*assword:*"
+send "$password\r"
+expect eof

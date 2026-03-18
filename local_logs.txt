@@ -1,0 +1,79 @@
+spawn ssh -o StrictHostKeyChecking=no root@65.109.172.180
+root@65.109.172.180's password: 
+Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.8.0-101-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Mon Mar 16 07:58:49 PM UTC 2026
+
+  System load:  0.05               Processes:             268
+  Usage of /:   50.2% of 74.79GB   Users logged in:       0
+  Memory usage: 71%                IPv4 address for eth0: 65.109.172.180
+  Swap usage:   0%                 IPv6 address for eth0: 2a01:4f9:c013:e989::1
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+Expanded Security Maintenance for Applications is not enabled.
+
+72 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+12 additional security updates can be applied with ESM Apps.
+Learn more about enabling ESM Apps service at https://ubuntu.com/esm
+
+
+You have new mail.
+Last login: Mon Mar 16 19:59:18 2026 from 189.18.76.183
+[?2004h]0;root@n8n: ~root@n8n:~# tail -n 20 /var/log/nginx/error.log > /tmp/error.log.txt
+[?2004l[?2004h]0;root@n8n: ~root@n8n:~# ls -la /var/www/jania-mesquita/ > /tmp/ls.txt
+[?2004l[?2004h]0;root@n8n: ~root@n8n:~# ls -la /var/www/jania-mesquita/frontend/ >> /tmp/ls.txt
+[?2004l[?2004h]0;root@n8n: ~root@n8n:~# cat /tmp/error.log.txt
+[?2004l2026/03/16 19:20:01 [error] 2847167#2847167: *120417 connect() failed (111: Connection refused) while connecting to upstream, client: 65.109.172.180, server: imersao.osvaldoaranha.com, request: "GET /api/health HTTP/2.0", upstream: "http://[::1]:3002/api/health", host: "imersao.osvaldoaranha.com"
+2026/03/16 19:20:07 [error] 2847167#2847167: *120420 no live upstreams while connecting to upstream, client: 65.109.172.180, server: imersao.osvaldoaranha.com, request: "GET /api/health HTTP/2.0", upstream: "http://localhost/api/health", host: "imersao.osvaldoaranha.com"
+2026/03/16 19:37:53 [error] 2847170#2847170: *120731 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 177.139.23.55, server: tools.attriostudio.com, request: "GET /favicon.ico HTTP/2.0", host: "tools.attriostudio.com", referrer: "https://tools.attriostudio.com/"
+2026/03/16 19:37:55 [error] 2847170#2847170: *120731 open() "/usr/share/nginx/html/tiny" failed (2: No such file or directory), client: 177.139.23.55, server: tools.attriostudio.com, request: "GET /tiny HTTP/2.0", host: "tools.attriostudio.com"
+2026/03/16 19:40:02 [error] 2847167#2847167: *120765 connect() failed (111: Connection refused) while connecting to upstream, client: 65.109.172.180, server: imersao.osvaldoaranha.com, request: "GET /api/health HTTP/2.0", upstream: "http://127.0.0.1:3002/api/health", host: "imersao.osvaldoaranha.com"
+2026/03/16 19:40:02 [error] 2847167#2847167: *120765 connect() failed (111: Connection refused) while connecting to upstream, client: 65.109.172.180, server: imersao.osvaldoaranha.com, request: "GET /api/health HTTP/2.0", upstream: "http://[::1]:3002/api/health", host: "imersao.osvaldoaranha.com"
+2026/03/16 19:40:08 [error] 2847167#2847167: *120768 no live upstreams while connecting to upstream, client: 65.109.172.180, server: imersao.osvaldoaranha.com, request: "GET /api/health HTTP/2.0", upstream: "http://localhost/api/health", host: "imersao.osvaldoaranha.com"
+2026/03/16 19:45:02 [error] 2847169#2847169: *120803 connect() failed (111: Connection refused) while connecting to upstream, client: 65.109.172.180, server: imersao.osvaldoaranha.com, request: "GET /api/health HTTP/2.0", upstream: "http://[::1]:3002/api/health", host: "imersao.osvaldoaranha.com"
+2026/03/16 19:45:02 [error] 2847169#2847169: *120803 connect() failed (111: Connection refused) while connecting to upstream, client: 65.109.172.180, server: imersao.osvaldoaranha.com, request: "GET /api/health HTTP/2.0", upstream: "http://127.0.0.1:3002/api/health", host: "imersao.osvaldoaranha.com"
+2026/03/16 19:45:07 [error] 2847169#2847169: *120808 no live upstreams while connecting to upstream, client: 65.109.172.180, server: imersao.osvaldoaranha.com, request: "GET /api/health HTTP/2.0", upstream: "http://localhost/api/health", host: "imersao.osvaldoaranha.com"
+2026/03/16 19:49:15 [error] 2847167#2847167: *120897 open() "/usr/share/nginx/html/tiny" failed (2: No such file or directory), client: 177.139.23.55, server: tools.attriostudio.com, request: "GET /tiny HTTP/2.0", host: "tools.attriostudio.com"
+2026/03/16 19:49:15 [error] 2847167#2847167: *120897 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 177.139.23.55, server: tools.attriostudio.com, request: "GET /favicon.ico HTTP/2.0", host: "tools.attriostudio.com", referrer: "https://tools.attriostudio.com/tiny"
+2026/03/16 19:49:20 [error] 2847167#2847167: *120896 "/usr/share/nginx/html/http:/nginx.org/index.html" is not found (2: No such file or directory), client: 103.4.250.35, server: tools.attriostudio.com, request: "GET /http%3A/nginx.org/ HTTP/1.1", host: "tools.attriostudio.com"
+2026/03/16 19:49:23 [error] 2847167#2847167: *120899 "/usr/share/nginx/html/http:/nginx.com/index.html" is not found (2: No such file or directory), client: 103.4.250.35, server: tools.attriostudio.com, request: "GET /http%3A/nginx.com/ HTTP/1.1", host: "tools.attriostudio.com"
+2026/03/16 19:50:02 [error] 2847167#2847167: *120905 connect() failed (111: Connection refused) while connecting to upstream, client: 65.109.172.180, server: imersao.osvaldoaranha.com, request: "GET /api/health HTTP/2.0", upstream: "http://[::1]:3002/api/health", host: "imersao.osvaldoaranha.com"
+2026/03/16 19:50:02 [error] 2847167#2847167: *120905 connect() failed (111: Connection refused) while connecting to upstream, client: 65.109.172.180, server: imersao.osvaldoaranha.com, request: "GET /api/health HTTP/2.0", upstream: "http://127.0.0.1:3002/api/health", host: "imersao.osvaldoaranha.com"
+2026/03/16 19:50:07 [error] 2847167#2847167: *120908 no live upstreams while connecting to upstream, client: 65.109.172.180, server: imersao.osvaldoaranha.com, request: "GET /api/health HTTP/2.0", upstream: "http://localhost/api/health", host: "imersao.osvaldoaranha.com"
+2026/03/16 19:56:41 [error] 2847169#2847169: *121042 open() "/usr/share/nginx/html/tiny" failed (2: No such file or directory), client: 189.18.76.183, server: tools.attriostudio.com, request: "GET /tiny HTTP/2.0", host: "tools.attriostudio.com"
+2026/03/16 19:56:42 [error] 2847169#2847169: *121042 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 189.18.76.183, server: tools.attriostudio.com, request: "GET /favicon.ico HTTP/2.0", host: "tools.attriostudio.com", referrer: "https://tools.attriostudio.com/tiny"
+2026/03/16 19:57:59 [error] 2847168#2847168: *121055 rewrite or internal redirection cycle while internally redirecting to "/index.html", client: 189.18.76.183, server: janiamesquita.com.br, request: "GET / HTTP/2.0", host: "janiamesquita.com.br"
+[?2004h]0;root@n8n: ~root@n8n:~# cat /tmp/ls.txt
+[?2004ltotal 12548
+drwxr-xr-x  6 root     root        4096 Mar 16 19:57 .
+drwxr-xr-x 14 root     root        4096 Mar 16 04:54 ..
+drwxr-xr-x  6      501 staff       4096 Mar 16 05:37 admin
+-rw-r--r--  1 root     root       54742 Mar 13 04:49 admin-and-backend.tar.gz
+drwxr-xr-x  7      501 staff       4096 Mar 16 06:29 backend
+-rw-r--r--  1 root     root     3916115 Mar 14 05:30 deploy_frontend_opt_img.tar.gz
+-rw-r--r--  1 root     root     4826826 Mar 14 05:21 deploy_frontend_opt.tar.gz
+-rw-r--r--  1 root     root     4015252 Mar 16 06:29 deploy.tar.gz
+drwxr-xr-x  3 root     root        4096 Mar 16 19:57 frontend
+drwxr-xr-x  5 www-data www-data    4096 Mar 16 06:29 frontend-dist-old
+total 36
+drwxr-xr-x 3 root root 4096 Mar 16 19:57 .
+drwxr-xr-x 6 root root 4096 Mar 16 19:57 ..
+drwxr-xr-x 3 root root 4096 Mar 16 19:57 assets
+-rw-r--r-- 1 root root   21 Mar 16 19:57 CNAME
+-rw-r--r-- 1 root root 6148 Mar 16 19:57 .DS_Store
+-rw-r--r-- 1 root root  259 Mar 16 19:57 favicon.svg
+-rw-r--r-- 1 root root 1210 Mar 16 19:57 .htaccess
+-rw-r--r-- 1 root root 1974 Mar 16 19:57 index.html
+[?2004h]0;root@n8n: ~root@n8n:~# exit
+[?2004llogout
+Connection to 65.109.172.180 closed.

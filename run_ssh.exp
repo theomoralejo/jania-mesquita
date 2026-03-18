@@ -1,0 +1,7 @@
+#!/usr/bin/expect -f
+set timeout 10
+set password "d4rHKRdw9NgU"
+spawn ssh -o StrictHostKeyChecking=no root@65.109.172.180 "cd /var/www/jania-mesquita && mv frontend frontend-temp && mkdir frontend && mv frontend-temp frontend/dist && chown -R www-data:www-data frontend && systemctl restart nginx"
+expect "*assword:*"
+send "$password\r"
+expect eof

@@ -1,0 +1,47 @@
+spawn ssh -o StrictHostKeyChecking=no root@65.109.172.180
+root@65.109.172.180's password: 
+Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.8.0-101-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Mon Mar 16 07:59:57 PM UTC 2026
+
+  System load:  0.52               Processes:             273
+  Usage of /:   50.2% of 74.79GB   Users logged in:       0
+  Memory usage: 71%                IPv4 address for eth0: 65.109.172.180
+  Swap usage:   0%                 IPv6 address for eth0: 2a01:4f9:c013:e989::1
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+Expanded Security Maintenance for Applications is not enabled.
+
+72 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+12 additional security updates can be applied with ESM Apps.
+Learn more about enabling ESM Apps service at https://ubuntu.com/esm
+
+
+You have new mail.
+Last login: Mon Mar 16 19:59:29 2026 from 189.18.76.183
+[?2004h]0;root@n8n: ~root@n8n:~# ls -la /var/www/jania-mesquita/frontend-dist-old | head -n 15 > /tmp/old_ls.txt
+[?2004l[?2004h]0;root@n8n: ~root@n8n:~# cat /tmp/old_ls.txt
+[?2004ltotal 40
+drwxr-xr-x 5 www-data www-data 4096 Mar 16 06:29 .
+drwxr-xr-x 6 root     root     4096 Mar 16 19:57 ..
+drwxr-xr-x 3 www-data www-data 4096 Mar 14 19:04 assets
+-rw-r--r-- 1 www-data www-data   21 Mar 14 19:04 CNAME
+-rwxr-xr-x 1      501 staff     163 Mar 16 05:53 ._dist
+drwxr-xr-x 3      501 staff    4096 Mar 16 05:53 dist
+drwxr-xr-x 3 www-data www-data 4096 Mar 14 23:43 dist_old
+-rw-r--r-- 1 www-data www-data  259 Mar 14 19:04 favicon.svg
+-rw-r--r-- 1 www-data www-data 1210 Mar  4 04:05 .htaccess
+-rw-r--r-- 1 www-data www-data 1974 Mar 14 19:04 index.html
+[?2004h]0;root@n8n: ~root@n8n:~# exit
+[?2004llogout
+Connection to 65.109.172.180 closed.
