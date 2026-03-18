@@ -29,7 +29,18 @@ export const AcervoCategoryEdit = () => {
           ]}
           extra="URL amigável (ex: lideranca)"
         >
-          <Input placeholder="lideranca" />
+          <Input placeholder="lideranca"  onBlur={(e) => {
+            const val = e.target.value;
+            if (val) {
+              const formatted = val
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/(^-|-$)+/g, "");
+              formProps.form?.setFieldsValue({ slug: formatted });
+            }
+          }} />
         </Form.Item>
       </Form>
     </Edit>

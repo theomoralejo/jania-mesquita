@@ -23,7 +23,7 @@ export function HeroHome() {
       {/* Subtle Warm Glow */}
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-br from-white/60 to-transparent rounded-full blur-3xl pointer-events-none"></div>
 
-      <div className="w-full max-w-[1218px] mx-auto relative z-10 px-[24px] md:px-12 py-[48px] md:py-24 pt-[98px] pr-[24px] pb-[48px] pl-[24px]">
+      <div className="w-full max-w-[1218px] mx-auto relative z-10 px-[24px] md:px-12 py-[48px] md:py-24 pt-[98px] lg:pt-[140px] pr-[24px] pb-[48px] pl-[24px]">
         {/* Two Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
           {/* Left Column - Text Content */}

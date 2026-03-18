@@ -48,7 +48,6 @@ export const DepoimentoCreate = () => {
         <Form.Item
           label="Foto"
           name="image"
-          rules={[{ required: true, message: 'Por favor, faça upload da foto' }]}
         >
           <ImageUpload folder="depoimentos" />
         </Form.Item>

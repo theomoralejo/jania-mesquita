@@ -13,17 +13,17 @@ export const AcervoCategoryCreate = () => {
   const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false);
 
   // Gerador avançado de slug validado
-  const slugify = (text = '') =>
+  const slugify = (text = "") =>
     text
       .toString()
       .toLowerCase()
       .trim()
-      .normalize('NFD') // Remove accents
-      .replace(/[\u0300-\u036f]/g, '') // Remove accents
-      .replace(/\s+/g, '-')
-      .replace(/[^a-z0-9-]/g, '')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '');
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
 
   return (
     <Create saveButtonProps={saveButtonProps}>

@@ -69,7 +69,7 @@ ssh root@65.109.172.180 "cp /var/www/jania-mesquita/backend/prisma/dev.db /var/w
 2. Empacotar source (sem node_modules, sem dist, sem banco)
 ```
 rm -f backend_deploy.tar.gz
-tar -czf backend_deploy.tar.gz --exclude='node_modules' --exclude='.DS_Store' --exclude='dist' --exclude='*.db' --exclude='*.db-journal' backend/
+tar -czf backend_deploy.tar.gz --exclude='node_modules' --exclude='.DS_Store' --exclude='dist' --exclude='*.db' --exclude='*.db-journal' --exclude='.env' backend/
 ```
 
 3. Enviar para o servidor

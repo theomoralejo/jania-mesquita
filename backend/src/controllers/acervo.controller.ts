@@ -52,7 +52,10 @@ export const getAcervoProducts = async (req: Request, res: Response): Promise<vo
         category: true,
         format: true,
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: [
+        { order: 'asc' },
+        { createdAt: 'desc' }
+      ],
     });
 
     res.json(products);
@@ -102,6 +105,22 @@ export const adminGetAcervoCategories = async (req: AuthRequest, res: Response):
   }
 };
 
+export const adminGetAcervoCategory = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const category = await prisma.acervoCategory.findUnique({
+      where: { id: String(req.params.id) },
+    });
+    if (!category) {
+      res.status(404).json({ error: 'Categoria não encontrada' });
+      return;
+    }
+    res.json(category);
+  } catch (error) {
+    console.error('Erro ao buscar categoria:', error);
+    res.status(500).json({ error: 'Erro ao buscar categoria' });
+  }
+};
+
 export const adminCreateAcervoCategory = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { label, slug } = req.body;
@@ -112,7 +131,10 @@ export const adminCreateAcervoCategory = async (req: AuthRequest, res: Response)
     const category = await prisma.acervoCategory.create({ data: { label, slug } });
     res.status(201).json(category);
   } catch (error: any) {
-    if (error.code === 'P2002') return res.status(400).json({ error: 'Slug já existe' });
+    if (error.code === 'P2002') {
+      res.status(400).json({ error: 'Slug já existe' });
+      return;
+    }
     res.status(500).json({ error: 'Erro ao criar categoria' });
   }
 };
@@ -121,20 +143,26 @@ export const adminUpdateAcervoCategory = async (req: AuthRequest, res: Response)
   try {
     const { label, slug } = req.body;
     const category = await prisma.acervoCategory.update({
-      where: { id: req.params.id },
+      where: { id: String(req.params.id) },
       data: { label, slug }
     });
     res.json(category);
   } catch (error: any) {
-    if (error.code === 'P2025') return res.status(404).json({ error: 'Categoria não encontrada' });
-    if (error.code === 'P2002') return res.status(400).json({ error: 'Slug já existe' });
+    if (error.code === 'P2025') {
+      res.status(404).json({ error: 'Categoria não encontrada' });
+      return;
+    }
+    if (error.code === 'P2002') {
+      res.status(400).json({ error: 'Slug já existe' });
+      return;
+    }
     res.status(500).json({ error: 'Erro ao atualizar categoria' });
   }
 };
 
 export const adminDeleteAcervoCategory = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    await prisma.acervoCategory.delete({ where: { id: req.params.id } });
+    await prisma.acervoCategory.delete({ where: { id: String(req.params.id) } });
     res.json({ message: 'Categoria deletada com sucesso' });
   } catch (error: any) {
     res.status(500).json({ error: 'Erro ao deletar categoria' });
@@ -158,39 +186,64 @@ export const adminGetAcervoFormats = async (req: AuthRequest, res: Response): Pr
   }
 };
 
+export const adminGetAcervoFormat = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const format = await prisma.acervoFormat.findUnique({
+      where: { id: String(req.params.id) },
+    });
+    if (!format) {
+      res.status(404).json({ error: 'Formato não encontrado' });
+      return;
+    }
+    res.json(format);
+  } catch (error) {
+    console.error('Erro ao buscar formato:', error);
+    res.status(500).json({ error: 'Erro ao buscar formato' });
+  }
+};
+
 export const adminCreateAcervoFormat = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { label, slug } = req.body;
+    const { label, slug, icon } = req.body;
     if (!label || !slug) {
       res.status(400).json({ error: 'Nome e slug são obrigatórios' });
       return;
     }
-    const format = await prisma.acervoFormat.create({ data: { label, slug } });
+    const format = await prisma.acervoFormat.create({ data: { label, slug, icon: icon ? String(icon) : "BookOpen" } });
     res.status(201).json(format);
   } catch (error: any) {
-    if (error.code === 'P2002') return res.status(400).json({ error: 'Slug já existe' });
+    if (error.code === 'P2002') {
+      res.status(400).json({ error: 'Slug já existe' });
+      return;
+    }
     res.status(500).json({ error: 'Erro ao criar formato' });
   }
 };
 
 export const adminUpdateAcervoFormat = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { label, slug } = req.body;
+    const { label, slug, icon } = req.body;
     const format = await prisma.acervoFormat.update({
-      where: { id: req.params.id },
-      data: { label, slug }
+      where: { id: String(req.params.id) },
+      data: { label, slug, icon: icon !== undefined ? String(icon) : undefined }
     });
     res.json(format);
   } catch (error: any) {
-    if (error.code === 'P2025') return res.status(404).json({ error: 'Formato não encontrado' });
-    if (error.code === 'P2002') return res.status(400).json({ error: 'Slug já existe' });
+    if (error.code === 'P2025') {
+      res.status(404).json({ error: 'Formato não encontrado' });
+      return;
+    }
+    if (error.code === 'P2002') {
+      res.status(400).json({ error: 'Slug já existe' });
+      return;
+    }
     res.status(500).json({ error: 'Erro ao atualizar formato' });
   }
 };
 
 export const adminDeleteAcervoFormat = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    await prisma.acervoFormat.delete({ where: { id: req.params.id } });
+    await prisma.acervoFormat.delete({ where: { id: String(req.params.id) } });
     res.json({ message: 'Formato deletado com sucesso' });
   } catch (error: any) {
     res.status(500).json({ error: 'Erro ao deletar formato' });
@@ -265,7 +318,7 @@ export const adminCreateAcervoProduct = async (req: AuthRequest, res: Response):
       title, slug, description, fullContent, image, price, originalPrice, 
       installmentsPrice, badge1Text, badge1Enabled, badge2Text, badge2Enabled,
       descriptionTitleText, descriptionTitleEnabled, bestsellerText, readersText,
-      categoryId, formatId, hotmartLink 
+      categoryId, formatId, hotmartLink, featured, order 
     } = req.body;
 
     if (!title || !slug) {
@@ -294,6 +347,8 @@ export const adminCreateAcervoProduct = async (req: AuthRequest, res: Response):
         descriptionTitleEnabled: descriptionTitleEnabled !== undefined ? Boolean(descriptionTitleEnabled) : true,
         bestsellerText: bestsellerText ? String(bestsellerText) : "Bestseller #1 em Gestão Médica",
         readersText: readersText ? String(readersText) : "Junte-se a 2.000+ médicos leitores",
+        featured: featured !== undefined ? Boolean(featured) : false,
+        order: order !== undefined ? Number(order) : 0,
       },
       include: {
         category: true,
@@ -319,7 +374,7 @@ export const adminUpdateAcervoProduct = async (req: AuthRequest, res: Response):
       title, slug, description, fullContent, image, price, originalPrice, installmentsPrice,
       badge1Text, badge1Enabled, badge2Text, badge2Enabled, descriptionTitleText, descriptionTitleEnabled,
       bestsellerText, readersText,
-      categoryId, formatId, hotmartLink, published 
+      categoryId, formatId, hotmartLink, published, featured, order 
     } = req.body;
 
     const product = await prisma.acervoProduct.update({
@@ -334,6 +389,7 @@ export const adminUpdateAcervoProduct = async (req: AuthRequest, res: Response):
         originalPrice: originalPrice !== undefined ? (originalPrice ? String(originalPrice) : null) : undefined, 
         hotmartLink: hotmartLink !== undefined ? (hotmartLink ? String(hotmartLink) : null) : undefined, 
         published: published !== undefined ? Boolean(published) : undefined, 
+        featured: featured !== undefined ? Boolean(featured) : undefined,
         categoryId: categoryId !== undefined ? String(categoryId) : undefined, 
         formatId: formatId !== undefined ? String(formatId) : undefined,
         installmentsPrice: installmentsPrice !== undefined ? (installmentsPrice ? String(installmentsPrice) : null) : undefined,
@@ -345,6 +401,7 @@ export const adminUpdateAcervoProduct = async (req: AuthRequest, res: Response):
         descriptionTitleEnabled: descriptionTitleEnabled !== undefined ? Boolean(descriptionTitleEnabled) : undefined,
         bestsellerText: bestsellerText !== undefined ? String(bestsellerText) : undefined,
         readersText: readersText !== undefined ? String(readersText) : undefined,
+        order: order !== undefined ? Number(order) : undefined,
       },
       include: {
         category: true,

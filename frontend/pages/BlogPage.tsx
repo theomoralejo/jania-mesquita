@@ -113,7 +113,7 @@ export default function BlogPage() {
           <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-[#42331C] blur-3xl"></div>
         </div>
         
-        <div className="container-custom relative z-10">
+        <div className="container-custom relative z-10 px-6 md:px-0">
           <div className="max-w-4xl mx-auto text-center">
             <div className="editorial-label mb-8">
               Blog
@@ -145,7 +145,7 @@ export default function BlogPage() {
       {/* Category Filter */}
       <section className="sticky top-20 z-40 bg-white/95 backdrop-blur-sm border-y border-[#DFDCD4] py-6">
         <div className="container-custom">
-          <div className="flex gap-3 overflow-x-auto pb-2 md:pb-0 no-scrollbar justify-center">
+          <div className="flex gap-3 overflow-x-auto pb-2 md:pb-0 no-scrollbar justify-start md:justify-center">
             {categories.map((category) => (
               <button
                 key={category.value}

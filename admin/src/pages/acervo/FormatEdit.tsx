@@ -2,7 +2,20 @@ import {
   Edit,
   useForm,
 } from '@refinedev/antd';
-import { Form, Input } from 'antd';
+import { Form, Input, Select } from 'antd';
+
+const ICON_OPTIONS = [
+  { value: 'Book', label: 'Livro (Book)' },
+  { value: 'BookOpen', label: 'Livro Aberto (BookOpen)' },
+  { value: 'ShoppingBag', label: 'Produto (ShoppingBag)' },
+  { value: 'Smartphone', label: 'Digital/Mobile (Smartphone)' },
+  { value: 'Video', label: 'Vídeo (Video)' },
+  { value: 'Headphones', label: 'Áudio (Headphones)' },
+  { value: 'FileText', label: 'Documento (FileText)' },
+  { value: 'PlayCircle', label: 'Play (PlayCircle)' },
+  { value: 'Star', label: 'Estrela (Star)' },
+  { value: 'Heart', label: 'Coração (Heart)' },
+];
 
 export const FormatEdit = () => {
   const { formProps, saveButtonProps } = useForm({
@@ -29,7 +42,30 @@ export const FormatEdit = () => {
           ]}
           extra="URL amigável (ex: lideranca)"
         >
-          <Input placeholder="lideranca" />
+          <Input placeholder="lideranca"  onBlur={(e) => {
+            const val = e.target.value;
+            if (val) {
+              const formatted = val
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/(^-|-$)+/g, "");
+              formProps.form?.setFieldsValue({ slug: formatted });
+            }
+          }} />
+        </Form.Item>
+
+        <Form.Item
+          label="Ícone"
+          name="icon"
+          initialValue="BookOpen"
+          extra="Selecione o ícone que aparecerá no filtro do site"
+        >
+          <Select 
+            options={ICON_OPTIONS}
+            placeholder="Selecione um ícone..."
+          />
         </Form.Item>
       </Form>
     </Edit>

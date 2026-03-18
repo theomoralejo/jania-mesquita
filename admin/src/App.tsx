@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Refine } from '@refinedev/core';
 import {
   AuthPage,
@@ -42,6 +43,8 @@ import { DiagnosticoList } from './pages/formularios/DiagnosticoList';
 import { DiagnosticoShow } from './pages/formularios/DiagnosticoShow';
 import { MentoriaList } from './pages/formularios/MentoriaList';
 import { MentoriaShow } from './pages/formularios/MentoriaShow';
+import { ConsultoriaList } from './pages/formularios/ConsultoriaList';
+import { ConsultoriaShow } from './pages/formularios/ConsultoriaShow';
 import { PalestrasList } from './pages/formularios/PalestrasList';
 import { PalestrasShow } from './pages/formularios/PalestrasShow';
 import { NewsletterList } from './pages/formularios/NewsletterList';
@@ -74,6 +77,61 @@ import { SettingsPage } from './pages/Settings';
 import { AdminLoginLogo } from './components/AdminLoginLogo';
 
 function App() {
+  // Injetar scripts globais (GTM, Pixels) do backend
+  useEffect(() => {
+    const apiBase = import.meta.env.VITE_API_URL || 'https://admin.janiamesquita.com.br/api';
+    fetch(`${apiBase}/config/scripts`)
+      .then(res => res.json())
+      .then(data => {
+        document.querySelectorAll('[data-config="head"]').forEach(el => el.remove());
+        document.querySelectorAll('[data-config="body"]').forEach(el => el.remove());
+        if (data && data.value) {
+          const params = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
+          if (params.head) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = params.head;
+            Array.from(tempDiv.childNodes).forEach(node => {
+              if (node.nodeType === 1) {
+                const el = node as Element;
+                if (el.tagName === 'SCRIPT') {
+                  const scriptEl = document.createElement('script');
+                  Array.from(el.attributes).forEach(attr => scriptEl.setAttribute(attr.name, attr.value));
+                  scriptEl.innerHTML = el.innerHTML;
+                  scriptEl.setAttribute('data-config', 'head');
+                  document.head.appendChild(scriptEl);
+                } else {
+                  const cloned = node.cloneNode(true) as Element;
+                  cloned.setAttribute('data-config', 'head');
+                  document.head.appendChild(cloned);
+                }
+              }
+            });
+          }
+          if (params.body) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = params.body;
+            Array.from(tempDiv.childNodes).forEach(node => {
+              if (node.nodeType === 1) {
+                const el = node as Element;
+                if (el.tagName === 'SCRIPT') {
+                  const scriptEl = document.createElement('script');
+                  Array.from(el.attributes).forEach(attr => scriptEl.setAttribute(attr.name, attr.value));
+                  scriptEl.innerHTML = el.innerHTML;
+                  scriptEl.setAttribute('data-config', 'body');
+                  document.body.appendChild(scriptEl);
+                } else {
+                  const cloned = node.cloneNode(true) as Element;
+                  cloned.setAttribute('data-config', 'body');
+                  document.body.appendChild(cloned);
+                }
+              }
+            });
+          }
+        }
+      })
+      .catch(err => console.error('Erro ao injetar scripts globais:', err));
+  }, []);
+
   return (
     <BrowserRouter>
       <ConfigProvider
@@ -215,6 +273,15 @@ function App() {
                 },
               },
               {
+                name: 'formularios/consultoria',
+                list: '/formularios/consultoria',
+                show: '/formularios/consultoria/show/:id',
+                meta: {
+                  parent: 'formularios',
+                  label: 'Consultoria',
+                },
+              },
+              {
                 name: 'formularios/contato',
                 list: '/formularios/contato',
                 show: '/formularios/contato/show/:id',
@@ -242,6 +309,14 @@ function App() {
                 },
               },
               {
+                name: 'formularios/newsletter',
+                list: '/formularios/newsletter',
+                meta: {
+                  parent: 'formularios',
+                  label: 'Newsletter',
+                },
+              },
+              {
                 name: 'formularios/palestras',
                 list: '/formularios/palestras',
                 show: '/formularios/palestras/show/:id',
@@ -251,20 +326,19 @@ function App() {
                 },
               },
               {
-                name: 'formularios/newsletter',
-                list: '/formularios/newsletter',
-                meta: {
-                  parent: 'formularios',
-                  label: 'Newsletter',
-                },
-              },
-              {
                 name: 'formularios/avaliacao',
                 list: '/formularios/avaliacao',
                 show: '/formularios/avaliacao/show/:id',
                 meta: {
                   parent: 'formularios',
-                  label: 'Avaliações',
+                  label: 'Quiz',
+                },
+              },
+              {
+                name: 'acervo_group',
+                meta: {
+                  label: 'Acervo',
+                  icon: <BookOutlined />,
                 },
               },
               {
@@ -274,8 +348,8 @@ function App() {
                 edit: '/acervo/edit/:id',
                 show: '/acervo/show/:id',
                 meta: {
-                  label: 'Acervo',
-                  icon: <BookOutlined />,
+                  parent: 'acervo_group',
+                  label: 'Produtos',
                 },
               },
               {
@@ -284,7 +358,7 @@ function App() {
                 create: '/acervo/categories/create',
                 edit: '/acervo/categories/edit/:id',
                 meta: {
-                  parent: 'acervo',
+                  parent: 'acervo_group',
                   label: 'Categorias',
                 },
               },
@@ -294,7 +368,7 @@ function App() {
                 create: '/acervo/formats/create',
                 edit: '/acervo/formats/edit/:id',
                 meta: {
-                  parent: 'acervo',
+                  parent: 'acervo_group',
                   label: 'Formatos',
                 },
               },
@@ -399,6 +473,11 @@ function App() {
                 <Route path="/formularios/mentoria">
                   <Route index element={<MentoriaList />} />
                   <Route path="show/:id" element={<MentoriaShow />} />
+                </Route>
+
+                <Route path="/formularios/consultoria">
+                  <Route index element={<ConsultoriaList />} />
+                  <Route path="show/:id" element={<ConsultoriaShow />} />
                 </Route>
 
                 <Route path="/formularios/palestras">

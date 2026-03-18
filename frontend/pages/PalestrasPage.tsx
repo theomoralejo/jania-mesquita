@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { useState, useEffect } from 'react';
-import { ArrowRight, CheckCircle2, Compass, Lightbulb, Users, Users2, MessageCircle, Target, Sparkles, Anchor, TrendingUp, Shield } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Compass, Lightbulb, Users, Users2, MessageCircle, Target, Sparkles, Anchor, TrendingUp, Shield, Star } from 'lucide-react';
 import { CompaniesLogos } from '../components/CompaniesLogos';
 import { EventPhotos } from '../components/EventPhotos';
 import { PalestrasHeroImage } from '../components/PalestrasHeroImage';
-import { formulariosApi, palestrasApi, depoimentosApi, type PalestraVertente, type PalestraEstatistica, type Depoimento } from '../lib/api';
+import { formulariosApi, palestrasApi, depoimentosApi, resolveImageUrl, type PalestraVertente, type PalestraEstatistica, type Depoimento } from '../lib/api';
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Users, Users2, Target, TrendingUp, Shield, Sparkles, MessageCircle, Compass, Lightbulb,
@@ -113,24 +113,24 @@ export default function PalestrasPage() {
 
               {/* CTA Buttons - Stack vertical */}
               <div className="flex flex-col gap-5 mb-20">
-                <a
-                  href="#contato"
+                <button
+                  onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
                   className="group px-10 py-5 bg-[#385443] text-[#F2EFE8] rounded-[7px] transition-all duration-300 hover:bg-[#4a6655] hover:shadow-lg hover:-translate-y-0.5 font-medium tracking-wide flex items-center justify-center gap-3"
                 >
                   <span>Vamos conversar sobre seu evento</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" strokeWidth={2} />
-                </a>
+                </button>
 
-                <a
-                  href="#trajetoria"
+                <button
+                  onClick={() => document.getElementById('trajetoria')?.scrollIntoView({ behavior: 'smooth' })}
                   className="px-10 py-5 border border-[#385443] text-[#385443] rounded-[7px] transition-all duration-300 hover:bg-[#DFDCD4] hover:-translate-y-0.5 font-medium tracking-wide flex items-center justify-center gap-2"
                 >
                   <span>Conheça a trajetória</span>
-                </a>
+                </button>
               </div>
 
               {/* Stats - mais compacto */}
-              <div className="grid grid-cols-4 gap-6 pt-10 border-t border-[#385443]/20">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pt-10 border-t border-[#385443]/20">
                 {stats.map((stat) => (
                   <div key={stat.id}>
                     <div className="font-serif text-3xl text-[#385443] mb-1">{stat.value}</div>
@@ -324,13 +324,13 @@ export default function PalestrasPage() {
                   Vamos construir juntos o conteúdo ideal para você.
                 </span>
               </p>
-              <a
-                href="#contato"
+              <button
+                onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
                 className="inline-flex items-center gap-2 text-[#385443] hover:text-[#4a6655] transition-colors duration-300 group"
               >
                 <span className="font-medium tracking-wide">Iniciar conversa</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" strokeWidth={2} />
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -400,13 +400,13 @@ export default function PalestrasPage() {
               Essas vertentes se combinam de formas únicas para criar{' '}
               <span className="text-[#385443] font-medium">a palestra ideal para seu contexto</span>
             </p>
-            <a
-              href="#contato"
+            <button
+              onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
               className="inline-flex items-center gap-2 text-[#385443] hover:text-[#4a6655] transition-colors duration-300 group"
             >
               <span className="font-medium tracking-wide">Vamos definir juntos</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" strokeWidth={2} />
-            </a>
+            </button>
           </div>
         </div>
       </section>
@@ -473,26 +473,48 @@ export default function PalestrasPage() {
               </span>
             </div>
 
-            <h2 className="font-serif text-[48px] md:text-[58px] mb-10 leading-[1.05] tracking-tight text-[#232323]">
-              O que dizem os{' '}
-              <span className="italic text-[#385443]">organizadores</span>
+            <h2 className="font-serif text-[36px] md:text-[58px] mb-10 leading-[1.05] tracking-tight text-[#232323]">
+              Pessoas que confiam na{' '}
+              <span className="italic text-[#385443]">Jania Mesquita</span>
             </h2>
           </div>
 
           {testimonials.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              {testimonials.map((testimonial) => (
-                <div key={testimonial.id} className="group bg-white p-8 rounded-[7px] border border-[#DFDCD4] hover:border-[#385443]/40 transition-all duration-300">
-                  <p className="text-[#42331C] mb-8 leading-relaxed italic text-base">
-                    "{testimonial.quote}"
-                  </p>
-                  <div className="pt-6 border-t border-[#DFDCD4]">
-                    <div className="text-[#232323] mb-1 font-medium">{testimonial.name}</div>
-                    <div className="text-sm text-[#385443] mb-1">{testimonial.role}</div>
-                    <div className="text-xs text-[#42331C]/70">{testimonial.event}</div>
-                  </div>
+            <div className="relative">
+              <div className="flex justify-end mb-4 pr-6 md:pr-0">
+                <div className="text-xs uppercase tracking-widest text-[#B6A689] font-bold flex items-center gap-2">
+                  <ArrowRight className="w-4 h-4" />
+                  Arraste para ler mais
                 </div>
-              ))}
+              </div>
+              <div className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide px-6 md:px-0">
+                {testimonials.map((testimonial, idx) => (
+                  <div key={idx} className="flex-none w-[320px] md:w-[380px] snap-start bg-white p-8 rounded-[7px] text-[#42331C] flex flex-col justify-between relative overflow-hidden group shadow-lg border border-[#DFDCD4]">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-[#B6A689]/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
+                    <div className="relative z-10 flex-grow">
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#385443]">
+                          <img src={resolveImageUrl((testimonial as any).image) || `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial.name)}&background=385443&color=fff`} alt={testimonial.name} className="w-full h-full object-cover" />
+                        </div>
+                        <div>
+                          <h4 className="font-serif text-lg text-[#42331C] mb-1">{testimonial.name}</h4>
+                          <p className="text-[10px] text-[#B6A689] uppercase tracking-wider">{testimonial.role} {testimonial.event && `• ${testimonial.event}`}</p>
+                        </div>
+                      </div>
+                      <p className="text-sm font-light leading-relaxed italic text-[#696969] line-clamp-4">
+                        "{testimonial.quote}"
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1 mt-6 relative z-10">
+                      {[1,2,3,4,5].map(i => (
+                        <Star key={i} className="w-4 h-4 text-[#d4af37] fill-current" />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+                {/* Invisible spacer to prevent cutoff on last item */}
+                <div className="flex-none w-1 md:hidden"></div>
+              </div>
             </div>
           )}
         </div>

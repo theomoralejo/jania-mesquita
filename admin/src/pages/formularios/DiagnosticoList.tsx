@@ -25,7 +25,7 @@ export const DiagnosticoList = () => {
     <List>
       <Alert
         message="Formulário Rápido de Contato (Diagnóstico)"
-        description={<>Estes contatos vêm do formulário no rodapé da página inicial (Home). <a href="https://janiamesquita.com.br/#diagnostico" target="_blank" rel="noreferrer">Ver formulário no site</a></>}
+        description={<>Estes contatos vêm do formulário no rodapé da página inicial (Home). <a href="https://janiamesquita.com.br/" target="_blank" rel="noreferrer">Ver formulário no site</a></>}
         type="info"
         showIcon
         style={{ marginBottom: 16 }}

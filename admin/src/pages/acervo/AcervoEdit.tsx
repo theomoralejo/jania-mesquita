@@ -44,7 +44,18 @@ export const AcervoEdit = () => {
           rules={[{ required: true, message: 'Por favor, insira o slug' }]}
           extra="URL amigável (ex: meu-produto)"
         >
-          <Input />
+          <Input  onBlur={(e) => {
+            const val = e.target.value;
+            if (val) {
+              const formatted = val
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/(^-|-$)+/g, "");
+              formProps.form?.setFieldsValue({ slug: formatted });
+            }
+          }} />
         </Form.Item>
 
         <Form.Item
@@ -190,6 +201,15 @@ export const AcervoEdit = () => {
           label="Publicado"
           name="published"
           valuePropName="checked"
+        >
+          <Switch />
+        </Form.Item>
+
+        <Form.Item
+          label="Em Destaque"
+          name="featured"
+          valuePropName="checked"
+          extra="Exibir este item em destaque no topo da página do Acervo"
         >
           <Switch />
         </Form.Item>

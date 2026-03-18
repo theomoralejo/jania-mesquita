@@ -1,17 +1,25 @@
 import React from 'react';
 
-import { ArrowRight, Users, Mic, BookOpen } from 'lucide-react';
+import { ArrowRight, Users, Mic, BookOpen, Stethoscope } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export function ServicesPreview() {
   const services = [
+    {
+      icon: Stethoscope,
+      title: 'Consultoria Estratégica',
+      description: 'Sessão diagnóstica individual de 1 hora. Identifique os gargalos da sua operação e receba um plano de ação personalizado.',
+      highlights: ['Diagnóstico completo', 'Plano de ação em 90 dias', 'Sessão individual com Jania'],
+      link: '/consultoria',
+      badge: 'Mais procurada'
+    },
     {
       icon: Users,
       title: 'Mentoria Executiva',
       description: 'Transforme sua clínica em uma operação escalável. Governança, liderança e processos que funcionam sem você presente.',
       highlights: ['Diagnóstico completo', 'Acompanhamento semanal', '3 níveis personalizados'],
       link: '/mentoria',
-      badge: 'Mais procurado'
+      badge: null
     },
     {
       icon: Mic,
@@ -59,7 +67,7 @@ export function ServicesPreview() {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {services.map((service, index) => (
             <div
               key={index}

@@ -4,6 +4,7 @@ import {
   useSelect,
 } from '@refinedev/antd';
 import { Form, Input, Select, Switch, DatePicker } from 'antd';
+import { useState } from 'react';
 import dayjs from 'dayjs';
 import { ImageUpload } from '../../components/ImageUpload';
 import { RichTextEditor } from '../../components/RichTextEditor';
@@ -40,16 +41,20 @@ export const PostCreate = () => {
     form?.setFieldValue('readTime', readTime);
   };
 
-  // Gerador simples de slug validado
-  const slugify = (text = '') =>
+  const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false);
+
+  // Gerador avançado de slug validado (remove acentos)
+  const slugify = (text = "") =>
     text
       .toString()
       .toLowerCase()
       .trim()
-      .replace(/\s+/g, '-')
-      .replace(/[^a-z0-9-]/g, '')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '');
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
 
   return (
     <Create saveButtonProps={saveButtonProps}>
@@ -61,10 +66,8 @@ export const PostCreate = () => {
         >
           <Input onChange={(e) => {
             const title = e.target.value;
-            const currentSlug = form?.getFieldValue('slug');
-            const generated = slugify(title);
-            if (!currentSlug) {
-              form?.setFieldValue('slug', generated);
+            if (!isSlugManuallyEdited) {
+              form?.setFieldValue('slug', slugify(title));
             }
           }} />
         </Form.Item>
@@ -75,7 +78,14 @@ export const PostCreate = () => {
           rules={[{ required: true, message: 'Por favor, insira o slug' }]}
           extra="URL amigável (ex: meu-post-incrivel)"
         >
-          <Input />
+          <Input 
+            onChange={() => setIsSlugManuallyEdited(true)}
+            onBlur={(e) => {
+              if (e.target.value) {
+                form?.setFieldValue('slug', slugify(e.target.value));
+              }
+            }}
+          />
         </Form.Item>
 
         <Form.Item

@@ -10,12 +10,13 @@ interface ImageUploadProps {
   folder?: string;
 }
 
-const apiBaseLocal = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const apiBaseLocal = import.meta.env.VITE_API_URL || 'https://janiamesquita.com.br/api';
 const apiBase = apiBaseLocal.replace(/\/api\/?$/, '');
 
 function resolveAdminImageUrl(url?: string | null): string {
   if (!url) return '';
   if (url.startsWith('/uploads')) return `${apiBase}${url}`;
+  if (url.startsWith('/assets')) return `${apiBase}${url}`;
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
   return url;
 }
@@ -175,7 +176,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ value, onChange, folde
                       onMouseOut={e => (e.currentTarget.style.borderColor = 'transparent')}
                     >
                       <Image
-                        src={`${apiBase}${item.url}`}
+                        src={resolveAdminImageUrl(item.url)}
                         alt={item.filename}
                         width={150}
                         height={100}

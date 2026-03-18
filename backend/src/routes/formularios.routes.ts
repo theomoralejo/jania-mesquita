@@ -3,6 +3,7 @@ import {
   submitContato,
   submitDiagnostico,
   submitMentoria,
+  submitConsultoria,
   submitPalestras,
   submitNewsletter,
   submitAvaliacao,
@@ -14,6 +15,8 @@ import {
   adminMarkDiagnosticoRead,
   adminGetMentorias,
   adminMarkMentoriaRead,
+  adminGetConsultorias,
+  adminMarkConsultoriaRead,
   adminGetPalestras,
   adminMarkPalestraRead,
   adminGetNewsletters,
@@ -30,6 +33,7 @@ const router = Router();
 router.post('/contato', submitContato);
 router.post('/diagnostico', submitDiagnostico);
 router.post('/mentoria', submitMentoria);
+router.post('/consultoria', submitConsultoria);
 router.post('/palestras', submitPalestras);
 router.post('/newsletter', submitNewsletter);
 router.post('/avaliacao', submitAvaliacao);
@@ -73,6 +77,20 @@ adminFormulariosRouter.put('/mentoria/:id', authenticate, adminMarkMentoriaRead)
 adminFormulariosRouter.patch('/mentoria/:id', authenticate, adminMarkMentoriaRead);
 adminFormulariosRouter.put('/mentoria/:id/read', authenticate, adminMarkMentoriaRead);
 adminFormulariosRouter.patch('/mentoria/:id/read', authenticate, adminMarkMentoriaRead);
+
+// Consultoria
+adminFormulariosRouter.get('/consultoria', authenticate, adminGetConsultorias);
+adminFormulariosRouter.get('/consultoria/:id', authenticate, async (req: any, res: any) => {
+  try {
+    const item = await prisma.formularioConsultoria.findUnique({ where: { id: String(req.params.id) } });
+    if (!item) { res.status(404).json({ error: 'Não encontrado' }); return; }
+    res.json(item);
+  } catch { res.status(500).json({ error: 'Erro ao buscar' }); }
+});
+adminFormulariosRouter.put('/consultoria/:id', authenticate, adminMarkConsultoriaRead);
+adminFormulariosRouter.patch('/consultoria/:id', authenticate, adminMarkConsultoriaRead);
+adminFormulariosRouter.put('/consultoria/:id/read', authenticate, adminMarkConsultoriaRead);
+adminFormulariosRouter.patch('/consultoria/:id/read', authenticate, adminMarkConsultoriaRead);
 
 // Palestras
 adminFormulariosRouter.get('/palestras', authenticate, adminGetPalestras);

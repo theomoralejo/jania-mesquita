@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Link } from 'react-router-dom';
-import { Instagram, Linkedin } from 'lucide-react';
+import { Instagram, Linkedin, CheckCircle2 } from 'lucide-react';
 import Logo from '../imports/Logo1';
+import { formulariosApi } from '../lib/api';
 
 export function Footer() {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    try {
+      setStatus('loading');
+      await formulariosApi.submitNewsletter({ email });
+      setStatus('success');
+    } catch (err) {
+      console.error('Erro ao assinar newsletter:', err);
+      setStatus('error');
+    }
+  };
+
   return (
     <footer className="bg-white">
 
@@ -67,16 +84,30 @@ export function Footer() {
               <p className="text-xs font-light mb-4 leading-relaxed text-[rgb(215,215,215)]">
                 Insights sobre governança e gestão de clínicas direto no seu e-mail.
               </p>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="Seu e-mail"
-                  className="flex-1 px-3 py-2 bg-[#4D412F]/50 border border-[#6B5D47] text-[#FFFFFF] rounded-[5px] text-xs focus:border-[#E8E5DD] focus:outline-none transition-colors placeholder:text-[#C9B896]"
-                />
-                <button className="px-4 py-2 bg-[#E8E5DD] text-[#31230D] rounded-[5px] hover:bg-[#FFFFFF] transition-colors font-bold text-xs">
-                  →
-                </button>
-              </div>
+              {status === 'success' ? (
+                <div className="flex items-center gap-2 text-[#E8E5DD]">
+                  <CheckCircle2 className="w-5 h-5 text-[#B6CBBE]" />
+                  <span className="text-sm">Inscrição realizada!</span>
+                </div>
+              ) : (
+                <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
+                  <input
+                    type="email"
+                    required
+                    placeholder="Seu e-mail"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="flex-1 px-3 py-2 bg-[#4D412F]/50 border border-[#6B5D47] text-[#FFFFFF] rounded-[5px] text-xs focus:border-[#E8E5DD] focus:outline-none transition-colors placeholder:text-[#C9B896]"
+                  />
+                  <button 
+                    type="submit"
+                    disabled={status === 'loading'}
+                    className="px-4 py-2 bg-[#E8E5DD] text-[#31230D] rounded-[5px] hover:bg-[#FFFFFF] transition-colors font-bold text-xs disabled:opacity-50"
+                  >
+                    {status === 'loading' ? '...' : '→'}
+                  </button>
+                </form>
+              )}
             </div>
           </div>
 

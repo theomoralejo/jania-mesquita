@@ -7,6 +7,8 @@ import acervoRoutes, { adminAcervoRouter } from './acervo.routes';
 import configRoutes, { adminConfigRouter } from './config.routes';
 import { adminGaleriaRouter } from './galeria.routes';
 import uploadRoutes from './upload.routes';
+import { reorderItems, inlineUpdate } from '../controllers/reorder.controller';
+import { authenticate } from '../middleware/auth';
 
 const router = Router();
 
@@ -34,4 +36,13 @@ router.use('/admin/config', adminConfigRouter);
 router.use('/admin', adminContentRouter);
 router.use('/admin/upload', uploadRoutes);
 
+// Reorder routes (admin)
+router.post('/admin/depoimentos/reorder', authenticate, reorderItems('depoimento'));
+router.post('/admin/midias/reorder', authenticate, reorderItems('mediaItem'));
+router.post('/admin/galeria/fotos/reorder', authenticate, reorderItems('galeriaFoto'));
+router.post('/admin/acervo/reorder', authenticate, reorderItems('acervoProduct'));
+
+// Inline update routes (admin) - uses PATCH on existing routes, already handled by controllers
+
 export default router;
+

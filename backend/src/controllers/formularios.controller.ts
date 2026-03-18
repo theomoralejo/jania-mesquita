@@ -100,6 +100,36 @@ export const submitMentoria = async (req: Request, res: Response): Promise<void>
   }
 };
 
+// Consultoria
+export const submitConsultoria = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { name, email, phone, clinic, revenue, mainChallenge } = req.body;
+
+    if (!name || !email || !phone || !clinic || !revenue) {
+      res.status(400).json({ error: 'Campos obrigatórios faltando' });
+      return;
+    }
+
+    const consultoria = await prisma.formularioConsultoria.create({
+      data: { name, email, phone, clinic, revenue, mainChallenge },
+    });
+
+    // Enviar email de notificação
+    emailService.notifyNewConsultoria({ name, email, phone, clinic, revenue, mainChallenge }).catch((error) => {
+      console.error('Erro ao enviar email de consultoria:', error);
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Solicitação de consultoria enviada com sucesso!',
+      id: consultoria.id,
+    });
+  } catch (error) {
+    console.error('Erro ao enviar consultoria:', error);
+    res.status(500).json({ error: 'Erro ao enviar solicitação de consultoria' });
+  }
+};
+
 // Palestras
 export const submitPalestras = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -371,6 +401,20 @@ export const adminMarkMentoriaRead = async (req: AuthRequest, res: Response): Pr
   }
 };
 
+export const adminMarkConsultoriaRead = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const id = String(req.params.id);
+    const { read } = req.body;
+    const item = await prisma.formularioConsultoria.update({
+      where: { id },
+      data: { read: read !== undefined ? read : true },
+    });
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao atualizar consultoria' });
+  }
+};
+
 export const adminMarkPalestraRead = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const id = String(req.params.id);
@@ -450,6 +494,24 @@ export const adminGetMentorias = async (req: AuthRequest, res: Response): Promis
   }
 };
 
+export const adminGetConsultorias = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { read } = req.query;
+    const where: any = {};
+    if (read !== undefined) where.read = read === 'true';
+
+    const consultorias = await prisma.formularioConsultoria.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+    });
+
+    res.json(consultorias);
+  } catch (error) {
+    console.error('Erro ao buscar consultorias:', error);
+    res.status(500).json({ error: 'Erro ao buscar consultorias' });
+  }
+};
+
 export const adminGetPalestras = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { read } = req.query;
@@ -508,6 +570,7 @@ export default {
   submitContato,
   submitDiagnostico,
   submitMentoria,
+  submitConsultoria,
   submitPalestras,
   submitNewsletter,
   submitAvaliacao,
@@ -519,6 +582,8 @@ export default {
   adminMarkDiagnosticoRead,
   adminGetMentorias,
   adminMarkMentoriaRead,
+  adminGetConsultorias,
+  adminMarkConsultoriaRead,
   adminGetPalestras,
   adminMarkPalestraRead,
   adminGetNewsletters,

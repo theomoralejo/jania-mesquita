@@ -389,17 +389,17 @@ async function main() {
 
   for (const item of [
     {
-      name: 'Dr. Carlos Silva', role: 'Diretor Médico', event: 'Workshop de Gestão Estratégica',
+      name: 'Carlos S.', role: 'Diretor Médico', event: '',
       quote: 'A palestra da Jania transformou completamente minha visão sobre gestão de clínicas. Implementei as estratégias e em 6 meses aumentei meu faturamento em 40%.',
       image: '/assets/img/jania_13.webp', published: true, order: 1,
     },
     {
-      name: 'Dra. Ana Paula', role: 'Proprietária de Clínica', event: 'Mentoria Individual',
+      name: 'Ana P.', role: 'Proprietária de Clínica', event: '',
       quote: 'O programa de mentoria me deu clareza e ferramentas práticas. Hoje tenho processos estruturados e uma equipe engajada. Recomendo para todo médico gestor!',
       image: '/assets/img/jania_9.webp', published: true, order: 2,
     },
     {
-      name: 'Dr. Roberto Mendes', role: 'CEO Hospital Regional', event: 'Palestra de Liderança',
+      name: 'Roberto M.', role: 'Gestor Hospitalar', event: '',
       quote: 'Conteúdo de altíssima qualidade com aplicação prática imediata. A Jania tem uma capacidade única de traduzir conceitos complexos em ações concretas.',
       published: true, order: 3,
     },

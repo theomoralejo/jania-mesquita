@@ -1,7 +1,8 @@
 import { List, useTable } from '@refinedev/antd';
-import { Table, Space, Button, Tag, Tooltip } from 'antd';
+import { Space, Button, Tag, Tooltip } from 'antd';
 import { EditOutlined, DeleteOutlined, LinkOutlined } from '@ant-design/icons';
 import { useDelete, useNavigation } from '@refinedev/core';
+import EnhancedTable, { EnhancedColumn } from '../../components/EnhancedTable';
 
 export const MidiaList = () => {
     const { tableProps } = useTable({
@@ -20,58 +21,82 @@ export const MidiaList = () => {
         Entrevista: 'cyan',
     };
 
+    const columns: EnhancedColumn[] = [
+        {
+            key: 'type',
+            dataIndex: 'type',
+            title: 'Tipo',
+            render: (type: string) => (
+                <Tag color={typeColors[type] || 'default'}>{type}</Tag>
+            ),
+        },
+        {
+            key: 'outlet',
+            dataIndex: 'outlet',
+            title: 'Veículo',
+            editable: true,
+        },
+        {
+            key: 'title',
+            dataIndex: 'title',
+            title: 'Título',
+            ellipsis: true,
+            editable: true,
+        },
+        {
+            key: 'date',
+            dataIndex: 'date',
+            title: 'Data',
+            width: 120,
+        },
+        {
+            key: 'link',
+            dataIndex: 'link',
+            title: 'Link',
+            render: (link: string) => (
+                <Tooltip title={link}>
+                    <a href={link} target="_blank" rel="noopener noreferrer">
+                        <LinkOutlined /> Abrir
+                    </a>
+                </Tooltip>
+            ),
+        },
+    ];
+
     return (
         <List
             title="Mídias"
             createButtonProps={{ onClick: () => create('midias') }}
         >
-            <Table {...tableProps} rowKey="id">
-                <Table.Column
-                    title="Tipo"
-                    dataIndex="type"
-                    render={(type: string) => (
-                        <Tag color={typeColors[type] || 'default'}>{type}</Tag>
-                    )}
-                />
-                <Table.Column title="Veículo" dataIndex="outlet" />
-                <Table.Column title="Título" dataIndex="title" ellipsis />
-                <Table.Column title="Data" dataIndex="date" width={120} />
-                <Table.Column
-                    title="Link"
-                    dataIndex="link"
-                    render={(link: string) => (
-                        <Tooltip title={link}>
-                            <a href={link} target="_blank" rel="noopener noreferrer">
-                                <LinkOutlined /> Abrir
-                            </a>
-                        </Tooltip>
-                    )}
-                />
-                <Table.Column title="Ordem" dataIndex="order" width={80} />
-                <Table.Column
-                    title="Ações"
-                    render={(_, record: any) => (
-                        <Space>
-                            <Button
-                                type="text"
-                                icon={<EditOutlined />}
-                                onClick={() => edit('midias', record.id)}
-                            />
-                            <Button
-                                type="text"
-                                danger
-                                icon={<DeleteOutlined />}
-                                onClick={() =>
-                                    deleteOne({
-                                        resource: 'midias',
-                                        id: record.id,
-                                    })
-                                }
-                            />
-                        </Space>
-                    )}
-                />
-            </Table>
+            <EnhancedTable
+                dataSource={tableProps.dataSource || []}
+                columns={columns}
+                loading={tableProps.loading}
+                resource="midias"
+                reorderEnabled={true}
+                pagination={tableProps.pagination}
+                onChange={tableProps.onChange}
+                actionColumn={(record: any) => (
+                    <Space>
+                        <Button
+                            type="text"
+                            icon={<EditOutlined />}
+                            onClick={() => edit('midias', record.id)}
+                        />
+                        <Button
+                            type="text"
+                            danger
+                            icon={<DeleteOutlined />}
+                            onClick={() =>
+                                deleteOne({
+                                    resource: 'midias',
+                                    id: record.id,
+                                })
+                            }
+                        />
+                    </Space>
+                )}
+            />
         </List>
     );
 };

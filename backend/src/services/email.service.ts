@@ -370,6 +370,68 @@ export const notifyNewMentoria = async (data: {
   }
 };
 
+// Notificação Admin - Nova Consultoria
+export const notifyNewConsultoria = async (data: {
+  name: string;
+  email: string;
+  phone: string;
+  clinic: string;
+  revenue: string;
+  mainChallenge?: string;
+}) => {
+  try {
+    const content = `
+      <h2 style="color: #333333; margin: 0 0 20px 0;">Nova Solicitação de Consultoria</h2>
+      <p style="color: #666666; line-height: 1.6; margin: 0 0 20px 0;">
+        Uma nova solicitação de consultoria foi recebida através do site.
+      </p>
+
+      <table width="100%" cellpadding="8" style="border-collapse: collapse; margin: 20px 0;">
+        <tr style="background-color: #f9f9f9;">
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333; width: 140px;">Nome:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.name}</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333;">Email:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.email}</td>
+        </tr>
+        <tr style="background-color: #f9f9f9;">
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333;">Telefone:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.phone}</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333;">Clínica:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.clinic}</td>
+        </tr>
+        <tr style="background-color: #f9f9f9;">
+          <td style="border: 1px solid #eeeeee; font-weight: bold; color: #333333;">Faturamento:</td>
+          <td style="border: 1px solid #eeeeee; color: #666666;">${data.revenue}</td>
+        </tr>
+      </table>
+
+      ${data.mainChallenge ? `
+      <div style="background-color: #f9f9f9; padding: 20px; border-radius: 6px; margin: 20px 0;">
+        <p style="margin: 0 0 10px 0; font-weight: bold; color: #333333;">Principal Desafio:</p>
+        <p style="margin: 0; color: #666666; line-height: 1.6; white-space: pre-wrap;">${data.mainChallenge}</p>
+      </div>
+      ` : ''}
+    `;
+
+    await transporter.sendMail({
+      from: emailConfig.from,
+      to: emailConfig.notificationEmail,
+      subject: '[Site] Nova Solicitação de Consultoria',
+      html: emailTemplate(content),
+    });
+
+    console.log('✅ Email de consultoria enviado para admin');
+    return { success: true };
+  } catch (error) {
+    console.error('❌ Erro ao enviar email de consultoria:', error);
+    throw error;
+  }
+};
+
 // Notificação Admin - Nova Palestra
 export const notifyNewPalestras = async (data: {
   name: string;
@@ -470,6 +532,7 @@ export default {
   notifyNewDiagnostico,
   notifyNewAvaliacao,
   notifyNewMentoria,
+  notifyNewConsultoria,
   notifyNewPalestras,
   notifyNewNewsletter,
 };

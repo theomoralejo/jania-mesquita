@@ -77,7 +77,7 @@ export function PricingSection() {
             </span>
           </div>
 
-          <h2 className="font-serif text-5xl md:text-6xl lg:text-7xl mb-12 leading-[1.05] tracking-tight text-[#232323]">
+          <h2 className="font-serif text-[42px] leading-[1.05] md:text-6xl lg:text-7xl mb-12 tracking-tight text-[#232323]">
             Três Níveis de <span className="italic text-[#385443]">Transformação</span>
           </h2>
 

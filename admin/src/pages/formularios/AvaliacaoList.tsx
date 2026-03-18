@@ -36,7 +36,7 @@ export const AvaliacaoList = () => {
     <List>
       <Alert
         message="Teste de Maturidade (Avaliação / Diagnóstico Completo)"
-        description={<>Estes contatos concluíram o quiz longo de pontuação de Maturidade da Clínica. <a href="https://janiamesquita.com.br/avaliacao" target="_blank" rel="noreferrer">Ver quiz no site</a></>}
+        description={<>Estes contatos concluíram o quiz longo de pontuação de Maturidade da Clínica. <a href="https://janiamesquita.com.br/#/avaliacao" target="_blank" rel="noreferrer">Ver quiz no site</a></>}
         type="info"
         showIcon
         style={{ marginBottom: 16 }}

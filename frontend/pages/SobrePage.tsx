@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Award, Users, TrendingUp, Target, BookOpen, Briefcase } from 'lucide-react';
 // import imgJaniaMesquita from 'figma:asset/ec80bb3e3c57326b8068234761e68d2524ebbcb0.png';
-const imgJaniaMesquita = `${import.meta.env.BASE_URL}assets/img/herosobre.jpg`;
+const imgJaniaMesquita = '/uploads/general/fotosobre_attriostudio-533534.webp';
 
 export default function SobrePage() {
   const stats = [
@@ -69,8 +69,8 @@ export default function SobrePage() {
       {/* Hero */}
       <section className="py-[58px] bg-[#F2EFE8] px-[0px] pt-[18px] pr-[0px] pb-[58px] pl-[0px]">
         <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            <div className="px-[20px] py-[0px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center">
+            <div className="px-[20px] py-[0px] order-2 lg:order-1">
               <div className="mb-4">
                 <div className="w-16 h-[2px] bg-[#385443]"></div>
               </div>
@@ -88,11 +88,11 @@ export default function SobrePage() {
                 <div>Mentoria Executiva</div>
               </div>
             </div>
-            <div className="rounded-3xl overflow-hidden h-[700px] shadow-2xl">
+            <div className="rounded-3xl overflow-hidden h-[300px] lg:h-[450px] shadow-2xl mx-6 lg:mx-0 order-1 lg:order-2">
               <img
                 src={imgJaniaMesquita}
                 alt="Jania Mesquita"
-                className="w-full h-full object-cover object-top p-[0px]"
+                className="w-full h-full object-cover object-center"
               />
             </div>
           </div>

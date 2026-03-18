@@ -27,10 +27,7 @@ export default function AcervoSinglePage() {
           return;
         }
 
-        const [productData, depoimentosData] = await Promise.all([
-           acervoApi.getProductBySlug(slug),
-           fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000/api'}/public/depoimentos`).then(res => res.json())
-        ]);
+        const productData = await acervoApi.getProductBySlug(slug);
 
         // Transformar dados da API para o formato do componente
         const transformedProduct = {
@@ -62,9 +59,15 @@ export default function AcervoSinglePage() {
 
         setProduct(transformedProduct);
 
-        // Filter valid depoimentos ensuring at least 1 image and proper content
-        if (Array.isArray(depoimentosData)) {
-           setAcervoDepoimentos(depoimentosData.slice(0, 2));
+        // Buscar depoimentos separadamente para não bloquear o produto se der erro
+        try {
+          const depoimentosRes = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000/api'}/depoimentos`);
+          const depoimentosData = await depoimentosRes.json();
+          if (Array.isArray(depoimentosData)) {
+            setAcervoDepoimentos(depoimentosData);
+          }
+        } catch (_) {
+          // Depoimentos não são críticos, página continua mesmo sem eles
         }
       } catch (error) {
         console.error('Erro ao buscar dados:', error);
@@ -267,20 +270,20 @@ export default function AcervoSinglePage() {
       <section className="pt-32 pb-20 lg:pt-40 lg:pb-32 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[#DFDCD4]/20 -z-10"></div>
         <div className="container-custom px-6 md:px-0">
-          <Link to="/acervo" className="inline-flex items-center gap-2 text-[#696969] hover:text-[#42331C] transition-colors text-xs tracking-widest uppercase font-bold mb-12">
+          <Link to="/acervo" className="inline-flex items-center gap-2 text-[#696969] hover:text-[#42331C] transition-colors text-xs tracking-widest uppercase font-bold mb-4 md:mb-12">
             <ArrowLeft className="w-4 h-4" />
             Voltar ao Acervo
           </Link>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center flex-col-reverse lg:flex-row">
             {/* Left Content */}
-            <div className="space-y-8">
+            <div className="space-y-8 order-2 lg:order-1">
               {resource.bestsellerText && <div className="inline-flex items-center gap-3 px-3 py-1 bg-[#385443]/10 rounded-full border border-[#385443]/20">
                 <Star className="w-3 h-3 text-[#385443] fill-current" />
                 <span className="text-[10px] uppercase tracking-widest font-bold text-[#385443]">{resource.bestsellerText}</span>
               </div>}
               
-              <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.05] text-[#42331C]">
+              <h1 className="font-serif text-[1.7rem] md:text-5xl lg:text-[2.75rem] leading-[1.05] text-[#42331C]">
                 {resource.title}
               </h1>
               
@@ -312,14 +315,13 @@ export default function AcervoSinglePage() {
               </div>
             </div>
 
-            {/* Right Image (Book Mockup vibe) */}
-            <div className="relative flex justify-center lg:justify-end">
-               <div className="relative w-full max-w-md aspect-[3/4] shadow-2xl rounded-[5px] rotate-y-12 transform transition-transform hover:rotate-0 duration-700">
-                  <div className="absolute inset-0 bg-[#42331C] rounded-[5px] transform translate-x-4 translate-y-4 -z-10"></div>
+            {/* Right Image - Clean, large, no frame */}
+            <div className="relative flex justify-center lg:justify-end order-1 lg:order-2 lg:mb-0">
+               <div className="relative w-[70%] md:w-full mx-auto md:mx-0 max-w-lg">
                   <img 
                     src={resolveImageUrl(resource.image)} 
                     alt={resource.title}
-                    className="w-full h-full object-cover rounded-[5px] border border-[#DFDCD4]"
+                    className="w-full h-full object-contain drop-shadow-2xl"
                   />
                   {/* Badge Overlay */}
                   {resource.badge1Enabled && resource.badge1Text && <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#385443] rounded-full flex items-center justify-center text-white font-serif text-center p-2 shadow-xl">
@@ -337,65 +339,50 @@ export default function AcervoSinglePage() {
           {/* Editorial Label */}
           <div className="flex items-center justify-center gap-4 mb-16">
             <div className="w-16 h-[1px] bg-[#B6A689]"></div>
-            <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#B6A689]">
-              Reconhecimento e Confiança
-            </span>
+            <h2 className="text-2xl md:text-3xl font-serif text-[#42331C]">
+              Pessoas que confiam na{' '}
+              <span className="italic text-[#385443]">Jania Mesquita</span>
+            </h2>
             <div className="w-16 h-[1px] bg-[#B6A689]"></div>
           </div>
 
-          {/* Testimonials Grid - Editorial Magazine Style */}
+          {/* Testimonials Carousel */}
           {acervoDepoimentos.length > 0 && (
-            <div className="max-w-[1218px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-              {/* Testimonial 1 - Featured Large */}
-              {acervoDepoimentos[0] && (
-                <div className="md:col-span-2 bg-white p-8 rounded-[7px] border border-[#DFDCD4] shadow-[var(--shadow-lg)] relative">
-                  <div className="absolute top-6 right-6">
-                    <Award className="w-10 h-10 text-[#d4af37] opacity-20" />
-                  </div>
-                  <div className="flex items-start gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#385443]">
-                      <img src={resolveImageUrl(acervoDepoimentos[0].image) || `https://ui-avatars.com/api/?name=${encodeURIComponent(acervoDepoimentos[0].name)}&background=385443&color=fff`} alt={acervoDepoimentos[0].name} className="w-full h-full object-cover" />
-                    </div>
-                    <div>
-                      <h4 className="font-serif text-lg text-[#42331C] mb-1">{acervoDepoimentos[0].name}</h4>
-                      <p className="text-xs text-[#B6A689] uppercase tracking-wider">{acervoDepoimentos[0].role} {acervoDepoimentos[0].event && `• ${acervoDepoimentos[0].event}`}</p>
-                    </div>
-                  </div>
-                  <p className="text-[#696969] font-light leading-relaxed italic mb-6">
-                    "{acervoDepoimentos[0].quote}"
-                  </p>
-                  <div className="flex items-center gap-2">
-                    {[1,2,3,4,5].map(i => (
-                      <Star key={i} className="w-4 h-4 text-[#d4af37] fill-current" />
-                    ))}
-                  </div>
+            <div className="max-w-[1218px] mx-auto mb-16 relative">
+              <div className="flex justify-end mb-4 pr-6 md:pr-0">
+                <div className="text-xs uppercase tracking-widest text-[#B6A689] font-bold flex items-center gap-2">
+                  <ArrowRight className="w-4 h-4" />
+                  Arraste para ler mais
                 </div>
-              )}
-
-              {/* Testimonial 2 - Compact */}
-              {acervoDepoimentos[1] && (
-                <div className="bg-[#385443] p-8 rounded-[7px] text-[#F2EFE8] flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#F2EFE8]">
-                        <img src={resolveImageUrl(acervoDepoimentos[1].image) || `https://ui-avatars.com/api/?name=${encodeURIComponent(acervoDepoimentos[1].name)}&background=F2EFE8&color=385443`} alt={acervoDepoimentos[1].name} className="w-full h-full object-cover" />
+              </div>
+              <div className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide px-6 md:px-0">
+                {acervoDepoimentos.map((dep, idx) => (
+                  <div key={idx} className="flex-none w-[320px] md:w-[380px] snap-start bg-white p-8 rounded-[7px] text-[#42331C] flex flex-col justify-between relative overflow-hidden group shadow-lg border border-[#DFDCD4]">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-[#B6A689]/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
+                    <div className="relative z-10 flex-grow">
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#385443]">
+                          <img src={resolveImageUrl(dep.image) || `https://ui-avatars.com/api/?name=${encodeURIComponent(dep.name)}&background=385443&color=fff`} alt={dep.name} className="w-full h-full object-cover" />
+                        </div>
+                        <div>
+                          <h4 className="font-serif text-lg text-[#42331C] mb-1">{dep.name}</h4>
+                          <p className="text-[10px] text-[#B6A689] uppercase tracking-wider">{dep.role} {dep.event && `• ${dep.event}`}</p>
+                        </div>
                       </div>
-                      <div>
-                        <h4 className="font-serif text-[#F2EFE8] mb-0">{acervoDepoimentos[1].name}</h4>
-                        <p className="text-[10px] text-[#DFDCD4] uppercase tracking-wider">{acervoDepoimentos[1].role} {acervoDepoimentos[1].event && `• ${acervoDepoimentos[1].event}`}</p>
-                      </div>
+                      <p className="text-sm font-light leading-relaxed italic text-[#696969] line-clamp-4">
+                        "{dep.quote}"
+                      </p>
                     </div>
-                    <p className="text-sm font-light leading-relaxed italic text-white line-clamp-4">
-                      "{acervoDepoimentos[1].quote}"
-                    </p>
+                    <div className="flex items-center gap-1 mt-6 relative z-10">
+                      {[1,2,3,4,5].map(i => (
+                        <Star key={i} className="w-4 h-4 text-[#d4af37] fill-current" />
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1 mt-6">
-                    {[1,2,3,4,5].map(i => (
-                      <Star key={i} className="w-3 h-3 text-[#d4af37] fill-current" />
-                    ))}
-                  </div>
-                </div>
-              )}
+                ))}
+                {/* Invisible spacer to prevent cutoff on last item */}
+                <div className="flex-none w-1 md:hidden"></div>
+              </div>
             </div>
           )}
 
@@ -560,10 +547,10 @@ export default function AcervoSinglePage() {
       {/* 5. PRICING / OFFER */}
       <section className="section-padding bg-[#F2EFE8]">
         <div className="container-custom px-6 md:px-0">
-          <div className="max-w-5xl mx-auto bg-white rounded-[20px] p-0 md:p-10 border border-[#DFDCD4] shadow-[var(--shadow-xl)] relative overflow-hidden">
+          <div className="max-w-5xl mx-auto bg-white rounded-[20px] p-4 md:p-10 border border-[#DFDCD4] shadow-[var(--shadow-xl)] relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#385443]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10 px-6 py-8 md:p-0">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center relative z-10 px-0 py-0 md:p-0">
               <div>
               {resource.badge2Enabled && resource.badge2Text && <span className="inline-block px-4 py-1 bg-[#385443] text-white text-xs font-bold tracking-widest uppercase rounded-full mb-6">
                 {resource.badge2Text}
@@ -589,20 +576,38 @@ export default function AcervoSinglePage() {
                 </ul>
               </div>
 
-            <div className="text-center bg-white p-8 rounded-[10px] border border-[#DFDCD4] shadow-lg flex flex-col items-center justify-center">
-              {resource.originalPrice && <div className="text-sm text-[#696969] mb-2 font-medium">De <span className="line-through">{resource.originalPrice}</span> por apenas:</div>}
+            <div className="text-center bg-white p-4 md:p-8 rounded-[10px] border border-[#DFDCD4] shadow-lg flex flex-col items-center justify-center">
+              {resource.originalPrice && <div className="text-sm text-[#696969] mb-2 font-medium">De <span className="line-through">{resource.originalPrice?.startsWith('R$') ? resource.originalPrice : `R$ ${resource.originalPrice}`}</span> por apenas:</div>}
               {resource.installmentsPrice && <div className="text-xs text-[#B6A689] uppercase tracking-widest font-bold mb-2">Parcelado</div>}
-              {resource.installmentsPrice && <div className="text-4xl md:text-5xl font-serif text-[#385443] mb-4">{resource.installmentsPrice}</div>}
-              {resource.installmentsPrice && <div className="text-sm text-[#696969] mb-4">À vista por {resource.price}</div>}
+              {resource.installmentsPrice && (() => {
+                // Format: "4x de R$ 7,90*" -> 30% "4x de " | 100% "7" | 30% ",90*"
+                const raw = resource.installmentsPrice;
+                const match = raw.match(/^(.*R\$\s*)([\d]+)([,.]?[\d*]*)\*?\s*$/);
+                if (match) {
+                  const prefix = match[1].trim(); // e.g. "4x de R$"
+                  const main = match[2];           // e.g. "7"
+                  const cents = match[3] ? match[3] + '*' : '*'; // e.g. ",90*"
+                  return (
+                    <div className="flex items-baseline justify-center gap-0 text-[#385443] font-serif mb-4">
+                      <span className="text-xl">{prefix}&nbsp;</span>
+                      <span className="text-5xl md:text-6xl font-bold leading-none">{main}</span>
+                      <span className="text-xl">{cents}</span>
+                    </div>
+                  );
+                }
+                // Fallback - exibir original
+                return <div className="text-4xl md:text-5xl font-serif text-[#385443] mb-4">{raw}</div>;
+              })()}
+              {resource.installmentsPrice && <div className="text-sm text-[#696969] mb-4">À vista por {resource.price?.startsWith('R$') ? resource.price : `R$ ${resource.price}`}</div>}
               
-              {!resource.installmentsPrice && <div className="text-5xl md:text-6xl font-serif text-[#385443] mb-2">{resource.price}</div>}
+              {!resource.installmentsPrice && <div className="text-5xl md:text-6xl font-serif text-[#385443] mb-2">{resource.price?.startsWith('R$') ? resource.price : `R$ ${resource.price}`}</div>}
               {!resource.installmentsPrice && <div className="text-xs text-[#B6A689] uppercase tracking-widest font-bold mb-8">Pagamento Único</div>}
               
               <a 
                 href={resource.hotmartLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-5 bg-[#385443] text-white rounded-[7px] hover:bg-[#2A4032] transition-all shadow-lg flex items-center justify-center gap-2 font-bold text-lg mb-4"
+                  className="w-full py-4 md:py-5 bg-[#385443] text-white rounded-[7px] hover:bg-[#2A4032] transition-all shadow-lg flex items-center justify-center gap-2 font-bold text-base md:text-lg mb-4"
                 >
                   Garantir Meu Exemplar
                   <ArrowRight className="w-5 h-5" />

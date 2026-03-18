@@ -22,6 +22,7 @@ type Summary = {
   newsletterCount: number;
   diagnosticoCount: number;
   mentoriaCount: number;
+  consultoriaCount: number;
   palestrasCount: number;
   avaliacoesCount: number;
 };
@@ -117,6 +118,15 @@ export const DashboardPage: React.FC = () => {
       border: summary.mentoriaCount > 0 ? '#90caf9' : '#e0e0e0',
     },
     {
+      title: 'Lead Consultoria',
+      value: summary.consultoriaCount,
+      icon: <MailOutlined style={{ fontSize: 28, color: summary.consultoriaCount > 0 ? '#2e7d32' : '#78877E' }} />,
+      bg: summary.consultoriaCount > 0
+        ? 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)'
+        : 'linear-gradient(135deg, #f5f5f5 0%, #fafafa 100%)',
+      border: summary.consultoriaCount > 0 ? '#a5d6a7' : '#e0e0e0',
+    },
+    {
       title: 'Lead Palestra',
       value: summary.palestrasCount,
       icon: <MailOutlined style={{ fontSize: 28, color: summary.palestrasCount > 0 ? '#FF8F00' : '#78877E' }} />,
@@ -151,12 +161,16 @@ export const DashboardPage: React.FC = () => {
   ];
 
   const interactionsData = [
-    { name: 'Contatos', value: summary.unreadContatos > 0 ? summary.unreadContatos : 3 },
-    { name: 'Newsletter', value: summary.newsletterCount > 0 ? summary.newsletterCount : 12 },
-    { name: 'Visitas (Hoje)', value: 145 }, // mock
-  ];
+    { name: 'Contatos', value: summary.unreadContatos },
+    { name: 'Newsletter', value: summary.newsletterCount },
+    { name: 'Diagnóstico', value: summary.diagnosticoCount },
+    { name: 'Mentoria', value: summary.mentoriaCount },
+    { name: 'Consultoria', value: summary.consultoriaCount },
+    { name: 'Palestras', value: summary.palestrasCount },
+    { name: 'Quiz', value: summary.avaliacoesCount },
+  ].filter(d => d.value > 0);
 
-  const COLORS = ['#385443', '#D4A017', '#614D35'];
+  const COLORS = ['#385443', '#D4A017', '#614D35', '#1565c0', '#6a1b9a', '#FF8F00', '#00695c'];
 
   return (
     <div style={{ padding: '24px' }}>
@@ -171,7 +185,7 @@ export const DashboardPage: React.FC = () => {
 
       <Row gutter={[20, 20]} style={{ marginBottom: 24 }}>
         {cards.map((card, i) => (
-          <Col xs={24} sm={12} lg={6} key={i}>
+          <Col xs={12} sm={12} lg={6} key={i}>
             <Card
               bordered
               style={{

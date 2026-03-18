@@ -3,11 +3,27 @@ import {
   useForm,
 } from '@refinedev/antd';
 import { Form, Input } from 'antd';
+import { useState } from 'react';
 
 export const CategoryCreate = () => {
-  const { formProps, saveButtonProps } = useForm({
+  const { formProps, saveButtonProps, form } = useForm({
     resource: 'blog/categories',
   });
+
+  const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false);
+
+  // Gerador avançado de slug validado
+  const slugify = (text = "") =>
+    text
+      .toString()
+      .toLowerCase()
+      .trim()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
 
   return (
     <Create saveButtonProps={saveButtonProps}>
@@ -17,7 +33,15 @@ export const CategoryCreate = () => {
           name="label"
           rules={[{ required: true, message: 'Por favor, insira o nome da categoria' }]}
         >
-          <Input placeholder="Ex: Liderança" />
+          <Input 
+            placeholder="Ex: Liderança" 
+            onChange={(e) => {
+              const label = e.target.value;
+              if (!isSlugManuallyEdited) {
+                form?.setFieldValue('slug', slugify(label));
+              }
+            }} 
+          />
         </Form.Item>
 
         <Form.Item
@@ -29,7 +53,15 @@ export const CategoryCreate = () => {
           ]}
           extra="URL amigável (ex: lideranca)"
         >
-          <Input placeholder="lideranca" />
+          <Input 
+            placeholder="lideranca" 
+            onChange={() => setIsSlugManuallyEdited(true)}
+            onBlur={(e) => {
+              if (e.target.value) {
+                form?.setFieldValue('slug', slugify(e.target.value));
+              }
+            }}
+          />
         </Form.Item>
       </Form>
     </Create>

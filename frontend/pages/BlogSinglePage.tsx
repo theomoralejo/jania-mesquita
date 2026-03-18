@@ -187,7 +187,7 @@ export default function BlogSinglePage() {
       <section className="bg-[#385443] text-white py-16">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <BookOpen className="w-12 h-12 mx-auto mb-6 opacity-80" />
-          <h2 className="font-serif text-3xl mb-4">
+          <h2 className="font-serif text-3xl mb-4 text-white">
             Quer aprofundar seus conhecimentos em governança clínica?
           </h2>
           <p className="text-lg mb-8 text-white/90">

@@ -2,17 +2,9 @@ import React from 'react';
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Filter, BookOpen, ShoppingBag, Smartphone, Book, Video, Headphones, ArrowRight } from 'lucide-react';
+import { Search, Filter, ArrowRight, BookOpen } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import { acervoApi, resolveImageUrl } from '../lib/api';
-
-// Mapeia icons para formatos
-const formatIcons: Record<string, any> = {
-  'ebook': Smartphone,
-  'kindle': Book,
-  'fisico': BookOpen,
-  'produto': ShoppingBag,
-  'default': BookOpen
-};
 
 export default function AcervoPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -47,7 +39,8 @@ export default function AcervoPage() {
           originalPrice: product.originalPrice,
           image: product.image,
           description: product.description,
-          tags: product.features?.map((f: any) => f.text).slice(0, 2) || []
+          tags: product.features?.map((f: any) => f.text).slice(0, 2) || [],
+          featured: product.featured
         }));
 
         setResources(transformedProducts);
@@ -67,11 +60,14 @@ export default function AcervoPage() {
         const formatsData = await acervoApi.getFormats();
         const transformedFormats = [
           { value: 'all', label: 'Todos os Formatos', icon: Filter },
-          ...formatsData.map((format: any) => ({
-            value: format.slug,
-            label: format.label,
-            icon: formatIcons[format.slug] || formatIcons.default
-          }))
+          ...formatsData.map((format: any) => {
+            const IconComponent = (LucideIcons as any)[format.icon || 'BookOpen'] || LucideIcons.BookOpen;
+            return {
+              value: format.slug,
+              label: format.label,
+              icon: IconComponent
+            };
+          })
         ];
         setFormats(transformedFormats);
 
@@ -93,6 +89,9 @@ export default function AcervoPage() {
     
     return matchesSearch && matchesCategory && matchesFormat;
   });
+
+  const featuredResource = filteredResources.find(resource => resource.featured);
+  const regularResources = filteredResources.filter(resource => !resource.featured);
 
   // Loading state
   if (loading) {
@@ -165,22 +164,76 @@ export default function AcervoPage() {
         </div>
       </section>
 
+      {/* Featured Resource */}
+      {featuredResource && (
+        <section className="pt-12 pb-6 bg-[#F2EFE8] border-b border-[#DFDCD4]">
+          <div className="container-custom px-6 md:px-0">
+            <div className="editorial-label mb-12 text-center">
+              Destaque do Acervo
+            </div>
+            
+            <Link to={`/acervo/${featuredResource.slug}`} className="group block mb-12">
+              <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+                {/* Image */}
+                <div className="relative aspect-[4/3] overflow-hidden bg-transparent rounded-[7px]">
+                  <img
+                    src={resolveImageUrl(featuredResource.image)}
+                    alt={featuredResource.title}
+                    className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute top-4 left-4 bg-[#385443] px-4 py-2 rounded-full shadow-lg">
+                    <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#F2EFE8]">
+                      Destaque
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="space-y-6">
+                  <div className="flex justify-between items-start border-b border-[#DFDCD4] pb-4">
+                    <span className="text-xs font-bold tracking-widest text-[#B6A689] uppercase">
+                      {featuredResource.category}
+                    </span>
+                    <span className="font-serif text-2xl text-[#385443]">
+                      {featuredResource.price?.startsWith('R$') ? featuredResource.price : `R$ ${featuredResource.price}`}
+                    </span>
+                  </div>
+
+                  <h2 className="font-serif text-4xl md:text-5xl leading-tight text-[#42331C] group-hover:text-[#385443] transition-colors">
+                    {featuredResource.title}
+                  </h2>
+
+                  <p className="text-lg text-[#696969] font-light leading-relaxed line-clamp-3">
+                    {featuredResource.description}
+                  </p>
+
+                  <div className="pt-4 flex items-center gap-2 text-sm tracking-widest uppercase font-bold text-[#385443] group-hover:translate-x-2 transition-transform duration-500">
+                    Ver Detalhes
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </section>
+      )}
+
       {/* Results Grid */}
       <section className="section-padding">
         <div className="container-custom px-6 md:px-0">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
-            {filteredResources.map((resource, index) => (
+            {regularResources.map((resource, index) => (
               <Link
                 key={index}
                 to={`/acervo/${resource.slug}`}
                 className="group block"
               >
                 {/* Image Aspect Ratio */}
-                <div className="relative aspect-[3/4] mb-8 overflow-hidden bg-[#EBEBEB]">
+                <div className="relative aspect-[3/4] mb-8 overflow-hidden bg-transparent">
                   <img
                     src={resolveImageUrl(resource.image)}
                     alt={resource.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 saturate-50 group-hover:saturate-100"
+                    className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
                   />
                   
                   {/* Floating Tag */}
@@ -198,7 +251,7 @@ export default function AcervoPage() {
                       {resource.category}
                     </span>
                     <span className="font-serif text-lg text-[#385443]">
-                      {resource.price}
+                      {resource.price?.startsWith('R$') ? resource.price : `R$ ${resource.price}`}
                     </span>
                   </div>
 
@@ -236,7 +289,7 @@ export default function AcervoPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 bg-[#42331C] text-[#F9F9F9] relative overflow-hidden">
+      <section className="py-32 bg-[#42331C] text-[#F9F9F9] relative overflow-hidden px-4 md:px-0">
         <div className="absolute inset-0 opacity-10 lines-pattern"></div>
         <div className="container-custom relative z-10 text-center bg-[rgb(242,239,232)] px-[20px] py-[50px] rounded-[30px]">
           <span className="block text-xs font-bold tracking-[0.2em] uppercase text-[#D4C5A8] mb-6">

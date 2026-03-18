@@ -65,6 +65,20 @@ export function Navigation() {
             </Link>
 
             <Link 
+              to="/consultoria" 
+              className={`relative text-sm font-medium tracking-wide transition-colors duration-300 group ${
+                isActive('/consultoria') 
+                  ? 'text-[#385443]' 
+                  : 'text-[#696969] hover:text-[#385443]'
+              }`}
+            >
+              Consultoria
+              {isActive('/consultoria') && (
+                <div className="absolute -bottom-2 left-0 right-0 h-px bg-[#385443]"></div>
+              )}
+            </Link>
+
+            <Link 
               to="/mentoria" 
               className={`relative text-sm font-medium tracking-wide transition-colors duration-300 group ${
                 isActive('/mentoria') 
@@ -156,7 +170,7 @@ export function Navigation() {
                   : 'text-[#696969] hover:text-[#385443]'
               }`}
             >
-              Avaliação
+              Meu nível de gestão
               {isActive('/avaliacao') && (
                 <div className="absolute -bottom-2 left-0 right-0 h-px bg-[#385443]"></div>
               )}
@@ -204,6 +218,13 @@ export function Navigation() {
             onClick={() => setMobileMenuOpen(false)}
           >
             Home
+          </Link>
+          <Link 
+            to="/consultoria" 
+            className="font-serif text-3xl text-[#232323]"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Consultoria
           </Link>
           <Link 
             to="/mentoria" 
@@ -255,7 +276,7 @@ export function Navigation() {
             className="font-serif text-3xl text-[#232323]"
             onClick={() => setMobileMenuOpen(false)}
           >
-            Avaliação
+            Meu nível de gestão
           </Link>
 
           <Link 

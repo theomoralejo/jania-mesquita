@@ -110,6 +110,7 @@ export interface AcervoProduct {
     slug: string;
   };
   features?: Array<{ text: string }>;
+  featured: boolean;
 }
 
 export interface AcervoCategory {
@@ -369,6 +370,15 @@ export interface MentoriaFormData {
   tier: string;
 }
 
+export interface ConsultoriaFormData {
+  name: string;
+  email: string;
+  phone: string;
+  clinic: string;
+  revenue: string;
+  mainChallenge?: string;
+}
+
 export interface PalestrasFormData {
   name: string;
   email: string;
@@ -413,6 +423,12 @@ export const formulariosApi = {
   // Enviar formulário de mentoria
   submitMentoria: async (data: MentoriaFormData): Promise<{ success: boolean }> => {
     const response = await api.post('/formularios/mentoria', data);
+    return response.data;
+  },
+
+  // Enviar formulário de consultoria
+  submitConsultoria: async (data: ConsultoriaFormData): Promise<{ success: boolean }> => {
+    const response = await api.post('/formularios/consultoria', data);
     return response.data;
   },
 

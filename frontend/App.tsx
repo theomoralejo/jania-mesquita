@@ -21,6 +21,7 @@ const PrivacidadePage = React.lazy(() => import('./pages/PrivacidadePage'));
 const NotFoundPage = React.lazy(() => import('./pages/NotFoundPage'));
 const LinksPage = React.lazy(() => import('./pages/LinksPage'));
 const AvaliacaoPage = React.lazy(() => import('./pages/AvaliacaoPage'));
+const ConsultoriaPage = React.lazy(() => import('./pages/ConsultoriaPage'));
 
 import { Suspense } from 'react';
 import { PageLoader } from './components/PageLoader';
@@ -96,6 +97,7 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/mentoria" element={<MentoriaPage />} />
+          <Route path="/consultoria" element={<ConsultoriaPage />} />
           <Route path="/palestras" element={<PalestrasPage />} />
           <Route path="/acervo" element={<AcervoPage />} />
           <Route path="/acervo/:slug" element={<AcervoSinglePage />} />

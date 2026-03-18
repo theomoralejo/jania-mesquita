@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Card, Row, Col, Image, message, Button, Spin, Typography } from 'antd';
-import { DeleteOutlined, CopyOutlined } from '@ant-design/icons';
+import { Card, Row, Col, Image, message, Button, Spin, Typography, Upload } from 'antd';
+import { DeleteOutlined, CopyOutlined, InboxOutlined } from '@ant-design/icons';
 import { axiosInstance } from '../providers/authProvider';
+import type { UploadProps } from 'antd';
 
 const { Title, Text } = Typography;
+const { Dragger } = Upload;
 
 interface UploadedImage {
     url: string;
@@ -14,6 +16,7 @@ interface UploadedImage {
 export const BibliotecaMidia = () => {
     const [images, setImages] = useState<UploadedImage[]>([]);
     const [loading, setLoading] = useState(true);
+    const [uploading, setUploading] = useState(false);
 
     const fetchImages = async () => {
         try {
@@ -52,7 +55,38 @@ export const BibliotecaMidia = () => {
         message.success('URL copiada para a área de transferência!');
     };
 
-    if (loading) {
+    const uploadProps: UploadProps = {
+        name: 'image',
+        multiple: true,
+        accept: 'image/*,video/*',
+        showUploadList: false,
+        customRequest: async ({ file, onSuccess, onError }) => {
+            setUploading(true);
+            try {
+                const formData = new FormData();
+                formData.append('image', file as File);
+                formData.append('folder', 'general');
+
+                await axiosInstance.post('/upload/image', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+                message.success(`${(file as File).name} enviado com sucesso!`);
+                fetchImages();
+                onSuccess?.('ok');
+            } catch (error: any) {
+                console.error('Erro ao fazer upload:', error);
+                message.error(error.response?.data?.error || `Erro ao enviar o arquivo ${(file as File).name}`);
+                onError?.(error);
+            } finally {
+                setUploading(false);
+            }
+        },
+    };
+
+    if (loading && images.length === 0) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
                 <Spin size="large" />
@@ -69,6 +103,25 @@ export const BibliotecaMidia = () => {
                 <Text style={{ color: '#78877E', fontSize: 16 }}>
                     Todos os arquivos físicos armazenados no servidor ({images.length} arquivos)
                 </Text>
+            </div>
+
+            <div style={{ marginBottom: 32 }}>
+                <Dragger {...uploadProps} disabled={uploading}>
+                    <p className="ant-upload-drag-icon">
+                        <InboxOutlined />
+                    </p>
+                    <p className="ant-upload-text">
+                        Clique ou arraste imagens e vídeos para esta área
+                    </p>
+                    <p className="ant-upload-hint">
+                        Suporte para múltiplos arquivos (JPG, PNG, WebP, MP4)
+                    </p>
+                </Dragger>
+                {uploading && (
+                    <div style={{ textAlign: 'center', marginTop: 16 }}>
+                        <Spin /> <Text type="secondary">Enviando arquivos...</Text>
+                    </div>
+                )}
             </div>
 
             <Row gutter={[16, 16]}>
@@ -134,7 +187,7 @@ export const BibliotecaMidia = () => {
                 })}
             </Row>
 
-            {images.length === 0 && (
+            {images.length === 0 && !uploading && (
                 <div style={{ textAlign: 'center', padding: '50px', backgroundColor: '#fafafa', borderRadius: '8px', border: '1px dashed #ddd' }}>
                     <Text type="secondary">Nenhuma imagem encontrada no servidor.</Text>
                 </div>

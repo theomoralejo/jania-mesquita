@@ -5,20 +5,44 @@ import { formulariosApi } from '../lib/api';
 // ——————————————————————————
 // FORM COMPONENT (Hero)
 // ——————————————————————————
-function ConsultoriaForm() {
+function ConsultoriaForm({ formId }: { formId?: string }) {
+  const [formStep, setFormStep] = useState(1); // 1 = Form, 2 = Price Reveal, 3 = Success
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', clinic: '', revenue: '', mainChallenge: '' });
-  const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmitStep1 = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await formulariosApi.submitConsultoria(formData);
-      setSubmitted(true);
+      // Step 1 Submission: Captures the lead BEFORE showing the price
+      await formulariosApi.submitConsultoria({
+         ...formData,
+         mainChallenge: `(PASSO 1) ${formData.mainChallenge}`
+      });
+      // Move to Price Reveal
+      setFormStep(2);
+      // Removed scrolling here because it caused jumping between the two forms on the page
     } catch (err) {
-      console.error('Erro ao enviar solicitação:', err);
-      setSubmitted(true);
+      console.error('Erro ao enviar solicitação passo 1:', err);
+      // Failsafe: move forward anyway to not block user flow
+      setFormStep(2);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmitStep2 = async () => {
+    setLoading(true);
+    try {
+      // Step 2 Submission: Hot Lead marked
+      await formulariosApi.submitConsultoria({
+        ...formData,
+        mainChallenge: `[LEAD QUENTE - ACEITOU O VALOR] ${formData.mainChallenge}`
+      });
+      setFormStep(3);
+    } catch (err) {
+      console.error('Erro ao enviar solicitação passo 2:', err);
+      setFormStep(3);
     } finally {
       setLoading(false);
     }
@@ -28,27 +52,66 @@ function ConsultoriaForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  if (submitted) {
+  if (formStep === 3) {
     return (
       <div className="bg-white border border-[#DFDCD4] p-8 text-center rounded-[9px] shadow-[var(--shadow-lg)]">
         <div className="w-20 h-20 border border-[#385443] rounded-full flex items-center justify-center mx-auto mb-8 text-[#385443]">
           <CheckCircle2 className="w-10 h-10" strokeWidth={1.5} />
         </div>
-        <h3 className="font-serif text-3xl font-light mb-6 tracking-tight text-[#232323]">Solicitação Recebida</h3>
+        <h3 className="font-serif text-3xl font-light mb-6 tracking-tight text-[#232323]">Solicitação Confirmada!</h3>
         <p className="mb-8 text-lg leading-relaxed font-light text-[#414141]">
-          Nossa equipe analisará sua solicitação e entrará em contato em até{' '}
-          <span className="font-medium text-[#385443]">24h úteis</span> para agendar sua sessão de consultoria.
+          Nossa equipe analisará sua aplicação e entrará em contato em até{' '}
+          <span className="font-medium text-[#385443]">24h úteis</span> para os próximos passos.
         </p>
         <p className="text-sm font-light text-[#78877E]">Confirmação enviada para {formData.email}</p>
       </div>
     );
   }
 
+
+
+  if (formStep === 2) {
+    return (
+      <div className="bg-white border border-[#DFDCD4] p-8 text-center rounded-[9px] shadow-[var(--shadow-lg)] space-y-8 flex flex-col min-h-[400px] justify-center text-left">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-[#385443]/10 text-[#385443] rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle2 className="w-8 h-8" />
+          </div>
+          <h3 className="font-serif text-3xl font-light mb-2 tracking-tight text-[#232323]">Informações Recebidas</h3>
+          <p className="text-[15px] leading-relaxed font-light text-[#696969]">
+            Para finalizar sua aplicação, confira o valor do investimento abaixo.
+          </p>
+        </div>
+
+        <div className="bg-[#F2EFE8] border border-[#DFDCD4] rounded-[9px] p-6 text-center w-full shadow-inner relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-[#385443]"></div>
+          <div className="text-xs font-bold tracking-[0.1em] uppercase text-[#B6A689] mb-3">Investimento da Sessão</div>
+          <div className="text-[#385443] font-serif flex flex-col items-center justify-center gap-1 mb-2">
+            <div className="text-5xl font-bold tracking-tight">R$ 1.000</div>
+            <div className="text-base text-[#696969] font-light font-sans mt-2">ou parcelado em até 5x de R$ 200 no cartão</div>
+          </div>
+        </div>
+
+        <button
+          onClick={handleSubmitStep2}
+          disabled={loading}
+          className="w-full py-5 bg-[#385443] text-white rounded-[7px] hover:bg-[#2A4032] transition-all shadow-lg flex items-center justify-center gap-2 font-bold text-xl mb-2 group shadow-[#385443]/20 disabled:opacity-60"
+        >
+          {loading ? 'Confirmando...' : 'Confirmar Solicitação de Vaga'}
+          {!loading && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" strokeWidth={3} />}
+        </button>
+        <p className="text-xs text-center font-light text-[#B6A689]">
+          Ao confirmar, nossa equipe entrará em contato para o agendamento real da sessão.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="bg-white border border-[#DFDCD4] p-6 lg:p-8 space-y-5 rounded-[9px] shadow-[var(--shadow-lg)]">
-      <div className="text-center mb-2">
-        <h3 className="font-serif text-xl text-[#232323] mb-1">Agende sua Consultoria</h3>
-        <p className="text-sm text-[#696969] font-light">Preencha o formulário e retornaremos em até 24h</p>
+    <form onSubmit={handleSubmitStep1} className="bg-white border border-[#DFDCD4] p-6 lg:p-8 space-y-5 rounded-[9px] shadow-[var(--shadow-lg)] relative">
+      <div className="text-center mb-6">
+        <h3 className="font-serif text-3xl text-[#232323] mb-2">Aplicação para Consultoria</h3>
+        <p className="text-sm text-[#696969] font-light">Preencha os dados abaixo para avançar e descobrir o valor do investimento.</p>
       </div>
 
       {[
@@ -100,10 +163,14 @@ function ConsultoriaForm() {
         disabled={loading}
         className="w-full px-8 py-4 bg-[#385443] text-white rounded-[7px] hover:bg-[#42331C] transition-all duration-500 flex items-center justify-center gap-3 group font-bold text-lg disabled:opacity-60"
       >
-        {loading ? 'Enviando...' : 'Solicitar Consultoria'}
+        {loading ? 'Consultando...' : 'Consultar Investimento'}
         {!loading && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" strokeWidth={2} />}
       </button>
 
+      <div className="flex items-center justify-center gap-2 mt-4 text-[#B6A689] text-xs font-medium">
+        <Shield className="w-3 h-3" />
+        Seus dados estão seguros e esta ação não gera cobrança.
+      </div>
       <p className="text-xs text-center font-light text-[#B6A689]">
         Ao enviar, você concorda com nossa{' '}
         <a href="/privacidade" className="underline hover:text-[#385443]">política de privacidade</a>
@@ -151,7 +218,7 @@ export default function ConsultoriaPage() {
     },
     {
       question: 'O investimento pode ser parcelado?',
-      answer: 'Sim! O investimento de R$ 1.000 pode ser parcelado em até 5x de R$ 200,00 no cartão de crédito.',
+      answer: 'Sim! Oferecemos opções de parcelamento em até 5x no cartão de crédito.',
     },
     {
       question: 'E se eu quiser continuar após a consultoria?',
@@ -236,17 +303,16 @@ export default function ConsultoriaPage() {
 
               {/* Pricing Preview */}
               <div className="bg-white/60 border border-[#DFDCD4] rounded-[9px] p-5 inline-block">
-                <div className="text-xs font-bold tracking-[0.15em] uppercase text-[#B6A689] mb-1">Investimento</div>
+                <div className="text-xs font-bold tracking-[0.15em] uppercase text-[#B6A689] mb-1">Aplicação Restrita</div>
                 <div className="flex items-baseline gap-2">
-                  <span className="font-serif text-3xl text-[#385443]">R$ 1.000</span>
-                  <span className="text-sm text-[#696969] font-light">ou 5x de R$ 200</span>
+                  <span className="font-serif text-2xl text-[#385443]">Investimento sob Consulta</span>
                 </div>
               </div>
             </div>
 
             {/* Right — Form */}
             <div className="order-1 lg:order-2">
-              <ConsultoriaForm />
+              <ConsultoriaForm formId="hero-form" />
             </div>
           </div>
         </div>
@@ -386,18 +452,17 @@ export default function ConsultoriaPage() {
 
               {/* Right — Price Card */}
               <div className="text-center bg-[#F2EFE8] p-8 md:p-10 rounded-[12px] border border-[#DFDCD4] shadow-xl">
-                <div className="text-xs text-[#B6A689] uppercase tracking-widest font-bold mb-4">Consultoria Estratégica</div>
+                <div className="text-xs text-[#B6A689] uppercase tracking-widest font-bold mb-4">Como funciona</div>
                 <div className="flex items-baseline justify-center gap-1 text-[#385443] font-serif mb-2">
-                  <span className="text-xl">R$</span>
-                  <span className="text-6xl md:text-7xl font-bold leading-none">1.000</span>
+                  <span className="text-4xl md:text-5xl font-bold leading-tight">Destrave sua empresa</span>
                 </div>
-                <div className="text-sm text-[#696969] mb-6">ou 5x de R$ 200,00 no cartão</div>
+                <div className="text-sm text-[#696969] mb-6 font-light">Escale resultados na sua clínica.</div>
 
                 <button
                   onClick={() => document.getElementById('formulario')?.scrollIntoView({ behavior: 'smooth' })}
                   className="w-full py-4 bg-[#385443] text-white rounded-[7px] hover:bg-[#2A4032] transition-all shadow-lg flex items-center justify-center gap-2 font-bold text-lg mb-4 group"
                 >
-                  Agendar Minha Consultoria
+                  Ver Investimento e Aplicar
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
 
@@ -531,7 +596,7 @@ export default function ConsultoriaPage() {
 
             {/* Right — Form */}
             <div>
-              <ConsultoriaForm />
+              <ConsultoriaForm formId="footer-form" />
             </div>
           </div>
         </div>

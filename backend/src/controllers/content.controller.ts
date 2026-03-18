@@ -269,6 +269,7 @@ export const adminGetSummary = async (req: AuthRequest, res: Response): Promise<
       newsletterCount,
       diagnosticoCount,
       mentoriaCount,
+      consultoriaCount,
       palestrasCount,
       avaliacoesCount,
     ] = await Promise.all([
@@ -280,6 +281,7 @@ export const adminGetSummary = async (req: AuthRequest, res: Response): Promise<
       prisma.formularioNewsletter.count(),
       prisma.formularioDiagnostico.count({ where: { read: false } }),
       prisma.formularioMentoria.count({ where: { read: false } }),
+      prisma.formularioConsultoria.count({ where: { read: false } }),
       prisma.formularioPalestras.count({ where: { read: false } }),
       prisma.formularioAvaliacao.count({ where: { read: false } }),
     ]);
@@ -293,6 +295,7 @@ export const adminGetSummary = async (req: AuthRequest, res: Response): Promise<
       newsletterCount,
       diagnosticoCount,
       mentoriaCount,
+      consultoriaCount,
       palestrasCount,
       avaliacoesCount,
     });

@@ -51,7 +51,7 @@ export function CompaniesLogos() {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 3,
           slidesToScroll: 1,
           arrows: false
         }
@@ -74,8 +74,8 @@ export function CompaniesLogos() {
               return (
                 <div key={index} className="px-2 md:px-4">
                   <div className="group relative">
-                    <div className="relative w-full h-[80px] md:h-[100px] flex items-center justify-center p-3 md:p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-white/80 shadow-sm hover:shadow-md hover:bg-white transition-all duration-300 hover:-translate-y-1 px-[12px] md:px-[16px] py-[6px]">
-                      <div className="w-full h-full flex items-center justify-center grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300">
+                    <div className="relative w-full h-[80px] md:h-[100px] flex items-center justify-center p-3 md:p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-white/80 shadow-sm hover:shadow-md hover:bg-white transition-all duration-300 hover:-translate-y-1 px-[12px] md:px-[16px] py-[6px] overflow-hidden">
+                      <div className="w-full h-full flex items-center justify-center grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300 [&>div]:max-h-[50px] [&>div]:max-w-[140px] [&>div]:md:max-h-[65px] [&>div]:md:max-w-[170px] [&_img]:max-h-[50px] [&_img]:md:max-h-[65px] [&_img]:w-auto">
                         <LogoComponent />
                       </div>
                     </div>
